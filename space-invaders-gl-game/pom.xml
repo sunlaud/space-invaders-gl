@@ -27,15 +27,20 @@
     </dependency>
 
     <dependency>
-       <groupId>net.java.dev.jogl</groupId>
+       <groupId>net.java.dev</groupId>
        <artifactId>jogl</artifactId>
      </dependency>
  
      <dependency>
-       <groupId>net.java.dev.jogl</groupId>
+       <groupId>net.java.dev</groupId>
        <artifactId>gluegen-rt</artifactId>
      </dependency>
 
+     <dependency>
+         <groupId>net.java.dev</groupId>
+         <artifactId>openmali</artifactId>
+     </dependency>
+      
    </dependencies>
 
   <build>
@@ -98,34 +103,4 @@
 
   </plugins>
   </build>
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.scala-tools</groupId>
-        <artifactId>maven-scala-plugin</artifactId>
-        <configuration>
-          <scalaVersion>${scala.version}</scalaVersion>
-          <launchers>
-            <launcher>
-              <id>Scala Launcher</id>
-              <mainClass>com.xdev.si.Game</mainClass>
-              <!-- args are optional -->
-              <args>
-                <arg>arg1</arg>
-              </args>
-              <!-- jvmArgs are optional -->
-              <jvmArgs>
-                <jvmArg>-Xmx128m</jvmArg>
-                <jvmArg>-Djava.library.path=../etc/gl_native_libs/</jvmArg>
-              </jvmArgs>
-            </launcher>
-            <!-- you could define other launcher -->
-          </launchers>
-        </configuration>
-      </plugin>
-
-    </plugins>
-  </reporting>
-
 </project>
