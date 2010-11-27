@@ -74,12 +74,6 @@
             </dependency>
 
             <dependency>
-                <groupId>com.gagetimer</groupId>
-                <artifactId>gagetimer</artifactId>
-                <version>1.0</version>
-            </dependency>
-
-            <dependency>
                 <groupId>net.java.dev</groupId>
                 <artifactId>openmali</artifactId>
                 <version>1.0</version>
