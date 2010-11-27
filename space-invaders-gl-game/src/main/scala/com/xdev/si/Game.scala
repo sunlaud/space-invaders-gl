@@ -1,5 +1,6 @@
 package com.xdev.si
 
+import entity.AlienEntity
 import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderer}
 import javax.media.opengl.GL
 import com.xdev.engine.gl.GLGameWindow
@@ -26,17 +27,15 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
   val EXPL_TILE_MAP = "/sprites/exp1.png"
   var explTileMap:TileMap = null
 
-  val ENEMY_ANIMATION = 0
-  val EXPLOSION_ANIMATION = 1
-  val animations = new HashMap[Int, Array[Sprite]]()
+  val frameSets = new HashMap[Int, Array[Sprite]]()
 
   def initGameRenders(): Array[GLEventListener2D] = {
-    debug("Init game renders")
+    info("Init game renders")
     Array[GLEventListener2D](new BackgroundRenderer(), new MainRenderer(), new HudRenderer(), DebugRenderer)
   }
 
   def initGameResources(gl: GL): Unit = {
-    debug("Init game resources")
+    info("Init game resources")
     ResourceFactory.getSprite(PRESS_ANY_KEY_SPRITE)
     ResourceFactory.getSprite(WIN_SPRITE)
     ResourceFactory.getSprite(GAME_OVER_SPRITE)
@@ -46,15 +45,15 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
     ResourceFactory.getSprite(ALIEN_SPRITE_1)
     ResourceFactory.getSprite(BACKGROUND_SPRITE)
 
+    info("Load animation frames")
     explTileMap = TileManager.load(EXPL_TILE_MAP, 42, 42)
-    animations.put(ENEMY_ANIMATION, Array[Sprite](
-      ResourceFactory.getSprite(Game.ALIEN_SPRITE_0),
-      ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
-      ResourceFactory.getSprite(Game.ALIEN_SPRITE_0),
-      ResourceFactory.getSprite(Game.ALIEN_SPRITE_1)
-      ))
-    animations.put(EXPLOSION_ANIMATION, explTileMap.toLine)
-
+    val enemyMainAnimatonFrames = Array[Sprite](
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_0),
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_1)
+                )
+    frameSets.put(AlienEntity.MAIN_ANIMATION, enemyMainAnimatonFrames)
+    frameSets.put(AlienEntity.EXPLOSION_ANIMATION, explTileMap.toLine)
+    info("Game resources loaded")
   }
   
   //Game entry point

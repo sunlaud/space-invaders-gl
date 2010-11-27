@@ -14,7 +14,9 @@ object ShotEntity{
   val START_VELOCITY_Y = -350
 }
 class ShotEntity(sprite : Sprite, listener: MainRenderer, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
+
   private var used  = false
+
   vy = ShotEntity.START_VELOCITY_Y
 
   override def move(delta: Long){
@@ -31,8 +33,11 @@ class ShotEntity(sprite : Sprite, listener: MainRenderer, cx: Float, cy: Float) 
     listener.notifyAlienKilled()
     used = true;
   }
-  
+
+  override def init(){}
   def doLogic():Unit= {}
   def notifyDead(): Unit = {markedAsDead = true; isDead = true}
+  override def update(delta: Long){}
+
   override def toString = "ShotEntity[" + x + ", " + y + "]"
 }
