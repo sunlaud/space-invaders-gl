@@ -26,11 +26,6 @@
     </dependency>
 
      <dependency>
-       <groupId>com.gagetimer</groupId>
-       <artifactId>gagetimer</artifactId>
-     </dependency>
-
-     <dependency>
        <groupId>net.java.dev</groupId>
        <artifactId>jogl</artifactId>
      </dependency>

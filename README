@@ -1,8 +1,21 @@
 Install and run info
 
+====================== Linux =========================
 1. Install JOGL libs into maven repo:
 go to etc/folder and run mvn-install-libs.sh
 
 2. Compile project (mvn clean install -Dmaven.test.skip)
 
 3. go to space-invaders-gl-game folder and run "mvn scala:run" goal or run runGame.sh in space-invaders-gl folder. 
+
+===================== Windows ========================
+
+1. Install JOGL libs into maven repo:
+run etc\mvn_install_common_libs.bat
+
+2. Compile project (mvn clean install -Dmaven.test.skip)
+
+3. Run runGame.bat in space-invaders-gl folder.
+
+NOTES
+By default, the game will run in x86 mode. To run it in amd64 please run runGame.amd64.bat
