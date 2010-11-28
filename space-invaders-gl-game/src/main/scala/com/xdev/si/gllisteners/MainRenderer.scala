@@ -1,6 +1,5 @@
 package com.xdev.si.gllisteners
 
-import java.awt.event.KeyEvent
 import javax.media.opengl.GL
 import collection.mutable.ArrayBuffer
 import com.xdev.si.entity.{ShotEntity, AlienEntity, AbstractEntity, ShipEntity}
@@ -8,6 +7,7 @@ import com.xdev.engine.logging.LogHelper
 import com.xdev.engine.input.Keyboard
 import com.xdev.si.{Game, ResourceFactory}
 import com.xdev.engine.gl.render.GLEventListener2D
+import java.awt.event.KeyEvent
 
 /**
  * Created by User: xdev
@@ -69,6 +69,8 @@ class MainRenderer extends GLEventListener2D with LogHelper{
   //Remove dead entites
   aliens--=aliens.filter(e => e.isDead)
   shots--=shots.filter(e => e.isDead)
+
+  aliens.foreach(_.update(delta)) 
   //Draw entities
   aliens.foreach(_.draw(gl))
   shots.foreach(_.draw(gl))

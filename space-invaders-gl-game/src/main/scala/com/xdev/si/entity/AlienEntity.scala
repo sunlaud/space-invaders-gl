@@ -4,51 +4,52 @@ import com.xdev.si.Game
 import javax.media.opengl.GL
 import com.xdev.si.gllisteners.MainRenderer
 import com.xdev.engine.sprite.Sprite
+import com.xdev.engine.animation.FrameAnimation
 
 /**
  * Created by User: xdev
  * Date: 25.08.2010
  * Time: 0:06:32
  */
+object AlienEntity{
+  val MAIN_ANIMATION = 0
+  val EXPLOSION_ANIMATION = 1
+}
 class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
 
-  var currentAnimation = Game.ENEMY_ANIMATION
-  var frameDuration = 250
+  var currentAnimation = AlienEntity.MAIN_ANIMATION
+
   //Change started velocity
   vx = -50.0f * Game.CURRENT_LEVEL
 
-  /** The time since the last frame change took place */
-  var lastFrameChange: Long = 0;
-  /** The current frame of animation being displayed */
-  var frameNumber = 0;
+  override def init(){
+    addFrameAnimation(new FrameAnimation (
+      id = AlienEntity.MAIN_ANIMATION,
+      frames = Game.frameSets(AlienEntity.MAIN_ANIMATION),
+      duration = 1000,
+      looped = true)
+    )
+    addFrameAnimation(new FrameAnimation (
+      id = AlienEntity.EXPLOSION_ANIMATION,
+      frames = Game.frameSets(AlienEntity.EXPLOSION_ANIMATION),
+      duration = 1000,
+      onAnimationEndedHook = {isDead = true})
+    )
+    frameAnimations(currentAnimation).start()
+  }
 
   override def move(delta: Long){
-    val frames = Game.animations(currentAnimation)
-    // since the move tells us how much time has passed
-    // by we can use it to drive the animation, however
-    // its the not the prettiest solution
-    lastFrameChange += delta;
-    // if we need to change the frame, update the frame number
-    // and flip over the sprite in use
-    if (lastFrameChange > frameDuration) {
-      // reset our frame change time counter
-      lastFrameChange = 0;
-      // update the frame
-      frameNumber+=1;
-      if (frameNumber >= frames.length) {
-        frameNumber = 0;
-        if(currentAnimation == Game.EXPLOSION_ANIMATION) isDead = true
-      }
-    }
-
     if ((vx < 0) && (x <= 0)) listener.updateLogic()
     if ((vx > 0) && (x > Game.WND_WIDTH - width)) listener.updateLogic()
     super.move(delta)
   }
 
+  override def update(delta: Long){
+    frameAnimations(currentAnimation).computeNextFrame(delta)
+  }
+
   override def draw(gl: GL): Unit = {
-    val frames = Game.animations(currentAnimation)
-    frames(frameNumber).draw(gl, x, y)
+    frameAnimations(currentAnimation).render(gl, x, y)
   }
 
   def doLogic():Unit= {
@@ -71,12 +72,9 @@ class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) 
   
   def notifyDead(): Unit = {
     markedAsDead = true
-    if(currentAnimation != Game.EXPLOSION_ANIMATION){
-      currentAnimation = Game.EXPLOSION_ANIMATION
-      frameNumber = 0
-      frameDuration = 30
-      lastFrameChange = 0
-    }
+    currentAnimation = AlienEntity.EXPLOSION_ANIMATION
+    if(!frameAnimations(currentAnimation).isRunning())
+      frameAnimations(currentAnimation).start()
   }
   override def toString = "AlienEntity[" + x + ", " + y + "]"
 }

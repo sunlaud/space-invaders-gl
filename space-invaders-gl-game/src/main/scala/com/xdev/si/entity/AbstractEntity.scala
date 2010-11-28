@@ -1,15 +1,17 @@
 package com.xdev.si.entity
 
-import java.awt.Rectangle
 import javax.media.opengl.GL
 import com.xdev.engine.sprite.Sprite
+import collection.mutable.HashMap
+import com.xdev.engine.animation.FrameAnimation
+import java.awt.Rectangle
 
 /**
  * Created by User: xdev
  * Date: 24.08.2010
  * Time: 21:56:53
  */
-abstract class AbstractEntity(sprite : Sprite, cx: Float, cy: Float) {
+abstract class AbstractEntity (sprite : Sprite, cx: Float, cy: Float){
   //Coordinates
   var x: Float = cx
   var y: Float = cy
@@ -24,10 +26,14 @@ abstract class AbstractEntity(sprite : Sprite, cx: Float, cy: Float) {
   //State
   var markedAsDead = false
   var isDead = false
+  protected val frameAnimations = new HashMap[Int, FrameAnimation]()
+  //Run init method on constructor creation
+  init()
+
   /* =============================================
      Methods
     =============================================*/
-
+  protected def init(): Unit
   /**
    * Move  entity
    */
@@ -65,4 +71,9 @@ abstract class AbstractEntity(sprite : Sprite, cx: Float, cy: Float) {
   def collidedWith(target: AbstractEntity): Unit
   def doLogic():Unit
   def notifyDead(): Unit
+  def update(delta: Long): Unit
+  
+  def addFrameAnimation(animation: FrameAnimation){
+     frameAnimations.put(animation.id, animation)
+  }
 }
