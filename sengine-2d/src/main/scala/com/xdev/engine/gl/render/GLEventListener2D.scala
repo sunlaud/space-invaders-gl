@@ -38,8 +38,10 @@ abstract class GLEventListener2D extends GLEventListener{
    */
   def display(drawable: GLAutoDrawable): Unit = {
     calculateDelta()
+    onUpdateFrame(delta, drawable.getWidth(), drawable.getHeight())
     onRenderFrame(drawable.getGL(), drawable.getWidth(), drawable.getHeight())
   }
+  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit
   def onRenderFrame(gl: GL, w: Int, h: Int): Unit
 
   private def calculateDelta(){

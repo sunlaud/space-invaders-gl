@@ -1,6 +1,6 @@
 package com.xdev.si.entity
 
-import com.xdev.si.gllisteners.MainRenderer
+import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
 
 /**
@@ -13,30 +13,27 @@ object ShotEntity{
   val firingInterval: Long = 500
   val START_VELOCITY_Y = -350
 }
-class ShotEntity(sprite : Sprite, listener: MainRenderer, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
+class ShotEntity(sprite : Sprite, listener: MainRenderLoop, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
 
   private var used  = false
 
-  vy = ShotEntity.START_VELOCITY_Y
+  override def init(){
+    vy = ShotEntity.START_VELOCITY_Y
+  }
 
   override def move(delta: Long){
     super.move(delta)
     if (y < 0) notifyDead()
   }
 
-  def collidedWith(target: AbstractEntity): Unit = {
+  override def collidedWith(target: AbstractEntity): Unit = {
     if (used) {return}
-    // remove the affected entities
     this.notifyDead()
     target.notifyDead()
-    // notify the game that the alien has been killed
-    listener.notifyAlienKilled()
-    used = true;
+    used = true
   }
 
-  override def init(){}
-  def doLogic():Unit= {}
-  def notifyDead(): Unit = {markedAsDead = true; isDead = true}
+  override def doLogic():Unit= {}
   override def update(delta: Long){}
 
   override def toString = "ShotEntity[" + x + ", " + y + "]"

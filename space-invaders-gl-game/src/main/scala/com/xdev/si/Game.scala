@@ -1,7 +1,7 @@
 package com.xdev.si
 
 import entity.AlienEntity
-import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderer}
+import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderLoop}
 import javax.media.opengl.GL
 import com.xdev.engine.gl.GLGameWindow
 import com.xdev.engine.gl.render.GLEventListener2D
@@ -31,7 +31,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
 
   def initGameRenders(): Array[GLEventListener2D] = {
     info("Init game renders")
-    Array[GLEventListener2D](new BackgroundRenderer(), new MainRenderer(), new HudRenderer(), DebugRenderer)
+    Array[GLEventListener2D](new BackgroundRenderer(), new MainRenderLoop(), new HudRenderer(), DebugRenderer)
   }
 
   def initGameResources(gl: GL): Unit = {

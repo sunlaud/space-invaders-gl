@@ -1,10 +1,10 @@
 package com.xdev.si.entity
 
-import com.xdev.si.Game
 import javax.media.opengl.GL
-import com.xdev.si.gllisteners.MainRenderer
+import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
 import com.xdev.engine.animation.FrameAnimation
+import com.xdev.si.Game
 
 /**
  * Created by User: xdev
@@ -15,14 +15,14 @@ object AlienEntity{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
 }
-class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
+class AlienEntity(sprite: Sprite, listener: MainRenderLoop, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
 
   var currentAnimation = AlienEntity.MAIN_ANIMATION
 
-  //Change started velocity
-  vx = -50.0f * Game.CURRENT_LEVEL
-
   override def init(){
+    //Change started velocity
+    vx = -50.0f * Game.CURRENT_LEVEL
+
     addFrameAnimation(new FrameAnimation (
       id = AlienEntity.MAIN_ANIMATION,
       frames = Game.frameSets(AlienEntity.MAIN_ANIMATION),
@@ -33,14 +33,14 @@ class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) 
       id = AlienEntity.EXPLOSION_ANIMATION,
       frames = Game.frameSets(AlienEntity.EXPLOSION_ANIMATION),
       duration = 1000,
-      onAnimationEndedHook = {isDead = true})
+      onAnimationEndedHook = {isDead = true; listener.notifyAlienKilled()})
     )
     frameAnimations(currentAnimation).start()
   }
 
   override def move(delta: Long){
-    if ((vx < 0) && (x <= 0)) listener.updateLogic()
-    if ((vx > 0) && (x > Game.WND_WIDTH - width)) listener.updateLogic()
+    if ((vx < 0) && (x <= 0)) { listener.updateEnemyesLogic() }
+    if ((vx > 0) && (x > Game.WND_WIDTH - width)) { listener.updateEnemyesLogic() }
     super.move(delta)
   }
 
@@ -52,7 +52,7 @@ class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) 
     frameAnimations(currentAnimation).render(gl, x, y)
   }
 
-  def doLogic():Unit= {
+  override def doLogic():Unit= {
     // swap over horizontal movement and move down the
     // screen a bit
     if(vx < 0) y -= 10 else y += 30
@@ -60,7 +60,7 @@ class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) 
     // if we've reached the bottom of the screen then the player
     // dies
     if (y >= Game.WND_HEIGHT - (height * 3)) {
-      listener.notifyDeath()
+      listener.notifyPlayerShipDestroyed()
     }
   }
 
@@ -68,9 +68,9 @@ class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) 
     vx = vx * 1.02f
   }
 
-  def collidedWith(target: AbstractEntity): Unit = {}
+  override def collidedWith(target: AbstractEntity): Unit = {}
   
-  def notifyDead(): Unit = {
+  override def notifyDead(): Unit = {
     markedAsDead = true
     currentAnimation = AlienEntity.EXPLOSION_ANIMATION
     if(!frameAnimations(currentAnimation).isRunning())
