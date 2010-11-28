@@ -2,7 +2,7 @@ package com.xdev.si.manager
 
 import com.xdev.si.ResourceFactory
 import collection.mutable.ArrayBuffer
-import com.xdev.si.entity.{AlienEntity, ShipEntity}
+import com.xdev.si.entity._
 import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
 
@@ -14,8 +14,8 @@ import com.xdev.engine.sprite.Sprite
 
 object GameManager {
 
-  def createPlayerShip(texture: String, x: Float, y: Float): ShipEntity = {
-    return new ShipEntity(ResourceFactory.getSprite(texture), x, y)
+  def createPlayerShip(listener: MainRenderLoop, texture: String, x: Float, y: Float): ShipEntity = {
+    return new ShipEntity(ResourceFactory.getSprite(texture), listener, x, y)
   }
 
   def createAliens(listener: MainRenderLoop, texture: String, rows: Int, columns: Int): ArrayBuffer[AlienEntity] = {
@@ -29,8 +29,11 @@ object GameManager {
    return aliens
   }
 
-  def createNewGameHud(texture: String): Sprite = {
+  def createInfoTexture(texture: String): Sprite = {
       return ResourceFactory.getSprite(texture)
   }
-
+  
+  def createShot(listener: MainRenderLoop, texture: String, x: Float, y: Float): ShotEntity = {
+    return new ShotEntity(ResourceFactory.getSprite(texture), listener, x, y)
+  }
 }

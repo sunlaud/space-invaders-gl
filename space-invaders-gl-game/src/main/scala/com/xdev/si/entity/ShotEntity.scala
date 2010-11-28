@@ -17,26 +17,23 @@ class ShotEntity(sprite : Sprite, listener: MainRenderLoop, cx: Float, cy: Float
 
   private var used  = false
 
-  vy = ShotEntity.START_VELOCITY_Y
+  override def init(){
+    vy = ShotEntity.START_VELOCITY_Y
+  }
 
   override def move(delta: Long){
     super.move(delta)
     if (y < 0) notifyDead()
   }
 
-  def collidedWith(target: AbstractEntity): Unit = {
+  override def collidedWith(target: AbstractEntity): Unit = {
     if (used) {return}
-    // remove the affected entities
     this.notifyDead()
     target.notifyDead()
-    // notify the game that the alien has been killed
-   // listener.notifyAlienKilled()
-    used = true;
+    used = true
   }
 
-  override def init(){}
-  def doLogic():Unit= {}
-  def notifyDead(): Unit = {markedAsDead = true; isDead = true}
+  override def doLogic():Unit= {}
   override def update(delta: Long){}
 
   override def toString = "ShotEntity[" + x + ", " + y + "]"

@@ -75,8 +75,12 @@ abstract class AbstractEntity (sprite : Sprite, cx: Float, cy: Float){
 
   def collidedWith(target: AbstractEntity): Unit
   def doLogic():Unit
-  def notifyDead(): Unit
   def update(delta: Long): Unit
+
+  def notifyDead(): Unit = {
+    isDead = true
+    markedAsDead = true
+  }
   
   def addFrameAnimation(animation: FrameAnimation){
      frameAnimations.put(animation.id, animation)
