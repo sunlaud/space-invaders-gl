@@ -17,7 +17,7 @@ import com.xdev.si.entity.weapon.ShotEntity
  */
 case class ShipEntity(sprite : Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos){
 
-  private var lastFire: Long
+  private var lastFire: Long = 0
   private val firingInterval = 500
   val shots = new ArrayBuffer[ShotEntity]()
   
@@ -40,11 +40,11 @@ case class ShipEntity(sprite : Sprite, listener: MainRenderLoop, pos: Vector3f) 
   override def update(delta: Long){}
 
   def fire(){
-    if (System.currentTimeMillis() - ShotEntity.lastFire < ShotEntity.firingInterval) {
+    if (System.currentTimeMillis() - lastFire < firingInterval) {
         return
     }
      // if we waited long enough, create the shot entity, and record the time.
-    ShotEntity.lastFire = System.currentTimeMillis()
+    lastFire = System.currentTimeMillis()
     shots += GameManager.createShot(listener, Game.SHOT_SPRITE, new Vector3f(position.getX() + 10, position.getY() - 30, 0.0f))
   }
 }
