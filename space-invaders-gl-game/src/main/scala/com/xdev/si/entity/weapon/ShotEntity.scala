@@ -1,29 +1,26 @@
-package com.xdev.si.entity
+package com.xdev.si.entity.weapon
 
 import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
+import org.openmali.vecmath2.Vector3f
+import com.xdev.si.entity.AbstractEntity
 
 /**
  * Created by User: xdev
  * Date: 25.08.2010
  * Time: 0:07:51
  */
-object ShotEntity{
-  var lastFire: Long = 0
-  val firingInterval: Long = 500
-  val START_VELOCITY_Y = -350
-}
-class ShotEntity(sprite : Sprite, listener: MainRenderLoop, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
+class ShotEntity(sprite : Sprite, listener: MainRenderLoop,  pos: Vector3f) extends AbstractEntity(sprite, pos){
 
   private var used  = false
 
   override def init(){
-    vy = ShotEntity.START_VELOCITY_Y
+    velocity.setY(-350)//Start shot velocity
   }
 
   override def move(delta: Long){
     super.move(delta)
-    if (y < 0) notifyDead()
+    if (position.getY() < 0) notifyDead()
   }
 
   override def collidedWith(target: AbstractEntity): Unit = {
@@ -36,5 +33,5 @@ class ShotEntity(sprite : Sprite, listener: MainRenderLoop, cx: Float, cy: Float
   override def doLogic():Unit= {}
   override def update(delta: Long){}
 
-  override def toString = "ShotEntity[" + x + ", " + y + "]"
+  override def toString = "ShotEntity[" + position + "]"
 }

@@ -2,6 +2,7 @@ package com.xdev.engine.sprite
 
 import javax.media.opengl.GL
 import com.sun.opengl.util.texture.{Texture, TextureCoords}
+import org.openmali.vecmath2.Vector3f
 
 /**
  * Created by User: xdev
@@ -15,7 +16,7 @@ class Sprite(texture: Texture){
   def getWidth(): Int = texture.getImageWidth()
   def getHeight(): Int = texture.getImageHeight()
 
-  def draw(gl : GL, x: Float, y: Float) = {
+  def draw(gl : GL, position: Vector3f) = {
 
     // Enable two-dimensional texturing.
     texture.enable()
@@ -25,7 +26,7 @@ class Sprite(texture: Texture){
     gl.glPushMatrix()
     // bind to the appropriate texture for this sprite
     // translate to the right location and prepare to draw
-    gl.glTranslatef(x, y, 0)
+    gl.glTranslatef(position.getX(), position.getY(), position.getZ())
     gl.glColor3f(1, 1, 1)
     // draw a quad textured to match the sprite
     gl.glBegin(GL.GL_QUADS)

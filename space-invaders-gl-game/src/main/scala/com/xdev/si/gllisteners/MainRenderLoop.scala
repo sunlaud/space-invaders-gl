@@ -4,12 +4,14 @@ import com.xdev.engine.logging.LogHelper
 import com.xdev.engine.gl.render.GLEventListener2D
 import javax.media.opengl.GL
 import com.xdev.si.manager.GameManager
-import com.xdev.si.entity.{AlienEntity, ShipEntity}
 import collection.mutable.ArrayBuffer
 import java.awt.event.KeyEvent
 import com.xdev.engine.input.Keyboard
 import com.xdev.si.GameStateType._
 import com.xdev.si.{GameStateType, Game}
+import org.openmali.vecmath2.Vector3f
+import com.xdev.si.entity.player.ShipEntity
+import com.xdev.si.entity.enemy.AlienEntity
 
 /**
  * Created by User: xdev
@@ -24,9 +26,11 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
 
   private var currentGameState = NEW_GAME
 
+  private val infoSpritePos = new Vector3f(325.0f, 250.0f, 0.0f)
+
   def onInit(gl: GL): Unit = {
     debug("Initialize")
-    playerShip = GameManager.createPlayerShip(this, Game.SHIP_SPRITE, Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25)
+    playerShip = GameManager.createPlayerShip(this, Game.SHIP_SPRITE, new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f))
     aliens ++= GameManager.createAliens(this, Game.ALIEN_SPRITE_0, 5, 12)
   }
 
@@ -59,15 +63,15 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
     currentGameState match {
       case NEW_GAME =>{
         //TODO: Remove magic numbers
-        GameManager.createInfoTexture(Game.PRESS_ANY_KEY_SPRITE).draw(gl, 325,250)
+        GameManager.createInfoTexture(Game.PRESS_ANY_KEY_SPRITE).draw(gl, infoSpritePos)
       }
       case WIN =>{
         //TODO: Remove magic numbers
-        GameManager.createInfoTexture(Game.WIN_SPRITE).draw(gl, 325,250)
+        GameManager.createInfoTexture(Game.WIN_SPRITE).draw(gl, infoSpritePos)
       }
       case LOSE =>{
         //TODO: Remove magic numbers
-        GameManager.createInfoTexture(Game.GAME_OVER_SPRITE).draw(gl, 325,250)
+        GameManager.createInfoTexture(Game.GAME_OVER_SPRITE).draw(gl, infoSpritePos)
       }
       case _ =>
     }
