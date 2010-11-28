@@ -15,7 +15,7 @@ import java.awt.event.KeyEvent
  * Time: 22:57:23
  */
 
-class MainRenderer extends GLEventListener2D with LogHelper{
+class MainRendererOld extends GLEventListener2D with LogHelper{
 
   private val SCORE_LOSE_PENALTY = 1000
 
@@ -40,6 +40,8 @@ class MainRenderer extends GLEventListener2D with LogHelper{
   private val aliens = new ArrayBuffer[AlienEntity]()
   private val shots = new ArrayBuffer[ShotEntity]()
 
+  private var currentGameState = GameState.NEW_GAME
+
   //==========================================================
   def onInit(gl: GL): Unit = {
     debug("Initialize")
@@ -47,37 +49,55 @@ class MainRenderer extends GLEventListener2D with LogHelper{
     //newGame()
   }
   //==========================================================
+
+  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
+
   def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
-
-  processKeyboard()
-  if (!waitingForKeyPress) {
-    if (logicRequiredThisLoop) {
-      logicRequiredThisLoop = false
-      aliens.foreach(_.doLogic())
-    }
-    aliens.foreach(_.move(delta))
-    shots.foreach(_.move(delta))
-    ship.move(delta)
-  } else {
-    ResourceFactory.getSprite(message).draw(gl, 325,250)
-    return
-  }
-  if (aliens.length == 0)notifyWin()
-
-  // Collision detection shot with enemies
-  checkCollisions()
-  //Remove dead entites
-  aliens--=aliens.filter(e => e.isDead)
-  shots--=shots.filter(e => e.isDead)
-
-  aliens.foreach(_.update(delta)) 
-  //Draw entities
-  aliens.foreach(_.draw(gl))
-  shots.foreach(_.draw(gl))
-  ship.draw(gl)
+    processKeyboard()
+    processGameState(currentGameState)
+    //Draw entities
+    aliens.foreach(_.draw(gl))
+    shots.foreach(_.draw(gl))
+    ship.draw(gl)
  }
+ //==========================================================
+ //                                                 GAME STATES PROCESSING
+ //==========================================================
+
+  private def processGameState(gameState: Any): Unit = gameState match {
+     case GameState.NEW_GAME => {
+       debug("New Game")
+       if(aliens.length != maxEnemyCount){
+         aliens.clear()
+         initEntities()
+       }
+       waitingForKeyPress = false
+       currentGameState = GameState.GAME_RUN
+     }
+     case GameState.GAME_RUN => {
+      if (logicRequiredThisLoop) {
+        logicRequiredThisLoop = false
+        aliens.foreach(_.doLogic())
+      }
+        aliens.foreach(_.move(delta))
+        shots.foreach(_.move(delta))
+        ship.move(delta)
+       if (aliens.length == 0)notifyWin()
+
+       // Collision detection shot with enemies
+       checkCollisions()
+       //Remove dead entites
+       aliens--=aliens.filter(e => e.isDead)
+       shots--=shots.filter(e => e.isDead)
+       aliens.foreach(_.update(delta))
+     }
+     case _ => debug("Unknown game state")
+  }
 
  //==========================================================
+ //                                                 GAME RENDER PROCESSING
+ //==========================================================
+
   private def checkCollisions(): Unit = {
     for(shot <- shots if !shot.isDead; if !shot.markedAsDead){
       for(enemy <- aliens if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
@@ -88,11 +108,6 @@ class MainRenderer extends GLEventListener2D with LogHelper{
   }
 
   private def newGame(): Unit = {
-    debug("New Game")
-    if(aliens.length == maxEnemyCount)return
-    aliens.clear()
-		initEntities()
-    waitingForKeyPress = false    
   }
 
   private def initEntities(): Unit = {
@@ -110,14 +125,16 @@ class MainRenderer extends GLEventListener2D with LogHelper{
     message = Game.WIN_SPRITE
     waitingForKeyPress = true
     Game.CURRENT_LEVEL += 1
+    currentGameState = GameState.WIN
   }
 
   def notifyDeath():Unit={
+    currentGameState = GameState.LOSE
     message = Game.GAME_OVER_SPRITE
     waitingForKeyPress = true
     if(Game.SCORE >= SCORE_LOSE_PENALTY ){
       Game.SCORE -= SCORE_LOSE_PENALTY
-    }else Game.SCORE = 0 
+    }else Game.SCORE = 0
   }
   /**
      * Notification that an alien has been killed
@@ -196,4 +213,8 @@ class MainRenderer extends GLEventListener2D with LogHelper{
 
     prevFireState = firePressed;
   }
+}
+
+object GameState extends Enumeration {
+  val GAME_RUN, GAME_PAUSE, WIN, LOSE, NEW_GAME = Value
 }

@@ -5,6 +5,7 @@ import com.xdev.engine.sprite.Sprite
 import collection.mutable.HashMap
 import com.xdev.engine.animation.FrameAnimation
 import java.awt.Rectangle
+import org.openmali.vecmath2.Tuple2f
 
 /**
  * Created by User: xdev
@@ -13,6 +14,10 @@ import java.awt.Rectangle
  */
 abstract class AbstractEntity (sprite : Sprite, cx: Float, cy: Float){
   //Coordinates
+  val position: Tuple2f = new Tuple2f(0.0f, 0.0f)
+  val size: Tuple2f = new Tuple2f(0.0f, 0.0f)
+  val velocity: Tuple2f = new Tuple2f(0.0f, 0.0f)
+  
   var x: Float = cx
   var y: Float = cy
   val width = sprite.getWidth()
