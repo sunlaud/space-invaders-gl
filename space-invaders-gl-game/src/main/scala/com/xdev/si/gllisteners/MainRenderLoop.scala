@@ -60,6 +60,9 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
   }
 
   def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
+    if(DebugRenderer.isDebugEnabled())
+      renderDebugInfo()
+
     currentGameState match {
       case NEW_GAME =>{
         //TODO: Remove magic numbers
@@ -80,6 +83,19 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
   }
 
    private def processKeyboard(): Unit = {
+     //TODO: After changing input processing logic - refactor this
+     if(Keyboard.isPressed(KeyEvent.VK_F2)){
+       DebugRenderer.show()
+       return
+     }
+     if(Keyboard.isPressed(KeyEvent.VK_F3)){
+       DebugRenderer.hide()
+       return
+     }
+     if(Keyboard.isPressed(KeyEvent.VK_ESCAPE)){
+       Game.closeWindow()
+       return
+     }
      currentGameState match {
        case NEW_GAME =>{
          if(Keyboard.isPressed(KeyEvent.VK_SPACE)){
@@ -152,4 +168,14 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
     }
   }
 
+  private def renderDebugInfo(){
+    var textBuff = Array[String](
+        "game state : " + currentGameState,
+        "fps : " + fps,
+        "delta : " + delta,
+        "aliens : " + aliens.length,
+        "shots : " + playerShip.shots.length
+      )
+    DebugRenderer.setTextForDebugging(textBuff)
+  }
 }
