@@ -2,7 +2,7 @@ package com.xdev.si.entity
 
 import com.xdev.si.Game
 import javax.media.opengl.GL
-import com.xdev.si.gllisteners.MainRenderer
+import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
 import com.xdev.engine.animation.FrameAnimation
 
@@ -15,7 +15,7 @@ object AlienEntity{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
 }
-class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
+class AlienEntity(sprite: Sprite, listener: MainRenderLoop, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
 
   var currentAnimation = AlienEntity.MAIN_ANIMATION
 
@@ -39,8 +39,8 @@ class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) 
   }
 
   override def move(delta: Long){
-    if ((vx < 0) && (x <= 0)) listener.updateLogic()
-    if ((vx > 0) && (x > Game.WND_WIDTH - width)) listener.updateLogic()
+    if ((vx < 0) && (x <= 0)) {/*doLogic()*/}
+    if ((vx > 0) && (x > Game.WND_WIDTH - width)) {/*doLogic()*/}
     super.move(delta)
   }
 
@@ -60,7 +60,7 @@ class AlienEntity(sprite: Sprite, listener: MainRenderer, cx: Float, cy: Float) 
     // if we've reached the bottom of the screen then the player
     // dies
     if (y >= Game.WND_HEIGHT - (height * 3)) {
-      listener.notifyDeath()
+      //listener.notifyDeath()
     }
   }
 

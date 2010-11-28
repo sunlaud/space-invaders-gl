@@ -21,6 +21,8 @@ class HudRenderer extends GLEventListener2D with LogHelper {
     textRenderer = new TextRenderer(new Font("Default", Font.PLAIN, 14))
   }
 
+  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
+
   def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
     textRenderer.beginRendering(w, h)
     textRenderer.setColor(1f, 1f, 0f, 1f)

@@ -36,6 +36,8 @@ object DebugRenderer extends GLEventListener2D{
     textForDebug = text
   }
 
+  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
+  
   def onRenderFrame(gl: GL, w: Int, h: Int) = {
     if(isDebuggerInfoRendered){
       textRenderer.beginRendering(w, h)

@@ -1,6 +1,6 @@
 package com.xdev.si.entity
 
-import com.xdev.si.gllisteners.MainRenderer
+import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
 
 /**
@@ -13,7 +13,7 @@ object ShotEntity{
   val firingInterval: Long = 500
   val START_VELOCITY_Y = -350
 }
-class ShotEntity(sprite : Sprite, listener: MainRenderer, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
+class ShotEntity(sprite : Sprite, listener: MainRenderLoop, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
 
   private var used  = false
 
@@ -30,7 +30,7 @@ class ShotEntity(sprite : Sprite, listener: MainRenderer, cx: Float, cy: Float) 
     this.notifyDead()
     target.notifyDead()
     // notify the game that the alien has been killed
-    listener.notifyAlienKilled()
+   // listener.notifyAlienKilled()
     used = true;
   }
 

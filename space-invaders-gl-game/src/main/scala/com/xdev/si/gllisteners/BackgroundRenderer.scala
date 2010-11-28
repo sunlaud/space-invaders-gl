@@ -19,6 +19,8 @@ class BackgroundRenderer extends GLEventListener2D with LogHelper {
     background = ResourceFactory.getSprite(Game.BACKGROUND_SPRITE)
   }
 
+  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
+  
   def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
      background.draw(gl, 0.0f, 0.0f)
   }
