@@ -5,33 +5,28 @@ import com.xdev.engine.sprite.Sprite
 import collection.mutable.HashMap
 import com.xdev.engine.animation.FrameAnimation
 import java.awt.Rectangle
-import org.openmali.vecmath2.Tuple2f
+import org.openmali.vecmath2.{Vector3f, Tuple2f}
 
 /**
  * Created by User: xdev
  * Date: 24.08.2010
  * Time: 21:56:53
  */
-abstract class AbstractEntity (sprite : Sprite, cx: Float, cy: Float){
+abstract class AbstractEntity (sprite : Sprite, pos: Vector3f){
   //Coordinates
-  val position: Tuple2f = new Tuple2f(0.0f, 0.0f)
-  val size: Tuple2f = new Tuple2f(0.0f, 0.0f)
-  val velocity: Tuple2f = new Tuple2f(0.0f, 0.0f)
-  
-  var x: Float = cx
-  var y: Float = cy
+  val position = pos
   val width = sprite.getWidth()
   val height = sprite.getHeight()
-  //Velocity
-  protected var vx: Float = 0.0f
-  protected var vy: Float = 0.0f
+
+  val velocity: Vector3f = new Vector3f(0.0f, 0.0f, 0.0f)
   //Bounding boxes
-  private val thisBoundBox : Rectangle  = new Rectangle(cx.asInstanceOf[Int], cy.asInstanceOf[Int], width, height)
+  private val thisBoundBox : Rectangle  = new Rectangle(position.getX().asInstanceOf[Int], position.getY().asInstanceOf[Int], width, height)
   private val targetBoundBox : Rectangle  = new Rectangle()
   //State
   var markedAsDead = false
   var isDead = false
   protected val frameAnimations = new HashMap[Int, FrameAnimation]()
+
   //Run init method on constructor creation
   init()
 
@@ -43,31 +38,33 @@ abstract class AbstractEntity (sprite : Sprite, cx: Float, cy: Float){
    * Move  entity
    */
   def move(delta: Long){
-    x = x + (vx * delta) / 1000.0f
-    y = y + (vy * delta) / 1000.0f
-    thisBoundBox.x = x.asInstanceOf[Int]
-    thisBoundBox.y = y.asInstanceOf[Int]
+    position.addX((velocity.getX() * delta) / 1000.0f)
+    position.addY((velocity.getY() * delta) / 1000.0f)
+    position.addZ((velocity.getZ() * delta) / 1000.0f)
+    thisBoundBox.x = position.getX().asInstanceOf[Int]
+    thisBoundBox.y = position.getY().asInstanceOf[Int]
   }
 
   def accelerate(dx: Float, dy: Float){
-    vx += dx
-    vy += dy
+    velocity.addX(dx)
+    velocity.addY(dy)
   }
 
   def stop(){
-    vx = 0
-    vy = 0
+    velocity.setX(0.0f)
+    velocity.setY(0.0f)
+    velocity.setZ(0.0f)
   }
 
-  def draw(gl: GL) = sprite.draw(gl, x, y)
+  def draw(gl: GL) = sprite.draw(gl, position)
   
   def collidesWith(target : AbstractEntity): Boolean ={
-    thisBoundBox.setBounds(x.asInstanceOf[Int],
-      y.asInstanceOf[Int],
+    thisBoundBox.setBounds(position.getX().asInstanceOf[Int],
+      position.getY().asInstanceOf[Int],
       width,
       height)
-    targetBoundBox.setBounds(target.x.asInstanceOf[Int],
-      target.y.asInstanceOf[Int],
+    targetBoundBox.setBounds(target.position.getX().asInstanceOf[Int],
+      target.position.getY().asInstanceOf[Int],
       target.width,
       target.height)
     return thisBoundBox.intersects(targetBoundBox)

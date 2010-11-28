@@ -1,10 +1,12 @@
-package com.xdev.si.entity
+package com.xdev.si.entity.enemy
 
 import javax.media.opengl.GL
 import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
 import com.xdev.engine.animation.FrameAnimation
 import com.xdev.si.Game
+import org.openmali.vecmath2.Vector3f
+import com.xdev.si.entity.AbstractEntity
 
 /**
  * Created by User: xdev
@@ -15,13 +17,13 @@ object AlienEntity{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
 }
-class AlienEntity(sprite: Sprite, listener: MainRenderLoop, cx: Float, cy: Float) extends AbstractEntity(sprite, cx, cy){
+class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos){
 
   var currentAnimation = AlienEntity.MAIN_ANIMATION
 
   override def init(){
     //Change started velocity
-    vx = -50.0f * Game.CURRENT_LEVEL
+    velocity.setX(-50.0f * Game.CURRENT_LEVEL)
 
     addFrameAnimation(new FrameAnimation (
       id = AlienEntity.MAIN_ANIMATION,
@@ -39,8 +41,8 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, cx: Float, cy: Float
   }
 
   override def move(delta: Long){
-    if ((vx < 0) && (x <= 0)) { listener.updateEnemyesLogic() }
-    if ((vx > 0) && (x > Game.WND_WIDTH - width)) { listener.updateEnemyesLogic() }
+    if ((velocity.getX() < 0) && (position.getX() <= 0)) { listener.updateEnemyesLogic() }
+    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) { listener.updateEnemyesLogic() }
     super.move(delta)
   }
 
@@ -49,23 +51,23 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, cx: Float, cy: Float
   }
 
   override def draw(gl: GL): Unit = {
-    frameAnimations(currentAnimation).render(gl, x, y)
+    frameAnimations(currentAnimation).render(gl, position)
   }
 
   override def doLogic():Unit= {
     // swap over horizontal movement and move down the
     // screen a bit
-    if(vx < 0) y -= 10 else y += 30
-    vx = -vx
+    if(velocity.getX() < 0) position.subY(10) else position.addY(30)
+    velocity.mulX(-1)
     // if we've reached the bottom of the screen then the player
     // dies
-    if (y >= Game.WND_HEIGHT - (height * 3)) {
+    if (position.getY() >= Game.WND_HEIGHT - (height * 3)) {
       listener.notifyPlayerShipDestroyed()
     }
   }
 
   def runFaster():Unit = {
-    vx = vx * 1.02f
+    velocity.mulX(1.02f)
   }
 
   override def collidedWith(target: AbstractEntity): Unit = {}
@@ -76,5 +78,5 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, cx: Float, cy: Float
     if(!frameAnimations(currentAnimation).isRunning())
       frameAnimations(currentAnimation).start()
   }
-  override def toString = "AlienEntity[" + x + ", " + y + "]"
+  override def toString = "AlienEntity[" + position + "]"
 }
