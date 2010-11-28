@@ -22,6 +22,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
   val SHOT_SPRITE = "/sprites/shot.gif"
   val ALIEN_SPRITE_0 = "/sprites/alien.gif"
   val ALIEN_SPRITE_1 = "/sprites/alien2.gif"
+  val ALIEN_SPRITE_2 = "/sprites/alien3.gif"
   val BACKGROUND_SPRITE = "/sprites/space.png"
 
   val EXPL_TILE_MAP = "/sprites/exp1.png"
@@ -43,13 +44,17 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
     ResourceFactory.getSprite(SHOT_SPRITE)
     ResourceFactory.getSprite(ALIEN_SPRITE_0)
     ResourceFactory.getSprite(ALIEN_SPRITE_1)
+    ResourceFactory.getSprite(ALIEN_SPRITE_2)
     ResourceFactory.getSprite(BACKGROUND_SPRITE)
 
     info("Load animation frames")
     explTileMap = TileManager.load(EXPL_TILE_MAP, 42, 42)
     val enemyMainAnimatonFrames = Array[Sprite](
                   ResourceFactory.getSprite(Game.ALIEN_SPRITE_0),
-                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_1)
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_2),
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_0)
                 )
     frameSets.put(AlienEntity.MAIN_ANIMATION, enemyMainAnimatonFrames)
     frameSets.put(AlienEntity.EXPLOSION_ANIMATION, explTileMap.toLine)
