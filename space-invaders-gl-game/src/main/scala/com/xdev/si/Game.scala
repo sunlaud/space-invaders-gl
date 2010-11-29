@@ -7,7 +7,8 @@ import com.xdev.engine.gl.GLGameWindow
 import com.xdev.engine.gl.render.GLEventListener2D
 import com.xdev.engine.sprite.Sprite
 import collection.mutable.HashMap
-
+import com.xdev.engine.tiles.{TileManager, TileMap}
+import com.xdev.engine.util.ResourceFactory
 object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 600, 75){
 
   val WND_WIDTH = 800
