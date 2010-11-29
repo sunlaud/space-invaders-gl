@@ -2,10 +2,11 @@ package com.xdev.si.gllisteners
 
 import com.xdev.engine.logging.LogHelper
 import javax.media.opengl.GL
-import com.xdev.si.{Game, ResourceFactory}
+import com.xdev.si.Game
 import com.xdev.engine.gl.render.GLEventListener2D
 import com.xdev.engine.sprite.Sprite
 import org.openmali.vecmath2.Vector3f
+import com.xdev.engine.util.ResourceFactory
 
 /**
  * Created by User: xdev

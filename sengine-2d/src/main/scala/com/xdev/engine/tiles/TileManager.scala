@@ -1,4 +1,4 @@
-package com.xdev.si
+package com.xdev.engine.tiles
 
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
