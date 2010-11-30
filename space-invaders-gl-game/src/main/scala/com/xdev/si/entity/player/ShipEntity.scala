@@ -9,6 +9,7 @@ import com.xdev.si.gllisteners.MainRenderLoop
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.AbstractEntity
 import com.xdev.si.entity.weapon.ShotEntity
+import com.xdev.si.entity.bonus.{ShipAccBonus, ShotSpeedBonus}
 
 /**
  * Created by User: xdev
@@ -18,7 +19,8 @@ import com.xdev.si.entity.weapon.ShotEntity
 case class ShipEntity(sprite : Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos){
 
   private var lastFire: Long = 0
-  private val firingInterval = 500
+  var firingInterval = 500
+  var acceleration = 250
   val shots = new ArrayBuffer[ShotEntity]()
   
   override def move(delta: Long){
@@ -46,5 +48,14 @@ case class ShipEntity(sprite : Sprite, listener: MainRenderLoop, pos: Vector3f) 
      // if we waited long enough, create the shot entity, and record the time.
     lastFire = System.currentTimeMillis()
     shots += GameManager.createShot(listener, Game.SHOT_SPRITE, new Vector3f(position.getX() + 10, position.getY() - 30, 0.0f))
+  }
+
+  override def applyBonus(bonus: AbstractEntity): Unit = {
+    //TODO: Write bonus type
+    if(bonus.isInstanceOf[ShotSpeedBonus]){
+       firingInterval -= 10
+    }else if(bonus.isInstanceOf[ShipAccBonus]){
+       acceleration += 10
+    }
   }
 }

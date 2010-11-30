@@ -12,8 +12,8 @@ import com.xdev.si.{GameStateType, Game}
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.player.ShipEntity
 import com.xdev.si.entity.enemy.AlienEntity
-import com.xdev.si.entity.bonus.ShotSpeedBonus
 import com.xdev.si.entity.AbstractEntity
+import com.xdev.si.entity.bonus.{ShipAccBonus, ShotSpeedBonus}
 
 /**
  * Created by User: xdev
@@ -35,12 +35,6 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
     debug("Initialize")
     playerShip = GameManager.createPlayerShip(this, Game.SHIP_SPRITE, new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f))
     aliens ++= GameManager.createAliens(this, Game.ALIEN_SPRITE_0, 5, 12)
-    bonuses += new ShotSpeedBonus(new Vector3f(300, 300, 0))
-    bonuses += new ShotSpeedBonus(new Vector3f(330, 310, 0))
-    bonuses += new ShotSpeedBonus(new Vector3f(360, 320, 0))
-    bonuses += new ShotSpeedBonus(new Vector3f(390, 330, 0))
-    bonuses += new ShotSpeedBonus(new Vector3f(420, 340, 0))
-    bonuses += new ShotSpeedBonus(new Vector3f(450, 350, 0))
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {
@@ -121,8 +115,8 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
          val firePressed = Keyboard.isPressed(KeyEvent.VK_SPACE)
 
          playerShip.stop()
-         if(leftPressed)playerShip.accelerate(-250, 0)
-         if(rightPressed)playerShip.accelerate(250, 0)
+         if(leftPressed)playerShip.accelerate(-playerShip.acceleration, 0)
+         if(rightPressed)playerShip.accelerate(playerShip.acceleration, 0)
          if(firePressed){playerShip.fire()}
        }
        case WIN =>{
@@ -171,6 +165,11 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
     aliens.foreach(_.doLogic())
   }
 
+  def generateBonus(bonusPos: Vector3f){
+    bonuses += new ShotSpeedBonus(bonusPos)
+    bonuses += new ShipAccBonus(bonusPos);
+  }
+
   private def checkCollisions(): Unit = {
     for(shot <- playerShip.shots if !shot.isDead; if !shot.markedAsDead){
       for(enemy <- aliens if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
@@ -178,10 +177,16 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
         return
       }
     }
+
+    for(bonus <- bonuses if !bonus.isDead; if !bonus.markedAsDead; if bonus.collidesWith(playerShip)){
+        bonus.collidedWith(playerShip)
+        playerShip.collidedWith(bonus)
+        return
+    }
   }
 
   private def renderDebugInfo(){
-    var textBuff = Array[String](
+    val textBuff = Array[String](
         "game state : " + currentGameState,
         "fps : " + fps,
         "delta : " + delta,

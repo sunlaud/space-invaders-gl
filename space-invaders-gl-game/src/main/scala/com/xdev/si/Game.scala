@@ -30,6 +30,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
 
   //Bonuses sprites
   val B_SHOT_SPEED_SPRITE = "/sprites/shotSpeed.png"
+  val B_SHIP_SPEED_SPRITE = "/sprites/plazma.png"
 
   var explTileMap:TileMap = null
 
@@ -51,6 +52,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
     ResourceFactory.getSprite(ALIEN_SPRITE_1)
     ResourceFactory.getSprite(ALIEN_SPRITE_2)
     ResourceFactory.getSprite(B_SHOT_SPEED_SPRITE)
+    ResourceFactory.getSprite(B_SHIP_SPEED_SPRITE)
     ResourceFactory.getSprite(BACKGROUND_SPRITE)
 
     info("Load animation frames")

@@ -35,7 +35,9 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
       id = AlienEntity.EXPLOSION_ANIMATION,
       frames = Game.frameSets(AlienEntity.EXPLOSION_ANIMATION),
       duration = 1000,
-      onAnimationEndedHook = {isDead = true; listener.notifyAlienKilled()})
+      onAnimationEndedHook = {
+        isDead = true; listener.notifyAlienKilled()
+      })
     )
     frameAnimations(currentAnimation).start()
   }
@@ -77,6 +79,8 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
     currentAnimation = AlienEntity.EXPLOSION_ANIMATION
     if(!frameAnimations(currentAnimation).isRunning())
       frameAnimations(currentAnimation).start()
+    //Generate bonuse after enemy dead    
+    listener.generateBonus(position.clone())
   }
   override def toString = "AlienEntity[" + position + "]"
 }

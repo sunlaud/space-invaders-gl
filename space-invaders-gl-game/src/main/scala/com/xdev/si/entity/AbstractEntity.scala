@@ -82,4 +82,6 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f){
   def addFrameAnimation(animation: FrameAnimation){
      frameAnimations.put(animation.id, animation)
   }
+
+  def applyBonus(bonus: AbstractEntity): Unit = {}
 }

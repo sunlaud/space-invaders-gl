@@ -13,15 +13,15 @@ import com.xdev.si.entity.player.ShipEntity
  * Time: 10:57:58 PM
  */
 
-case class ShotSpeedBonus(pos: Vector3f) extends AbstractEntity(ResourceFactory.getSprite(Game.B_SHOT_SPEED_SPRITE), pos) with LogHelper {
+case class ShipAccBonus(pos: Vector3f) extends AbstractEntity(ResourceFactory.getSprite(Game.B_SHIP_SPEED_SPRITE), pos) with LogHelper {
 
   override def init(): Unit = {
-    velocity.setY(100)
+    velocity.setY(200)
   }
   override def move(delta: Long){
     super.move(delta)
     if (position.getY() > Game.WND_HEIGHT) {
-       notifyDead()
+      notifyDead()
     }
   }
   override def collidedWith(target: AbstractEntity): Unit = {
