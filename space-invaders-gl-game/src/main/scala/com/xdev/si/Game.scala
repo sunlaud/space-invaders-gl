@@ -27,6 +27,10 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
   val BACKGROUND_SPRITE = "/sprites/space.png"
 
   val EXPL_TILE_MAP = "/sprites/exp1.png"
+
+  //Bonuses sprites
+  val B_SHOT_SPEED_SPRITE = "/sprites/shotSpeed.png"
+
   var explTileMap:TileMap = null
 
   val frameSets = new HashMap[Int, Array[Sprite]]()
@@ -46,6 +50,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
     ResourceFactory.getSprite(ALIEN_SPRITE_0)
     ResourceFactory.getSprite(ALIEN_SPRITE_1)
     ResourceFactory.getSprite(ALIEN_SPRITE_2)
+    ResourceFactory.getSprite(B_SHOT_SPEED_SPRITE)
     ResourceFactory.getSprite(BACKGROUND_SPRITE)
 
     info("Load animation frames")

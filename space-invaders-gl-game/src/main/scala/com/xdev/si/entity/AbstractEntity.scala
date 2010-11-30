@@ -33,7 +33,6 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f){
   /* =============================================
      Methods
     =============================================*/
-  protected def init(): Unit
   /**
    * Move  entity
    */
@@ -69,7 +68,8 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f){
       target.height)
     return thisBoundBox.intersects(targetBoundBox)
   }
-
+  //Abstract methods
+  protected def init(): Unit
   def collidedWith(target: AbstractEntity): Unit
   def doLogic():Unit
   def update(delta: Long): Unit
