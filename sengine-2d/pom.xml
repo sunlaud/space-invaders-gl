@@ -6,7 +6,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>${pom.artifactId}</name>
+  <name>Engine</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.xdev</groupId>
   <artifactId>sengine-2d</artifactId>
@@ -48,6 +48,7 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
+	<version>2.14</version>
         <executions>
           <execution>
             <goals>
@@ -58,9 +59,6 @@
         </executions>
         <configuration>
           <scalaVersion>${scala.version}</scalaVersion>
-          <args>
-            <arg>-target:jvm-1.5</arg>
-          </args>
         </configuration>
       </plugin>
     

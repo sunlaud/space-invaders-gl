@@ -1,6 +1,5 @@
 package com.xdev.si
 
-import entity.bonus._
 import entity.enemy.AlienEntity
 import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderLoop}
 import javax.media.opengl.GL

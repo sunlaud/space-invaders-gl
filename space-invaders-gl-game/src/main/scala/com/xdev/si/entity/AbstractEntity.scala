@@ -5,7 +5,7 @@ import com.xdev.engine.sprite.Sprite
 import collection.mutable.HashMap
 import com.xdev.engine.animation.FrameAnimation
 import java.awt.Rectangle
-import org.openmali.vecmath2.{Vector3f, Tuple2f}
+import org.openmali.vecmath2.Vector3f
 
 /**
  * Created by User: xdev
