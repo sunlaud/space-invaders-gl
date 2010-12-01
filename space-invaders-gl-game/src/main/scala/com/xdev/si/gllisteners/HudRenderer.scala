@@ -17,13 +17,13 @@ class HudRenderer extends GLEventListener2D with LogHelper {
 
   var textRenderer: TextRenderer = null
 
-  def onInit(gl: GL): Unit = {
+  override def onInit(gl: GL): Unit = {
     textRenderer = new TextRenderer(new Font("Default", Font.PLAIN, 12))
   }
 
-  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
+  override def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
 
-  def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
+  override def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
     textRenderer.beginRendering(w, h)
     textRenderer.setColor(0f, 1f, 0f, 1f)
     textRenderer.draw("level : %d score : %d".format(Game.CURRENT_LEVEL, Game.SCORE), 10, Game.WND_HEIGHT - 25)

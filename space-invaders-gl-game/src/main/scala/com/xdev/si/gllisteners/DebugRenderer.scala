@@ -16,7 +16,7 @@ import com.xdev.si.Game
 
 object DebugRenderer extends GLEventListener2D{
 
-  var isDebuggerInfoRendered = false
+  var isDebuggerInfoRendered = true
   var textBuffer: Array[String] = Array[String]()
   var textRenderer: TextRenderer = null
 
@@ -38,9 +38,9 @@ object DebugRenderer extends GLEventListener2D{
     textBuffer = textLines
   }
 
-  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
+  override def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
   
-  def onRenderFrame(gl: GL, w: Int, h: Int) = {
+  override def onRenderFrame(gl: GL, w: Int, h: Int) = {
     if(isDebuggerInfoRendered && textBuffer.length > 0){
       textRenderer.beginRendering(w, h)
       textRenderer.setColor(1f, 1f, 1f, 1f)
@@ -53,7 +53,7 @@ object DebugRenderer extends GLEventListener2D{
     }
   }
 
-  def onInit(gl: GL) = {
+  override def onInit(gl: GL) = {
     textRenderer = new TextRenderer(new Font("Default", Font.PLAIN, 9))    
   }
 

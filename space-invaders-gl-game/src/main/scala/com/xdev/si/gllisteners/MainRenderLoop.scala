@@ -12,6 +12,8 @@ import com.xdev.si.{GameStateType, Game}
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.player.ShipEntity
 import com.xdev.si.entity.enemy.AlienEntity
+import com.xdev.si.entity.AbstractEntity
+import com.xdev.si.entity.bonus.{AbstractBonus, ShipAccBonus, ShotSpeedBonus}
 
 /**
  * Created by User: xdev
@@ -23,27 +25,30 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
 
   private var playerShip: ShipEntity = null
   private val aliens = new ArrayBuffer[AlienEntity]()
+  private val bonuses = new ArrayBuffer[AbstractBonus]()
 
   private var currentGameState = NEW_GAME
 
   private val infoSpritePos = new Vector3f(325.0f, 250.0f, 0.0f)
 
-  def onInit(gl: GL): Unit = {
+  override def onInit(gl: GL): Unit = {
     debug("Initialize")
     playerShip = GameManager.createPlayerShip(this, Game.SHIP_SPRITE, new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f))
     aliens ++= GameManager.createAliens(this, Game.ALIEN_SPRITE_0, 5, 12)
   }
 
-  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {
+  override def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {
     processKeyboard()
     currentGameState match {
       case GAME_RUN =>{
         aliens.foreach(_.move(delta))
         playerShip.move(delta)
+        bonuses.foreach(_.move(delta))
 
         checkCollisions()
         //Remove dead entites
         aliens--=aliens.filter(e => e.isDead)
+        bonuses--=bonuses.filter(e => e.isDead)
         playerShip.shots--= playerShip.shots.filter(e => e.isDead)
         //Check
         if (aliens.length == 0){
@@ -59,7 +64,7 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
     }
   }
 
-  def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
+  override def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
     if(DebugRenderer.isDebugEnabled())
       renderDebugInfo()
 
@@ -78,6 +83,7 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
       }
       case _ =>
     }
+    bonuses.foreach(_.draw(gl))
     aliens.foreach(_.draw(gl))
     playerShip.draw(gl)
   }
@@ -109,8 +115,8 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
          val firePressed = Keyboard.isPressed(KeyEvent.VK_SPACE)
 
          playerShip.stop()
-         if(leftPressed)playerShip.accelerate(-250, 0)
-         if(rightPressed)playerShip.accelerate(250, 0)
+         if(leftPressed)playerShip.accelerate(-playerShip.acceleration, 0)
+         if(rightPressed)playerShip.accelerate(playerShip.acceleration, 0)
          if(firePressed){playerShip.fire()}
        }
        case WIN =>{
@@ -159,6 +165,16 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
     aliens.foreach(_.doLogic())
   }
 
+  /**
+   * Generate random bonus affter enemy killed
+   */
+  def generateBonus(killedEnemyPosition: Vector3f){
+    val generatedBonus: Option[AbstractBonus] = GameManager.generateRandomBonus(killedEnemyPosition)
+    if(generatedBonus.isDefined){
+      bonuses += generatedBonus.get
+    }
+  }
+
   private def checkCollisions(): Unit = {
     for(shot <- playerShip.shots if !shot.isDead; if !shot.markedAsDead){
       for(enemy <- aliens if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
@@ -166,15 +182,23 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
         return
       }
     }
+
+    for(bonus <- bonuses if !bonus.isDead; if !bonus.markedAsDead; if bonus.isCollidesWith(playerShip)){
+        bonus.collidedWith(playerShip)
+        return
+    }
   }
 
   private def renderDebugInfo(){
-    var textBuff = Array[String](
+    val textBuff = Array[String](
         "game state : " + currentGameState,
         "fps : " + fps,
         "delta : " + delta,
         "aliens : " + aliens.length,
-        "shots : " + playerShip.shots.length
+        "shots : " + playerShip.shots.length,
+        "bonuses : " + bonuses.length,
+        "ship acceleration : " + playerShip.acceleration,
+        "ship firingInterval : " + playerShip.firingInterval
       )
     DebugRenderer.setTextForDebugging(textBuff)
   }

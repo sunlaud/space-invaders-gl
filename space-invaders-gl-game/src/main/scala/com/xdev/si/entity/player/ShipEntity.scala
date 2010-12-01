@@ -15,10 +15,14 @@ import com.xdev.si.entity.weapon.ShotEntity
  * Date: 24.08.2010
  * Time: 23:55:17
  */
+object ShipEntity{
+  val MAX_ACCELERATION = 500
+  val MIN_FIRE_INTERVAL = 100
+}
 case class ShipEntity(sprite : Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos){
-
   private var lastFire: Long = 0
-  private val firingInterval = 500
+  var firingInterval = 500
+  var acceleration = 250
   val shots = new ArrayBuffer[ShotEntity]()
   
   override def move(delta: Long){

@@ -17,13 +17,13 @@ object AlienEntity{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
 }
-class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos){
+class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos) with Cloneable{
 
   var currentAnimation = AlienEntity.MAIN_ANIMATION
 
   override def init(){
     //Change started velocity
-    velocity.setX(-50.0f * Game.CURRENT_LEVEL)
+    velocity.setX(-30.0f * Game.CURRENT_LEVEL)
 
     addFrameAnimation(new FrameAnimation (
       id = AlienEntity.MAIN_ANIMATION,
@@ -35,7 +35,9 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
       id = AlienEntity.EXPLOSION_ANIMATION,
       frames = Game.frameSets(AlienEntity.EXPLOSION_ANIMATION),
       duration = 1000,
-      onAnimationEndedHook = {isDead = true; listener.notifyAlienKilled()})
+      onAnimationEndedHook = {
+        isDead = true; listener.notifyAlienKilled()
+      })
     )
     frameAnimations(currentAnimation).start()
   }
@@ -77,6 +79,8 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
     currentAnimation = AlienEntity.EXPLOSION_ANIMATION
     if(!frameAnimations(currentAnimation).isRunning())
       frameAnimations(currentAnimation).start()
+    //Generate bonuse after enemy dead    
+    listener.generateBonus(position.clone())
   }
   override def toString = "AlienEntity[" + position + "]"
 }
