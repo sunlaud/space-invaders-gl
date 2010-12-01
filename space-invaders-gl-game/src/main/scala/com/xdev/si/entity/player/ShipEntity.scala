@@ -15,6 +15,9 @@ import com.xdev.si.entity.weapon.ShotEntity
  * Date: 24.08.2010
  * Time: 23:55:17
  */
+
+
+
 object ShipEntity{
   val MAX_ACCELERATION = 500
   val MIN_FIRE_INTERVAL = 100
@@ -38,9 +41,18 @@ case class ShipEntity(sprite : Sprite, listener: MainRenderLoop, pos: Vector3f) 
   }
 
   override def init(){}
-  override def collidedWith(target: AbstractEntity): Unit = {}
+  
+  override def collidedWith(target: AbstractEntity): Unit = {
+    target.notifyDead()
+    this.notifyDead()
+  }
+  
   override def doLogic():Unit= {}
-  override def notifyDead(): Unit = {}
+  
+  override def notifyDead(): Unit = {
+   super.notifyDead();
+   listener.notifyPlayerShipDestroyed();
+  }
   override def update(delta: Long){}
 
   def fire(){

@@ -30,10 +30,11 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
   private var currentGameState = NEW_GAME
 
   private val infoSpritePos = new Vector3f(325.0f, 250.0f, 0.0f)
+  private val playerShipStartPosition = new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f)
 
   override def onInit(gl: GL): Unit = {
     debug("Initialize")
-    playerShip = GameManager.createPlayerShip(this, Game.SHIP_SPRITE, new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f))
+    playerShip = GameManager.createPlayerShip(this, Game.SHIP_SPRITE, playerShipStartPosition)
     aliens ++= GameManager.createAliens(this, Game.ALIEN_SPRITE_0, 5, 12)
   }
 
@@ -110,11 +111,16 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
        }
        case GAME_RUN => {
          //TODO: Fix Move speed - remove magic number
+         val upPressed = Keyboard.isPressed(KeyEvent.VK_UP)
+         val downPressed = Keyboard.isPressed(KeyEvent.VK_DOWN)
          val leftPressed = Keyboard.isPressed(KeyEvent.VK_LEFT)
          val rightPressed = Keyboard.isPressed(KeyEvent.VK_RIGHT)
          val firePressed = Keyboard.isPressed(KeyEvent.VK_SPACE)
 
          playerShip.stop()
+         
+         if(upPressed)playerShip.accelerate(0, -playerShip.acceleration)
+         if(downPressed)playerShip.accelerate(0, playerShip.acceleration)
          if(leftPressed)playerShip.accelerate(-playerShip.acceleration, 0)
          if(rightPressed)playerShip.accelerate(playerShip.acceleration, 0)
          if(firePressed){playerShip.fire()}
@@ -134,6 +140,7 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
            if(Game.SCORE >= bonus)Game.SCORE -= bonus
            aliens.clear()
            aliens ++= GameManager.createAliens(this, Game.ALIEN_SPRITE_0, 5, 12)
+           playerShip.position.set(playerShipStartPosition)
            setGameState(GAME_RUN)
          }
        }
@@ -182,6 +189,11 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
         return
       }
     }
+    
+    for(enemy <- aliens if !enemy.isDead; if !enemy.markedAsDead; if playerShip.collidesWith(enemy)){
+        playerShip.collidedWith(enemy)
+        return
+      }
 
     for(bonus <- bonuses if !bonus.isDead; if !bonus.markedAsDead; if bonus.isCollidesWith(playerShip)){
         bonus.collidedWith(playerShip)
