@@ -1,0 +1,33 @@
+#Bonuses creation
+To create new bonus logic - need to create new class extendable AbstractBonus class, realize method def applyBonus(target: AbstractEntity) and 
+register new bonus in game system in GameManager object (registerGameBonuses and generateRandomBonus methods)
+example :
+create class ShotSpeedBonus
+case class ShotSpeedBonus(pos: Vector3f) extends AbstractBonus(ResourceFactory.getSprite(Game.B_SHOT_SPEED_SPRITE), pos) {
+
+  override def applyBonus(target: AbstractEntity): Unit = target match {
+    case ship: ShipEntity => {
+      if(ship.firingInterval > ShipEntity.MIN_FIRE_INTERVAL)
+        ship.firingInterval -= 10
+    }
+    case _ =>
+  }
+}
+
+In GameManager : 
+ def registerGameBonuses(): Unit = {
+      ...
+      availableBonuses.put(availableBonuses.size, new ShotSpeedBonus(new Vector3f(0,0,0)))    	
+ }
+ and 
+ def generateRandomBonus(startPosition: Vector3f): Option[AbstractBonus] = {
+    ...	
+    if(randomBonus.isDefined){
+      return randomBonus.get match {
+        case b: ShotSpeedBonus => Some(new ShotSpeedBonus(startPosition))
+	...
+      }
+    }
+    return None
+  }
+Enjoy your new bonus

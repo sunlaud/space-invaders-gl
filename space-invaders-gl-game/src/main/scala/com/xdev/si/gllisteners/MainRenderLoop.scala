@@ -13,7 +13,7 @@ import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.player.ShipEntity
 import com.xdev.si.entity.enemy.AlienEntity
 import com.xdev.si.entity.AbstractEntity
-import com.xdev.si.entity.bonus.{ShipAccBonus, ShotSpeedBonus}
+import com.xdev.si.entity.bonus.{AbstractBonus, ShipAccBonus, ShotSpeedBonus}
 
 /**
  * Created by User: xdev
@@ -25,7 +25,7 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
 
   private var playerShip: ShipEntity = null
   private val aliens = new ArrayBuffer[AlienEntity]()
-  private val bonuses = new ArrayBuffer[AbstractEntity]()
+  private val bonuses = new ArrayBuffer[AbstractBonus]()
 
   private var currentGameState = NEW_GAME
 
@@ -165,9 +165,14 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
     aliens.foreach(_.doLogic())
   }
 
-  def generateBonus(bonusPos: Vector3f){
-    bonuses += new ShotSpeedBonus(bonusPos)
-    bonuses += new ShipAccBonus(bonusPos);
+  /**
+   * Generate random bonus affter enemy killed
+   */
+  def generateBonus(killedEnemyPosition: Vector3f){
+    val generatedBonus: Option[AbstractBonus] = GameManager.generateRandomBonus(killedEnemyPosition)
+    if(generatedBonus.isDefined){
+      bonuses += generatedBonus.get
+    }
   }
 
   private def checkCollisions(): Unit = {
@@ -178,9 +183,8 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
       }
     }
 
-    for(bonus <- bonuses if !bonus.isDead; if !bonus.markedAsDead; if bonus.collidesWith(playerShip)){
+    for(bonus <- bonuses if !bonus.isDead; if !bonus.markedAsDead; if bonus.isCollidesWith(playerShip)){
         bonus.collidedWith(playerShip)
-        playerShip.collidedWith(bonus)
         return
     }
   }
@@ -192,7 +196,9 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
         "delta : " + delta,
         "aliens : " + aliens.length,
         "shots : " + playerShip.shots.length,
-        "bonuses : " + bonuses.length
+        "bonuses : " + bonuses.length,
+        "ship acceleration : " + playerShip.acceleration,
+        "ship firingInterval : " + playerShip.firingInterval
       )
     DebugRenderer.setTextForDebugging(textBuff)
   }

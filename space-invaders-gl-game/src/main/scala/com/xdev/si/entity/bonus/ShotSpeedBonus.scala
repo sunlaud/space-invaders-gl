@@ -4,7 +4,6 @@ import com.xdev.si.entity.AbstractEntity
 import org.openmali.vecmath2.Vector3f
 import com.xdev.engine.util.ResourceFactory
 import com.xdev.si.Game
-import com.xdev.engine.logging.LogHelper
 import com.xdev.si.entity.player.ShipEntity
 
 /**
@@ -13,21 +12,13 @@ import com.xdev.si.entity.player.ShipEntity
  * Time: 10:57:58 PM
  */
 
-case class ShotSpeedBonus(pos: Vector3f) extends AbstractEntity(ResourceFactory.getSprite(Game.B_SHOT_SPEED_SPRITE), pos) with LogHelper {
+case class ShotSpeedBonus(pos: Vector3f) extends AbstractBonus(ResourceFactory.getSprite(Game.B_SHOT_SPEED_SPRITE), pos) {
 
-  override def init(): Unit = {
-    velocity.setY(100)
-  }
-  override def move(delta: Long){
-    super.move(delta)
-    if (position.getY() > Game.WND_HEIGHT) {
-       notifyDead()
+  override def applyBonus(target: AbstractEntity): Unit = target match {
+    case ship: ShipEntity => {
+      if(ship.firingInterval > ShipEntity.MIN_FIRE_INTERVAL)
+        ship.firingInterval -= 10
     }
+    case _ =>
   }
-  override def collidedWith(target: AbstractEntity): Unit = {
-    notifyDead()
-    target.asInstanceOf[ShipEntity].applyBonus(this)
-  }
-  override def doLogic():Unit = {}
-  override def update(delta: Long): Unit = {}
 }
