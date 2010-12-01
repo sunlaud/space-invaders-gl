@@ -4,12 +4,8 @@ import org.openmali.vecmath2.Vector3f
 import com.xdev.engine.sprite.Sprite
 import com.xdev.si.entity.AbstractEntity
 import com.xdev.si.Game
-import com.xdev.engine.logging.LogHelper
 import java.awt.Rectangle
 import javax.media.opengl.GL
-import collection.mutable.HashMap
-import com.xdev.engine.animation.FrameAnimation
-
 /**
  * User: xdev
  * Date: Nov 30, 2010

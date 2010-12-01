@@ -4,7 +4,6 @@ import com.xdev.si.entity.AbstractEntity
 import org.openmali.vecmath2.Vector3f
 import com.xdev.engine.util.ResourceFactory
 import com.xdev.si.Game
-import com.xdev.engine.logging.LogHelper
 import com.xdev.si.entity.player.ShipEntity
 
 /**
