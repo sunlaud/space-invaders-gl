@@ -18,7 +18,7 @@ case class ShipAccBonus(pos: Vector3f) extends AbstractBonus(ResourceFactory.get
   override def applyBonus(target: AbstractEntity): Unit = target match {
     case ship: ShipEntity => {
       if(ship.acceleration < ShipEntity.MAX_ACCELERATION)
-        ship.acceleration += 10
+        ship.acceleration += 15
     }
     case _ =>
   }

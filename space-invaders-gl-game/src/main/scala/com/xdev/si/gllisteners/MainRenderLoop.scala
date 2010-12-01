@@ -12,8 +12,7 @@ import com.xdev.si.{GameStateType, Game}
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.player.ShipEntity
 import com.xdev.si.entity.enemy.AlienEntity
-import com.xdev.si.entity.AbstractEntity
-import com.xdev.si.entity.bonus.{AbstractBonus, ShipAccBonus, ShotSpeedBonus}
+import com.xdev.si.entity.bonus.AbstractBonus
 
 /**
  * Created by User: xdev

@@ -56,7 +56,7 @@ object GameManager extends LogHelper{
   }
 
   def generateRandomBonus(startPosition: Vector3f): Option[AbstractBonus] = {
-    val randomIndex = Random.nextInt(availableBonuses.size + 30)
+    val randomIndex = Random.nextInt(availableBonuses.size * 15)
     val randomBonus: Option[AbstractBonus] = availableBonuses.get(randomIndex)
     if(randomBonus.isDefined){
       return randomBonus.get match {

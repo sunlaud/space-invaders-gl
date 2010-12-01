@@ -17,7 +17,7 @@ object AlienEntity{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
 }
-class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos) with Cloneable{
+class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos) {
 
   var currentAnimation = AlienEntity.MAIN_ANIMATION
 
@@ -43,6 +43,7 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
   }
 
   override def move(delta: Long){
+    if(markedAsDead)return 
     if ((velocity.getX() < 0) && (position.getX() <= 0)) { listener.updateEnemyesLogic() }
     if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) { listener.updateEnemyesLogic() }
     super.move(delta)
