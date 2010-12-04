@@ -117,9 +117,6 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
          val firePressed = Keyboard.isPressed(KeyEvent.VK_SPACE)
 
          playerShip.stop()
-         
-         if(upPressed)playerShip.accelerate(0, -playerShip.acceleration)
-         if(downPressed)playerShip.accelerate(0, playerShip.acceleration)
          if(leftPressed)playerShip.accelerate(-playerShip.acceleration, 0)
          if(rightPressed)playerShip.accelerate(playerShip.acceleration, 0)
          if(firePressed){playerShip.fire()}
