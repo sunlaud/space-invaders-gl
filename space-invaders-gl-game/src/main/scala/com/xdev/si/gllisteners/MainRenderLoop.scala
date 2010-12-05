@@ -20,7 +20,7 @@ import com.xdev.si.entity.bonus.AbstractBonus
  * Time: 22:57:23
  */
 
-class MainRenderLoop extends GLEventListener2D with LogHelper {
+object MainRenderLoop extends GLEventListener2D with LogHelper {
 
   private var playerShip: ShipEntity = null
   private val aliens = new ArrayBuffer[AlienEntity]()
@@ -33,8 +33,8 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
 
   override def onInit(gl: GL): Unit = {
     debug("Initialize")
-    playerShip = GameManager.createPlayerShip(this, Game.SHIP_SPRITE, playerShipStartPosition)
-    aliens ++= GameManager.createAliens(this, Game.ALIEN_SPRITE_0, 5, 12)
+    playerShip = GameManager.createPlayerShip(Game.SHIP_SPRITE, playerShipStartPosition)
+    aliens ++= GameManager.createAliens(Game.ALIEN_SPRITE_0, 5, 12)
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {
@@ -49,7 +49,7 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
         //Remove dead entites
         aliens--=aliens.filter(e => e.isDead)
         bonuses--=bonuses.filter(e => e.isDead)
-        playerShip.shots--= playerShip.shots.filter(e => e.isDead)
+        playerShip.weapon.removeUnusedShots()
         //Check
         if (aliens.length == 0){
           notifyAllAlienKilled()
@@ -126,7 +126,7 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
            var bonus = 1000 * Game.CURRENT_LEVEL
            Game.SCORE += bonus
            Game.CURRENT_LEVEL += 1
-           aliens ++= GameManager.createAliens(this, Game.ALIEN_SPRITE_0, 5, 12)
+           aliens ++= GameManager.createAliens(Game.ALIEN_SPRITE_0, 5, 12)
            setGameState(GAME_RUN)
          }
        }
@@ -135,7 +135,7 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
            var bonus = 1000 * Game.CURRENT_LEVEL
            if(Game.SCORE >= bonus)Game.SCORE -= bonus
            aliens.clear()
-           aliens ++= GameManager.createAliens(this, Game.ALIEN_SPRITE_0, 5, 12)
+           aliens ++= GameManager.createAliens(Game.ALIEN_SPRITE_0, 5, 12)
            playerShip.position.set(playerShipStartPosition)
            setGameState(GAME_RUN)
          }
@@ -150,12 +150,12 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
 
   def notifyPlayerShipDestroyed():Unit={
     setGameState(LOSE)
-    playerShip.shots.clear()
+    playerShip.weapon.removeAllShots()
    }
 
   def notifyAllAlienKilled():Unit={
     setGameState(WIN)
-    playerShip.shots.clear()
+    playerShip.weapon.removeAllShots()
     aliens.clear()
    }
 
@@ -179,7 +179,7 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
   }
 
   private def checkCollisions(): Unit = {
-    for(shot <- playerShip.shots if !shot.isDead; if !shot.markedAsDead){
+    for(shot <- playerShip.weapon.shots if !shot.isDead; if !shot.markedAsDead){
       for(enemy <- aliens if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
         shot.collidedWith(enemy)
         return
@@ -203,10 +203,10 @@ class MainRenderLoop extends GLEventListener2D with LogHelper {
         "fps : " + fps,
         "delta : " + delta,
         "aliens : " + aliens.length,
-        "shots : " + playerShip.shots.length,
+        "shots : " + playerShip.weapon.getShotsCount(),
         "bonuses : " + bonuses.length,
         "ship acceleration : " + playerShip.acceleration,
-        "ship firingInterval : " + playerShip.firingInterval
+        "ship firingInterval : " + playerShip.weapon.firingInterval
       )
     DebugRenderer.setTextForDebugging(textBuff)
   }

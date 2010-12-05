@@ -1,5 +1,5 @@
 #!/bin/sh
-ARCH=i586
+ARCH=amd64
 OS=linux
 NATIVES=./etc/native/$OS/$ARCH/
 JAR_FILE=./space-invaders-gl-game/target/space-invaders-gl-game-1.0-SNAPSHOT.jar

@@ -7,11 +7,9 @@ import java.awt.Font
 import com.xdev.si.Game
 
 /**
- * Created by IntelliJ IDEA.
  * User: Andrey Klochkov
  * Date: 25.11.2010
  * Time: 21:52:23
- * To change this template use File | Settings | File Templates.
  */
 
 object DebugRenderer extends GLEventListener2D{
