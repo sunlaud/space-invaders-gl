@@ -12,13 +12,13 @@ import org.openmali.vecmath2.Vector3f
  * Date: 24.08.2010
  * Time: 21:56:53
  */
-abstract class AbstractEntity (sprite : Sprite, pos: Vector3f) {
+abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
   //Coordinates
   val position = pos
+  val velocity = vel
   val width = sprite.getWidth()
   val height = sprite.getHeight()
 
-  val velocity: Vector3f = new Vector3f(0.0f, 0.0f, 0.0f)
   //Bounding boxes
   private val thisBoundBox : Rectangle  = new Rectangle(position.getX().asInstanceOf[Int], position.getY().asInstanceOf[Int], width, height)
   private val targetBoundBox : Rectangle  = new Rectangle()
@@ -29,6 +29,9 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f) {
 
   //Run init method on constructor creation
   init()
+
+  def this(sprite: Sprite, pos:Vector3f) = this(sprite, pos, new Vector3f(0.0f, 0.0f, 0.0f))
+  def this(sprite: Sprite) = this(sprite, new Vector3f(0.0f, 0.0f, 0.0f) , new Vector3f(0.0f, 0.0f, 0.0f))
 
   /* =============================================
      Methods
@@ -45,9 +48,10 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f) {
     thisBoundBox.y = position.getY().asInstanceOf[Int]
   }
 
-  def accelerate(dx: Float, dy: Float){
+  def accelerate(dx: Float = 0.0f, dy: Float = 0.0f, dz: Float = 0.0f){
     velocity.addX(dx)
     velocity.addY(dy)
+    velocity.addZ(dz)
   }
 
   def stop(){

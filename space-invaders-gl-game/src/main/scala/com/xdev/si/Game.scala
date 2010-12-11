@@ -41,7 +41,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   def initGameRenders(): Array[GLEventListener2D] = {
     info("Init game renders")
     val start = System.currentTimeMillis
-    val listeners = Array[GLEventListener2D](new BackgroundRenderer(), MainRenderLoop, new HudRenderer(), DebugRenderer)
+    val listeners = Array[GLEventListener2D](BackgroundRenderer, MainRenderLoop, HudRenderer, DebugRenderer)
     debug("Initialize time : " + (System.currentTimeMillis - start) + " ms")
     return listeners
   }

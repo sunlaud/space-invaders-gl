@@ -17,7 +17,7 @@ object AlienEntity{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
 }
-class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(sprite, pos) {
+case class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(sprite, pos) {
 
   var currentAnimation = AlienEntity.MAIN_ANIMATION
 
@@ -44,8 +44,8 @@ class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(sprite, 
 
   override def move(delta: Long){
     if(markedAsDead)return 
-    if ((velocity.getX() < 0) && (position.getX() <= 0)) { MainRenderLoop.updateEnemyesLogic() }
-    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) { MainRenderLoop.updateEnemyesLogic() }
+    if ((velocity.getX() < 0) && (position.getX() <= 0)) { MainRenderLoop.updateEnemiesLogic() }
+    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) { MainRenderLoop.updateEnemiesLogic() }
     super.move(delta)
   }
 
@@ -83,5 +83,4 @@ class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(sprite, 
     //Generate bonuse after enemy dead    
     MainRenderLoop.generateBonus(position.clone())
   }
-  override def toString = "AlienEntity[" + position + "]"
 }

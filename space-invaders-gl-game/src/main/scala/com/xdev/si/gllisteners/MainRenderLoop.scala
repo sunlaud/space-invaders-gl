@@ -83,9 +83,9 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
       }
       case _ =>
     }
+    playerShip.draw(gl)
     bonuses.foreach(_.draw(gl))
     aliens.foreach(_.draw(gl))
-    playerShip.draw(gl)
   }
 
    private def processKeyboard(): Unit = {
@@ -110,16 +110,10 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
        }
        case GAME_RUN => {
          //TODO: Fix Move speed - remove magic number
-         val upPressed = Keyboard.isPressed(KeyEvent.VK_UP)
-         val downPressed = Keyboard.isPressed(KeyEvent.VK_DOWN)
-         val leftPressed = Keyboard.isPressed(KeyEvent.VK_LEFT)
-         val rightPressed = Keyboard.isPressed(KeyEvent.VK_RIGHT)
-         val firePressed = Keyboard.isPressed(KeyEvent.VK_SPACE)
-
          playerShip.stop()
-         if(leftPressed)playerShip.accelerate(-playerShip.acceleration, 0)
-         if(rightPressed)playerShip.accelerate(playerShip.acceleration, 0)
-         if(firePressed){playerShip.fire()}
+         if(Keyboard.isPressed(KeyEvent.VK_LEFT))playerShip.accelerate(-playerShip.acceleration)
+         if(Keyboard.isPressed(KeyEvent.VK_RIGHT))playerShip.accelerate(playerShip.acceleration)
+         if(Keyboard.isPressed(KeyEvent.VK_SPACE)){playerShip.fire()}
        }
        case WIN =>{
          if(Keyboard.isPressed(KeyEvent.VK_SPACE)){
@@ -164,7 +158,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     Game.SCORE += 100
   }
 
-  def updateEnemyesLogic(){
+  def updateEnemiesLogic(){
     aliens.foreach(_.doLogic())
   }
 

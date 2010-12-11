@@ -13,7 +13,7 @@ import com.xdev.si.Game
  * Time: 1:19:36
  */
 
-class HudRenderer extends GLEventListener2D with LogHelper {
+object HudRenderer extends GLEventListener2D with LogHelper {
 
   var textRenderer: TextRenderer = null
 

@@ -21,8 +21,8 @@ case class ShipEntity(sprite : Sprite, pos: Vector3f) extends AbstractEntity(spr
   var acceleration = 250
 
   override def move(delta: Long){
-    if ((velocity.getX() < 0) && (position.getX() <= 0)) return
-    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) return
+    if ((velocity.getX() < 0) && (position.getX() <= 0)) position.setX(0.0f)
+    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) position.setX(Game.WND_WIDTH - width)
     super.move(delta)
     weapon.update(delta)
   }
