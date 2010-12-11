@@ -37,9 +37,10 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f) {
    * Move  entity
    */
   def move(delta: Long){
-    position.addX((velocity.getX() * delta) / 1000.0f)
-    position.addY((velocity.getY() * delta) / 1000.0f)
-    position.addZ((velocity.getZ() * delta) / 1000.0f)
+    val dt = (delta / 1000.0f)
+    position.addX(velocity.getX() * dt)
+    position.addY(velocity.getY() * dt)
+    position.addZ(velocity.getZ() * dt)
     thisBoundBox.x = position.getX().asInstanceOf[Int]
     thisBoundBox.y = position.getY().asInstanceOf[Int]
   }

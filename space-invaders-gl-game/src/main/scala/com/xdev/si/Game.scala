@@ -11,7 +11,7 @@ import com.xdev.engine.tiles.{TileManager, TileMap}
 import com.xdev.engine.util.ResourceFactory
 import manager.GameManager
 
-object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 600, 75){
+object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 600){
 
   val WND_WIDTH = 800
   val WND_HEIGHT = 600
