@@ -1,6 +1,5 @@
-package com.xdev.si
+package com.xdev.engine.util
 
-import com.xdev.engine.util.TextureLoader
 import collection.mutable.HashMap
 import com.xdev.engine.sprite.Sprite
 

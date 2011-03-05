@@ -1,13 +1,17 @@
 package com.xdev.si
 
-import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderer}
+import entity.enemy.AlienEntity
+import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderLoop}
 import javax.media.opengl.GL
 import com.xdev.engine.gl.GLGameWindow
 import com.xdev.engine.gl.render.GLEventListener2D
 import com.xdev.engine.sprite.Sprite
 import collection.mutable.HashMap
+import com.xdev.engine.tiles.{TileManager, TileMap}
+import com.xdev.engine.util.ResourceFactory
+import manager.GameManager
 
-object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 600, 75){
+object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 600){
 
   val WND_WIDTH = 800
   val WND_HEIGHT = 600
@@ -21,22 +25,31 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
   val SHOT_SPRITE = "/sprites/shot.gif"
   val ALIEN_SPRITE_0 = "/sprites/alien.gif"
   val ALIEN_SPRITE_1 = "/sprites/alien2.gif"
+  val ALIEN_SPRITE_2 = "/sprites/alien3.gif"
   val BACKGROUND_SPRITE = "/sprites/space.png"
 
   val EXPL_TILE_MAP = "/sprites/exp1.png"
+
+  //Bonuses sprites
+  val B_SHOT_SPEED_SPRITE = "/sprites/shotSpeed.png"
+  val B_SHIP_SPEED_SPRITE = "/sprites/plazma.png"
+
   var explTileMap:TileMap = null
 
-  val ENEMY_ANIMATION = 0
-  val EXPLOSION_ANIMATION = 1
-  val animations = new HashMap[Int, Array[Sprite]]()
+  val frameSets = new HashMap[Int, Array[Sprite]]()
 
   def initGameRenders(): Array[GLEventListener2D] = {
-    debug("Init game renders")
-    Array[GLEventListener2D](new BackgroundRenderer(), new MainRenderer(), new HudRenderer(), DebugRenderer)
+    info("Init game renders")
+    val start = System.currentTimeMillis
+    val listeners = Array[GLEventListener2D](BackgroundRenderer, MainRenderLoop, HudRenderer, DebugRenderer)
+    debug("Initialize time : " + (System.currentTimeMillis - start) + " ms")
+    return listeners
   }
 
   def initGameResources(gl: GL): Unit = {
-    debug("Init game resources")
+    val start = System.currentTimeMillis
+    info("Init game resources")
+    info("Preinit textures")
     ResourceFactory.getSprite(PRESS_ANY_KEY_SPRITE)
     ResourceFactory.getSprite(WIN_SPRITE)
     ResourceFactory.getSprite(GAME_OVER_SPRITE)
@@ -44,17 +57,27 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
     ResourceFactory.getSprite(SHOT_SPRITE)
     ResourceFactory.getSprite(ALIEN_SPRITE_0)
     ResourceFactory.getSprite(ALIEN_SPRITE_1)
+    ResourceFactory.getSprite(ALIEN_SPRITE_2)
+    ResourceFactory.getSprite(B_SHIP_SPEED_SPRITE)
     ResourceFactory.getSprite(BACKGROUND_SPRITE)
 
+    info("Load animation frames")
     explTileMap = TileManager.load(EXPL_TILE_MAP, 42, 42)
-    animations.put(ENEMY_ANIMATION, Array[Sprite](
-      ResourceFactory.getSprite(Game.ALIEN_SPRITE_0),
-      ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
-      ResourceFactory.getSprite(Game.ALIEN_SPRITE_0),
-      ResourceFactory.getSprite(Game.ALIEN_SPRITE_1)
-      ))
-    animations.put(EXPLOSION_ANIMATION, explTileMap.toLine)
+    val enemyMainAnimatonFrames = Array[Sprite](
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_0),
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_2),
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
+                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_0)
+                )
+    frameSets.put(AlienEntity.MAIN_ANIMATION, enemyMainAnimatonFrames)
+    frameSets.put(AlienEntity.EXPLOSION_ANIMATION, explTileMap.toLine)
+    info("Game resources loaded")
 
+    info("Register game bonuses")
+    GameManager.registerGameBonuses()
+    info("Done")
+    debug("Initialize time : " + (System.currentTimeMillis - start) + " ms")
   }
   
   //Game entry point

@@ -6,7 +6,7 @@
     <relativePath>../pom.xml</relativePath>
   </parent>
 
-  <name>${pom.artifactId}</name>
+  <name>Engine</name>
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.xdev</groupId>
   <artifactId>sengine-2d</artifactId>
@@ -18,17 +18,6 @@
       <groupId>org.scala-lang</groupId>
       <artifactId>scala-library</artifactId>
     </dependency>
-
-    <dependency>
-      <groupId>org.specs</groupId>
-      <artifactId>specs</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-     <dependency>
-       <groupId>com.gagetimer</groupId>
-       <artifactId>gagetimer</artifactId>
-     </dependency>
 
      <dependency>
        <groupId>net.java.dev</groupId>
@@ -45,6 +34,11 @@
        <artifactId>log4j</artifactId>
      </dependency>
 
+     <dependency>
+       <groupId>net.java.dev</groupId>
+       <artifactId>openmali</artifactId>
+     </dependency>
+
    </dependencies>
 
   <build>
@@ -54,6 +48,7 @@
       <plugin>
         <groupId>org.scala-tools</groupId>
         <artifactId>maven-scala-plugin</artifactId>
+	<version>2.14</version>
         <executions>
           <execution>
             <goals>
@@ -64,9 +59,6 @@
         </executions>
         <configuration>
           <scalaVersion>${scala.version}</scalaVersion>
-          <args>
-            <arg>-target:jvm-1.5</arg>
-          </args>
         </configuration>
       </plugin>
     

@@ -1,37 +1,30 @@
-package com.xdev.si.entity
+package com.xdev.si.entity.bonus
 
-import javax.media.opengl.GL
-import com.xdev.engine.sprite.Sprite
-import collection.mutable.HashMap
-import com.xdev.engine.animation.FrameAnimation
-import java.awt.Rectangle
 import org.openmali.vecmath2.Vector3f
-
+import com.xdev.engine.sprite.Sprite
+import com.xdev.si.entity.AbstractEntity
+import com.xdev.si.Game
+import java.awt.Rectangle
+import javax.media.opengl.GL
 /**
- * Created by User: xdev
- * Date: 24.08.2010
- * Time: 21:56:53
+ * User: xdev
+ * Date: Nov 30, 2010
+ * Time: 11:08:51 PM
  */
-abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
+
+abstract class AbstractBonus(sprite : Sprite, pos: Vector3f) {
   //Coordinates
   val position = pos
-  val velocity = vel
   val width = sprite.getWidth()
   val height = sprite.getHeight()
 
+  val velocity: Vector3f = new Vector3f(0.0f, 80.0f, 0.0f)
   //Bounding boxes
   private val thisBoundBox : Rectangle  = new Rectangle(position.getX().asInstanceOf[Int], position.getY().asInstanceOf[Int], width, height)
   private val targetBoundBox : Rectangle  = new Rectangle()
   //State
   var markedAsDead = false
   var isDead = false
-  protected val frameAnimations = new HashMap[Int, FrameAnimation]()
-
-  //Run init method on constructor creation
-  init()
-
-  def this(sprite: Sprite, pos:Vector3f) = this(sprite, pos, new Vector3f(0.0f, 0.0f, 0.0f))
-  def this(sprite: Sprite) = this(sprite, new Vector3f(0.0f, 0.0f, 0.0f) , new Vector3f(0.0f, 0.0f, 0.0f))
 
   /* =============================================
      Methods
@@ -40,18 +33,19 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
    * Move  entity
    */
   def move(delta: Long){
-    val dt = (delta / 1000.0f)
-    position.addX(velocity.getX() * dt)
-    position.addY(velocity.getY() * dt)
-    position.addZ(velocity.getZ() * dt)
+    position.addX((velocity.getX() * delta) / 1000.0f)
+    position.addY((velocity.getY() * delta) / 1000.0f)
+    position.addZ((velocity.getZ() * delta) / 1000.0f)
     thisBoundBox.x = position.getX().asInstanceOf[Int]
     thisBoundBox.y = position.getY().asInstanceOf[Int]
+    if (position.getY() > Game.WND_HEIGHT) {
+       notifyDead()
+    }
   }
 
-  def accelerate(dx: Float = 0.0f, dy: Float = 0.0f, dz: Float = 0.0f){
+  def accelerate(dx: Float, dy: Float){
     velocity.addX(dx)
     velocity.addY(dy)
-    velocity.addZ(dz)
   }
 
   def stop(){
@@ -61,8 +55,8 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
   }
 
   def draw(gl: GL) = sprite.draw(gl, position)
-  
-  def collidesWith(target : AbstractEntity): Boolean ={
+
+  def isCollidesWith(target : AbstractEntity): Boolean ={
     thisBoundBox.setBounds(position.getX().asInstanceOf[Int],
       position.getY().asInstanceOf[Int],
       width,
@@ -73,18 +67,20 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
       target.height)
     return thisBoundBox.intersects(targetBoundBox)
   }
-  //Abstract methods
-  protected def init(): Unit
-  def collidedWith(target: AbstractEntity): Unit
-  def doLogic():Unit
-  def update(delta: Long): Unit
+
+  def collidedWith(target: AbstractEntity): Unit = {
+    notifyDead()
+    applyBonus(target)
+  }
 
   def notifyDead(): Unit = {
     isDead = true
     markedAsDead = true
   }
-  
-  def addFrameAnimation(animation: FrameAnimation){
-     frameAnimations.put(animation.id, animation)
-  }
+  //Abstract methods
+
+  /**
+   * Apply bonus to target entity
+   */
+  def applyBonus(target: AbstractEntity): Unit
 }
