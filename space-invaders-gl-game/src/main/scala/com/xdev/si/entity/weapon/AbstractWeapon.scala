@@ -10,8 +10,8 @@ import org.openmali.vecmath2.Vector3f
  * Time: 0:38:33
  */
 abstract class AbstractWeapon(pos: Vector3f) {
-  val shots = new ArrayBuffer[ShotEntity]()
-  var firingInterval = 500
+  val shots = new ArrayBuffer[ShotEntity]() //List of shots
+  var firingInterval = 500 //milliseconds
   val weaponPos = pos
 
   def fire(): Unit
