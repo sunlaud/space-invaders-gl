@@ -4,7 +4,7 @@ import com.xdev.engine.input.Keyboard
 import java.awt.{BorderLayout, Frame}
 import javax.media.opengl._
 import java.awt.event.{WindowEvent, WindowAdapter}
-import com.sun.opengl.util.FPSAnimator
+import com.sun.opengl.util.Animator
 import com.xdev.engine.logging.LogHelper
 import render.GLEventListener2D
 
@@ -14,12 +14,10 @@ import render.GLEventListener2D
  * Time: 1:17:26
  */
 
-abstract class GLGameWindow(title: String, w: Int, h: Int, maxFPS: Int) extends LogHelper {
+abstract class GLGameWindow(title: String, w: Int, h: Int) extends LogHelper {
   private var canvas: GLCanvas = null
   //Game loop animator
-  private var animator : FPSAnimator = null
-  //Maximum fps count
-  private val MAX_FPS = maxFPS
+  private var animator : Animator = null
   private val frame = new Frame(title)
 
   /**
@@ -38,7 +36,8 @@ abstract class GLGameWindow(title: String, w: Int, h: Int, maxFPS: Int) extends 
     canvas.setFocusable(true)
     //Init keyboard and animator loop
     Keyboard.init(canvas)
-    animator = new FPSAnimator(canvas, MAX_FPS)
+    animator = new Animator(canvas)
+    animator.setRunAsFastAsPossible(true)
     animator.start()
 
     // Setup the canvas inside the main window

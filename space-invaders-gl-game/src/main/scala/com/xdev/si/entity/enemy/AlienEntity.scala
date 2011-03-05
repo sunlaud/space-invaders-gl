@@ -1,12 +1,12 @@
 package com.xdev.si.entity.enemy
 
 import javax.media.opengl.GL
-import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
 import com.xdev.engine.animation.FrameAnimation
 import com.xdev.si.Game
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.AbstractEntity
+import com.xdev.si.gllisteners.MainRenderLoop
 
 /**
  * Created by User: xdev
@@ -17,7 +17,7 @@ object AlienEntity{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
 }
-class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) extends AbstractEntity(sprite, pos) {
+case class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(sprite, pos) {
 
   var currentAnimation = AlienEntity.MAIN_ANIMATION
 
@@ -36,7 +36,7 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
       frames = Game.frameSets(AlienEntity.EXPLOSION_ANIMATION),
       duration = 1000,
       onAnimationEndedHook = {
-        isDead = true; listener.notifyAlienKilled()
+        isDead = true; MainRenderLoop.notifyAlienKilled()
       })
     )
     frameAnimations(currentAnimation).start()
@@ -44,8 +44,8 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
 
   override def move(delta: Long){
     if(markedAsDead)return 
-    if ((velocity.getX() < 0) && (position.getX() <= 0)) { listener.updateEnemyesLogic() }
-    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) { listener.updateEnemyesLogic() }
+    if ((velocity.getX() < 0) && (position.getX() <= 0)) { MainRenderLoop.updateEnemiesLogic() }
+    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) { MainRenderLoop.updateEnemiesLogic() }
     super.move(delta)
   }
 
@@ -65,7 +65,7 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
     // if we've reached the bottom of the screen then the player
     // dies
     if (position.getY() >= Game.WND_HEIGHT - (height * 3)) {
-      listener.notifyPlayerShipDestroyed()
+      MainRenderLoop.notifyPlayerShipDestroyed()
     }
   }
 
@@ -81,7 +81,6 @@ class AlienEntity(sprite: Sprite, listener: MainRenderLoop, pos: Vector3f) exten
     if(!frameAnimations(currentAnimation).isRunning())
       frameAnimations(currentAnimation).start()
     //Generate bonuse after enemy dead    
-    listener.generateBonus(position.clone())
+    MainRenderLoop.generateBonus(position.clone())
   }
-  override def toString = "AlienEntity[" + position + "]"
 }

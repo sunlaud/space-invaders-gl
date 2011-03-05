@@ -1,6 +1,5 @@
 package com.xdev.si
 
-import entity.bonus._
 import entity.enemy.AlienEntity
 import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderLoop}
 import javax.media.opengl.GL
@@ -12,7 +11,7 @@ import com.xdev.engine.tiles.{TileManager, TileMap}
 import com.xdev.engine.util.ResourceFactory
 import manager.GameManager
 
-object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 600, 75){
+object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 600){
 
   val WND_WIDTH = 800
   val WND_HEIGHT = 600
@@ -42,7 +41,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.0", 800, 6
   def initGameRenders(): Array[GLEventListener2D] = {
     info("Init game renders")
     val start = System.currentTimeMillis
-    val listeners = Array[GLEventListener2D](new BackgroundRenderer(), new MainRenderLoop(), new HudRenderer(), DebugRenderer)
+    val listeners = Array[GLEventListener2D](BackgroundRenderer, MainRenderLoop, HudRenderer, DebugRenderer)
     debug("Initialize time : " + (System.currentTimeMillis - start) + " ms")
     return listeners
   }

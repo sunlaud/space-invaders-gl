@@ -14,7 +14,7 @@ import com.xdev.engine.util.ResourceFactory
  * Time: 1:50:10
  */
 
-class BackgroundRenderer extends GLEventListener2D with LogHelper {
+object BackgroundRenderer extends GLEventListener2D with LogHelper {
   var background: Sprite = null
   val position: Vector3f = new Vector3f(0.0f, 0.0f, 0.0f)
   override def onInit(gl: GL): Unit = {

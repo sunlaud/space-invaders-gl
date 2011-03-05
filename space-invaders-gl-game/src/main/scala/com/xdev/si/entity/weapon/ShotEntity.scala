@@ -10,7 +10,7 @@ import com.xdev.si.entity.AbstractEntity
  * Date: 25.08.2010
  * Time: 0:07:51
  */
-class ShotEntity(sprite : Sprite, listener: MainRenderLoop,  pos: Vector3f) extends AbstractEntity(sprite, pos){
+class ShotEntity(sprite : Sprite,  pos: Vector3f) extends AbstractEntity(sprite, pos){
 
   private var used  = false
 
