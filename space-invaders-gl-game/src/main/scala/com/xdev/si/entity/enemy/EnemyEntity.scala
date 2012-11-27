@@ -13,27 +13,27 @@ import com.xdev.si.gllisteners.MainRenderLoop
  * Date: 25.08.2010
  * Time: 0:06:32
  */
-object AlienEntity{
+object EnemyEntity{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
 }
-case class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(sprite, pos) {
+case class EnemyEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(sprite, pos) {
 
-  var currentAnimation = AlienEntity.MAIN_ANIMATION
+  var currentAnimation = EnemyEntity.MAIN_ANIMATION
 
   override def init(){
     //Change started velocity
     velocity.setX(-30.0f * Game.CURRENT_LEVEL)
 
     addFrameAnimation(new FrameAnimation (
-      id = AlienEntity.MAIN_ANIMATION,
-      frames = Game.frameSets(AlienEntity.MAIN_ANIMATION),
+      id = EnemyEntity.MAIN_ANIMATION,
+      frames = Game.frameSets(EnemyEntity.MAIN_ANIMATION),
       duration = 1000,
       looped = true)
     )
     addFrameAnimation(new FrameAnimation (
-      id = AlienEntity.EXPLOSION_ANIMATION,
-      frames = Game.frameSets(AlienEntity.EXPLOSION_ANIMATION),
+      id = EnemyEntity.EXPLOSION_ANIMATION,
+      frames = Game.frameSets(EnemyEntity.EXPLOSION_ANIMATION),
       duration = 1000,
       onAnimationEndedHook = {
         isDead = true; MainRenderLoop.notifyAlienKilled()
@@ -77,7 +77,7 @@ case class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(spr
   
   override def notifyDead() {
     markedAsDead = true
-    currentAnimation = AlienEntity.EXPLOSION_ANIMATION
+    currentAnimation = EnemyEntity.EXPLOSION_ANIMATION
     if(!frameAnimations(currentAnimation).isRunning)
       frameAnimations(currentAnimation).start()
     //Generate bonuse after enemy dead    

@@ -4,7 +4,7 @@ import com.xdev.si.entity.AbstractEntity
 import org.openmali.vecmath2.Vector3f
 import com.xdev.engine.util.ResourceFactory
 import com.xdev.si.Game
-import com.xdev.si.entity.player.ShipEntity
+import com.xdev.si.entity.player.PlayerEntity
 
 /**
  * User: xdev
@@ -14,11 +14,13 @@ import com.xdev.si.entity.player.ShipEntity
 
 case class ShipAccBonus(pos: Vector3f) extends AbstractBonus(ResourceFactory.getSprite(Game.B_SHIP_SPEED_SPRITE), pos){
 
-  override def applyBonus(target: AbstractEntity): Unit = target match {
-    case ship: ShipEntity => {
-      if(ship.acceleration < ShipEntity.MAX_ACCELERATION)
-        ship.acceleration += 15
+  override def applyBonus(target: AbstractEntity){
+    target match {
+      case ship: PlayerEntity => {
+        if(ship.acceleration < PlayerEntity.MAX_ACCELERATION)
+          ship.acceleration += 15
+      }
+      case _ =>
     }
-    case _ =>
   }
 }

@@ -1,6 +1,6 @@
 package com.xdev.si
 
-import entity.enemy.AlienEntity
+import entity.enemy.EnemyEntity
 import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderLoop}
 import javax.media.opengl.GL
 import com.xdev.engine.gl.GLGameWindow
@@ -70,8 +70,8 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
                   ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
                   ResourceFactory.getSprite(Game.ALIEN_SPRITE_0)
                 )
-    frameSets.put(AlienEntity.MAIN_ANIMATION, enemyMainAnimatonFrames)
-    frameSets.put(AlienEntity.EXPLOSION_ANIMATION, explTileMap.toLine)
+    frameSets.put(EnemyEntity.MAIN_ANIMATION, enemyMainAnimatonFrames)
+    frameSets.put(EnemyEntity.EXPLOSION_ANIMATION, explTileMap.toLine)
     info("Game resources loaded")
 
     info("Register game bonuses")

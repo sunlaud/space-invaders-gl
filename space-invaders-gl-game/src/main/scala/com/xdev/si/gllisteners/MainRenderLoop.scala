@@ -10,8 +10,8 @@ import com.xdev.engine.input.Keyboard
 import com.xdev.si.GameStateType._
 import com.xdev.si.{GameStateType, Game}
 import org.openmali.vecmath2.Vector3f
-import com.xdev.si.entity.player.ShipEntity
-import com.xdev.si.entity.enemy.AlienEntity
+import com.xdev.si.entity.player.PlayerEntity
+import com.xdev.si.entity.enemy.EnemyEntity
 import com.xdev.si.entity.bonus.AbstractBonus
 
 /**
@@ -22,43 +22,44 @@ import com.xdev.si.entity.bonus.AbstractBonus
 
 object MainRenderLoop extends GLEventListener2D with LogHelper {
 
-  private var playerShip: ShipEntity = null
-  private val aliens = new ArrayBuffer[AlienEntity]()
+  private var player: PlayerEntity = null
+  private val enemies = new ArrayBuffer[EnemyEntity]()
   private val bonuses = new ArrayBuffer[AbstractBonus]()
 
   private var currentGameState = NEW_GAME
 
-  private val infoSpritePos = new Vector3f(325.0f, 250.0f, 0.0f)
-  private val playerShipStartPosition = new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f)
+  private val INFO_SPRITE_POS = new Vector3f(325.0f, 250.0f, 0.0f)
+  private val PLAYER_START_POS = new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f)
 
   override def onInit(gl: GL) {
     debug("Initialize")
-    playerShip = GameManager.createPlayerShip(Game.SHIP_SPRITE, playerShipStartPosition)
-    aliens ++= GameManager.createAliens(Game.ALIEN_SPRITE_0, 5, 12)
+    player = GameManager.createPlayer(Game.SHIP_SPRITE, PLAYER_START_POS)
+    enemies ++= GameManager.createEnemies(Game.ALIEN_SPRITE_0, 5, 12)
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int) {
     processKeyboard()
     currentGameState match {
       case GAME_RUN =>{
-        aliens.foreach(_.move(delta))
-        playerShip.move(delta)
+        enemies.foreach(_.move(delta))
+        player.move(delta)
         bonuses.foreach(_.move(delta))
 
         checkCollisions()
+
         //Remove dead entites
-        aliens--=aliens.filter(e => e.isDead)
-        bonuses--=bonuses.filter(e => e.isDead)
-        playerShip.weapon.removeUnusedShots()
+        enemies --= enemies.filter(e => e.isDead)
+        bonuses --= bonuses.filter(e => e.isDead)
+        player.weapon.removeUnusedShots()
         //Check
-        if (aliens.length == 0){
+        if (enemies.length == 0){
           notifyAllAlienKilled()
           return
         }
 
         //Update 
-        aliens.foreach(_.update(delta))
-        playerShip.update(delta)
+        enemies.foreach(_.update(delta))
+        player.update(delta)
       }
       case _ =>
     }
@@ -71,21 +72,21 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     currentGameState match {
       case NEW_GAME =>{
         //TODO: Remove magic numbers
-        GameManager.createInfoTexture(Game.PRESS_ANY_KEY_SPRITE).draw(gl, infoSpritePos)
+        GameManager.createSprite(Game.PRESS_ANY_KEY_SPRITE).draw(gl, INFO_SPRITE_POS)
       }
       case WIN =>{
         //TODO: Remove magic numbers
-        GameManager.createInfoTexture(Game.WIN_SPRITE).draw(gl, infoSpritePos)
+        GameManager.createSprite(Game.WIN_SPRITE).draw(gl, INFO_SPRITE_POS)
       }
       case LOSE =>{
         //TODO: Remove magic numbers
-        GameManager.createInfoTexture(Game.GAME_OVER_SPRITE).draw(gl, infoSpritePos)
+        GameManager.createSprite(Game.GAME_OVER_SPRITE).draw(gl, INFO_SPRITE_POS)
       }
       case _ =>
     }
-    playerShip.draw(gl)
+    player.draw(gl)
     bonuses.foreach(_.draw(gl))
-    aliens.foreach(_.draw(gl))
+    enemies.foreach(_.draw(gl))
   }
 
    private def processKeyboard() {
@@ -110,17 +111,17 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
        }
        case GAME_RUN => {
          //TODO: Fix Move speed - remove magic number
-         playerShip.stop()
-         if(Keyboard.isPressed(KeyEvent.VK_LEFT))playerShip.accelerate(-playerShip.acceleration)
-         if(Keyboard.isPressed(KeyEvent.VK_RIGHT))playerShip.accelerate(playerShip.acceleration)
-         if(Keyboard.isPressed(KeyEvent.VK_SPACE)){playerShip.fire()}
+         player.stop()
+         if(Keyboard.isPressed(KeyEvent.VK_LEFT))player.accelerate(-player.acceleration)
+         if(Keyboard.isPressed(KeyEvent.VK_RIGHT))player.accelerate(player.acceleration)
+         if(Keyboard.isPressed(KeyEvent.VK_SPACE)){player.fire()}
        }
        case WIN =>{
          if(Keyboard.isPressed(KeyEvent.VK_SPACE)){
            var bonus = 1000 * Game.CURRENT_LEVEL
            Game.SCORE += bonus
            Game.CURRENT_LEVEL += 1
-           aliens ++= GameManager.createAliens(Game.ALIEN_SPRITE_0, 5, 12)
+           enemies ++= GameManager.createEnemies(Game.ALIEN_SPRITE_0, 5, 12)
            setGameState(GAME_RUN)
          }
        }
@@ -128,9 +129,9 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
          if(Keyboard.isPressed(KeyEvent.VK_SPACE)){
            var bonus = 1000 * Game.CURRENT_LEVEL
            if(Game.SCORE >= bonus)Game.SCORE -= bonus
-           aliens.clear()
-           aliens ++= GameManager.createAliens(Game.ALIEN_SPRITE_0, 5, 12)
-           playerShip.position.set(playerShipStartPosition)
+           enemies.clear()
+           enemies ++= GameManager.createEnemies(Game.ALIEN_SPRITE_0, 5, 12)
+           player.position.set(PLAYER_START_POS)
            setGameState(GAME_RUN)
          }
        }
@@ -144,49 +145,46 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
 
   def notifyPlayerShipDestroyed(){
     setGameState(LOSE)
-    playerShip.weapon.removeAllShots()
+    player.weapon.removeAllShots()
    }
 
   def notifyAllAlienKilled(){
     setGameState(WIN)
-    playerShip.weapon.removeAllShots()
-    aliens.clear()
+    player.weapon.removeAllShots()
+    enemies.clear()
    }
 
   def notifyAlienKilled(){
-    aliens.foreach(_.runFaster())
+    enemies.foreach(_.runFaster())
     Game.SCORE += 100
   }
 
   def updateEnemiesLogic(){
-    aliens.foreach(_.doLogic())
+    enemies.foreach(_.doLogic())
   }
 
   /**
    * Generate random bonus affter enemy killed
    */
   def generateBonus(killedEnemyPosition: Vector3f){
-    val generatedBonus: Option[AbstractBonus] = GameManager.generateRandomBonus(killedEnemyPosition)
-    if(generatedBonus.isDefined){
-      bonuses += generatedBonus.get
-    }
+    GameManager.generateRandomBonus(killedEnemyPosition).foreach(bonuses += _)
   }
 
   private def checkCollisions(){
-    for(shot <- playerShip.weapon.shots if !shot.isDead; if !shot.markedAsDead){
-      for(enemy <- aliens if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
+    for(shot <- player.weapon.shots if !shot.isDead; if !shot.markedAsDead){
+      for(enemy <- enemies if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
         shot.collidedWith(enemy)
         return
       }
     }
     
-    for(enemy <- aliens if !enemy.isDead; if !enemy.markedAsDead; if playerShip.collidesWith(enemy)){
-        playerShip.collidedWith(enemy)
+    for(enemy <- enemies if !enemy.isDead; if !enemy.markedAsDead; if player.collidesWith(enemy)){
+        player.collidedWith(enemy)
         return
       }
 
-    for(bonus <- bonuses if !bonus.isDead; if !bonus.markedAsDead; if bonus.isCollidesWith(playerShip)){
-        bonus.collidedWith(playerShip)
+    for(bonus <- bonuses if !bonus.isDead; if !bonus.markedAsDead; if bonus.isCollidesWith(player)){
+        bonus.collidedWith(player)
         return
     }
   }
@@ -196,11 +194,11 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
         "game state : " + currentGameState,
         "fps : " + fps,
         "delta : " + delta,
-        "aliens : " + aliens.length,
-        "shots : " + playerShip.weapon.getShotsCount,
+        "aliens : " + enemies.length,
+        "shots : " + player.weapon.getShotsCount,
         "bonuses : " + bonuses.length,
-        "ship acceleration : " + playerShip.acceleration,
-        "ship firingInterval : " + playerShip.weapon.firingInterval
+        "ship acceleration : " + player.acceleration,
+        "ship firingInterval : " + player.weapon.firingInterval
       )
     DebugRenderer.setTextForDebugging(textBuff)
   }

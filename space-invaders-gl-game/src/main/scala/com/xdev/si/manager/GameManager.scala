@@ -3,8 +3,8 @@ package com.xdev.si.manager
 import com.xdev.engine.sprite.Sprite
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.weapon.ShotEntity
-import com.xdev.si.entity.enemy.AlienEntity
-import com.xdev.si.entity.player.ShipEntity
+import com.xdev.si.entity.enemy.EnemyEntity
+import com.xdev.si.entity.player.PlayerEntity
 import com.xdev.engine.util.ResourceFactory
 import com.xdev.si.entity.bonus._
 import collection.mutable.{HashMap, ArrayBuffer}
@@ -20,43 +20,44 @@ import util.Random
 object GameManager extends LogHelper{
 
   val availableBonuses = new HashMap[Int, AbstractBonus]()
+  val BONUSES_RANDOM_SEEK = 15
+
   //======================================================================
   // Entity management
   //======================================================================
 
-  def createPlayerShip(texture: String, position: Vector3f): ShipEntity = {
-    return new ShipEntity(ResourceFactory.getSprite(texture), position)
+  def createPlayer(texture: String, position: Vector3f): PlayerEntity = {
+    new PlayerEntity(ResourceFactory.getSprite(texture), position)
   }
 
-  def createAliens(texture: String, rows: Int, columns: Int): ArrayBuffer[AlienEntity] = {
-    val aliens = new ArrayBuffer[AlienEntity]()
+  def createEnemies(texture: String, rows: Int, columns: Int): ArrayBuffer[EnemyEntity] = {
+    val aliens = new ArrayBuffer[EnemyEntity]()
     for(y <- 0 until rows) {
       for(x <- 0 until columns) {
         //TODO: Remove listener, remove magic numbers
-        aliens += new AlienEntity(ResourceFactory.getSprite(texture), new Vector3f(100 + (x * 50), (50) + y * 30, 0.0f))
+        aliens += new EnemyEntity(ResourceFactory.getSprite(texture), new Vector3f(100 + (x * 50), (50) + y * 30, 0.0f))
       }
     }
-   return aliens
+   aliens
   }
 
-  def createInfoTexture(texture: String): Sprite = {
-      return ResourceFactory.getSprite(texture)
+  def createSprite(texture: String): Sprite = {
+      ResourceFactory.getSprite(texture)
   }
   
   def createShot(texture: String, position: Vector3f): ShotEntity = {
-    return new ShotEntity(ResourceFactory.getSprite(texture), position)
+    new ShotEntity(ResourceFactory.getSprite(texture), position)
   }
   //======================================================================
   // Bonuses management
   //======================================================================
-  def registerGameBonuses(): Unit = {
+  def registerGameBonuses() {
       availableBonuses.put(availableBonuses.size, new ShotSpeedBonus(new Vector3f(0,0,0)))
       availableBonuses.put(availableBonuses.size, new ShipAccBonus(new Vector3f(0,0,0)))
   }
 
   def generateRandomBonus(startPosition: Vector3f): Option[AbstractBonus] = {
-    val randomIndex = Random.nextInt(availableBonuses.size * 15)
-    val randomBonus: Option[AbstractBonus] = availableBonuses.get(randomIndex)
+    val randomBonus: Option[AbstractBonus] = availableBonuses.get(Random.nextInt(availableBonuses.size * BONUSES_RANDOM_SEEK))
     if(randomBonus.isDefined){
       return randomBonus.get match {
         case b: ShotSpeedBonus => Some(new ShotSpeedBonus(startPosition))
@@ -64,6 +65,6 @@ object GameManager extends LogHelper{
         case _ => None
       }
     }
-    return None
+    None
   }
 }

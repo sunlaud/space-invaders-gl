@@ -4,7 +4,7 @@ import com.xdev.si.entity.AbstractEntity
 import org.openmali.vecmath2.Vector3f
 import com.xdev.engine.util.ResourceFactory
 import com.xdev.si.Game
-import com.xdev.si.entity.player.ShipEntity
+import com.xdev.si.entity.player.PlayerEntity
 
 /**
  * User: xdev
@@ -15,8 +15,8 @@ import com.xdev.si.entity.player.ShipEntity
 case class ShotSpeedBonus(pos: Vector3f) extends AbstractBonus(ResourceFactory.getSprite(Game.B_SHOT_SPEED_SPRITE), pos) {
 
   override def applyBonus(target: AbstractEntity): Unit = target match {
-    case ship: ShipEntity => {
-      if(ship.weapon.firingInterval > ShipEntity.MIN_FIRE_INTERVAL)
+    case ship: PlayerEntity => {
+      if(ship.weapon.firingInterval > PlayerEntity.MIN_FIRE_INTERVAL)
         ship.weapon.firingInterval -= 15
     }
     case _ =>
