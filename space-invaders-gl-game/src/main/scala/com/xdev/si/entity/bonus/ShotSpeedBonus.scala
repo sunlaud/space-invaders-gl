@@ -12,7 +12,7 @@ import com.xdev.si.entity.player.PlayerEntity
  * Time: 10:57:58 PM
  */
 
-case class ShotSpeedBonus(pos: Vector3f) extends AbstractBonus(ResourceFactory.getSprite(Game.B_SHOT_SPEED_SPRITE), pos) {
+final case class ShotSpeedBonus(pos: Vector3f) extends AbstractBonus(ResourceFactory.getSprite(Game.B_SHOT_SPEED_SPRITE), pos) {
 
   override def applyBonus(target: AbstractEntity) { target match {
       case ship: PlayerEntity => {

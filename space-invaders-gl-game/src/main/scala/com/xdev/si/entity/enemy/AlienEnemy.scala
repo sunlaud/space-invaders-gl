@@ -9,7 +9,6 @@ import javax.media.opengl.GL
 import com.xdev.si.entity.AbstractEntity
 
 /**
- * Created by IntelliJ IDEA.
  * User: xdev.developer@gmail.com
  * Date: 27.11.12
  * Time: 23:08

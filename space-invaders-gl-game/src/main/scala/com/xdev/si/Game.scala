@@ -33,6 +33,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   //Bonuses sprites
   val B_SHOT_SPEED_SPRITE = "/sprites/shotSpeed.png"
   val B_SHIP_SPEED_SPRITE = "/sprites/plazma.png"
+  val B_SHOTGUN = "/sprites/1.png"
 
   var explTileMap:TileMap = null
 
