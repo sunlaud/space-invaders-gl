@@ -21,25 +21,25 @@ case class ShipEntity(sprite : Sprite, pos: Vector3f) extends AbstractEntity(spr
   var acceleration = 250
 
   override def move(delta: Long){
-    if ((velocity.getX() < 0) && (position.getX() <= 0)) position.setX(0.0f)
-    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) position.setX(Game.WND_WIDTH - width)
+    if ((velocity.getX < 0) && (position.getX <= 0)) position.setX(0.0f)
+    if ((velocity.getX > 0) && (position.getX > Game.WND_WIDTH - width)) position.setX(Game.WND_WIDTH - width)
     super.move(delta)
     weapon.update(delta)
   }
 
-  override def draw(gl: GL): Unit = {
+  override def draw(gl: GL) {
     super.draw(gl)
     weapon.draw(gl)
   }
 
   override def init(){}
   
-  override def collidedWith(target: AbstractEntity): Unit = {
+  override def collidedWith(target: AbstractEntity) {
     target.notifyDead()
     this.notifyDead()
   }
   
-  override def doLogic():Unit= {}
+  override def doLogic() {}
   
   override def update(delta: Long){}
 

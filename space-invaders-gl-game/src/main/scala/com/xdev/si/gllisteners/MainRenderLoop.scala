@@ -31,13 +31,13 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
   private val infoSpritePos = new Vector3f(325.0f, 250.0f, 0.0f)
   private val playerShipStartPosition = new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f)
 
-  override def onInit(gl: GL): Unit = {
+  override def onInit(gl: GL) {
     debug("Initialize")
     playerShip = GameManager.createPlayerShip(Game.SHIP_SPRITE, playerShipStartPosition)
     aliens ++= GameManager.createAliens(Game.ALIEN_SPRITE_0, 5, 12)
   }
 
-  override def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {
+  override def onUpdateFrame(delta: Long, w: Int, h: Int) {
     processKeyboard()
     currentGameState match {
       case GAME_RUN =>{
@@ -64,7 +64,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     }
   }
 
-  override def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
+  override def onRenderFrame(gl: GL, w: Int, h: Int) {
     if(DebugRenderer.isDebugEnabled())
       renderDebugInfo()
 
@@ -88,7 +88,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     aliens.foreach(_.draw(gl))
   }
 
-   private def processKeyboard(): Unit = {
+   private def processKeyboard() {
      //TODO: After changing input processing logic - refactor this
      if(Keyboard.isPressed(KeyEvent.VK_F2)){
        DebugRenderer.show()
@@ -142,18 +142,18 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     currentGameState = gameState
   }
 
-  def notifyPlayerShipDestroyed():Unit={
+  def notifyPlayerShipDestroyed(){
     setGameState(LOSE)
     playerShip.weapon.removeAllShots()
    }
 
-  def notifyAllAlienKilled():Unit={
+  def notifyAllAlienKilled(){
     setGameState(WIN)
     playerShip.weapon.removeAllShots()
     aliens.clear()
    }
 
-  def notifyAlienKilled():Unit={
+  def notifyAlienKilled(){
     aliens.foreach(_.runFaster())
     Game.SCORE += 100
   }
@@ -172,7 +172,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     }
   }
 
-  private def checkCollisions(): Unit = {
+  private def checkCollisions(){
     for(shot <- playerShip.weapon.shots if !shot.isDead; if !shot.markedAsDead){
       for(enemy <- aliens if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
         shot.collidedWith(enemy)
@@ -197,7 +197,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
         "fps : " + fps,
         "delta : " + delta,
         "aliens : " + aliens.length,
-        "shots : " + playerShip.weapon.getShotsCount(),
+        "shots : " + playerShip.weapon.getShotsCount,
         "bonuses : " + bonuses.length,
         "ship acceleration : " + playerShip.acceleration,
         "ship firingInterval : " + playerShip.weapon.firingInterval

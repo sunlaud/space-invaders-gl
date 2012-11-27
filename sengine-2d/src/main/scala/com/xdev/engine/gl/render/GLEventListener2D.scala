@@ -13,7 +13,7 @@ abstract class GLEventListener2D extends GLEventListener{
 
   protected var delta : Long = 0
   /** The time at which the last rendering looped started from the point of view of the game logic */
-  private var lastLoopTime: Long = SystemTimer.getTime()
+  private var lastLoopTime: Long = SystemTimer.getTime
   /** The last time at which we recorded the frame rate */
   private var lastFpsTime : Long = 0
   /** The current number of frames recorded */
@@ -24,29 +24,29 @@ abstract class GLEventListener2D extends GLEventListener{
    * is responsible for setting up the GL context.
    * @param drawable The GL context which is being initialised
    */
-  def init(drawable: GLAutoDrawable): Unit = {
+  def init(drawable: GLAutoDrawable) {
     // get hold of the GL content
-    drawable.setGL(new DebugGL(drawable.getGL()))
-    onInit(drawable.getGL())
+    drawable.setGL(new DebugGL(drawable.getGL))
+    onInit(drawable.getGL)
   }
-  def onInit(gl: GL): Unit
+  def onInit(gl: GL)
   /**
    * Called by the JOGL rendering process to display a frame. In this
    * case its responsible for blanking the display and then notifing
    * any registered callback that the screen requires rendering.
    * @param drawable The GL context component being drawn
    */
-  def display(drawable: GLAutoDrawable): Unit = {
+  def display(drawable: GLAutoDrawable) {
     calculateDelta()
-    onUpdateFrame(delta, drawable.getWidth(), drawable.getHeight())
-    onRenderFrame(drawable.getGL(), drawable.getWidth(), drawable.getHeight())
+    onUpdateFrame(delta, drawable.getWidth, drawable.getHeight)
+    onRenderFrame(drawable.getGL, drawable.getWidth, drawable.getHeight)
   }
-  def onUpdateFrame(delta: Long, w: Int, h: Int): Unit
-  def onRenderFrame(gl: GL, w: Int, h: Int): Unit
+  def onUpdateFrame(delta: Long, w: Int, h: Int)
+  def onRenderFrame(gl: GL, w: Int, h: Int)
 
   private def calculateDelta(){
-    delta = SystemTimer.getTime() - lastLoopTime
-    lastLoopTime = SystemTimer.getTime()
+    delta = SystemTimer.getTime - lastLoopTime
+    lastLoopTime = SystemTimer.getTime
     // update the frame counter
     lastFpsTime += delta
     fpsAccumulator += 1
@@ -67,7 +67,7 @@ abstract class GLEventListener2D extends GLEventListener{
      * @param width The width of the component
      * @param height The height of the component
      */
-  def reshape(drawable: GLAutoDrawable, x: Int, y: Int, width: Int, height: Int): Unit = {}
+  def reshape(drawable: GLAutoDrawable, x: Int, y: Int, width: Int, height: Int) {}
   /**
 	 * Called by the JOGL rendering process if/when the display mode
 	 * is changed.
@@ -75,5 +75,5 @@ abstract class GLEventListener2D extends GLEventListener{
 	 * @param modeChanged True if the display mode has changed
 	 * @param deviceChanged True if the device in use has changed
 	 */
-  def displayChanged(drawable: GLAutoDrawable, modeChanged: Boolean, deviceChanged: Boolean): Unit = {}
+  def displayChanged(drawable: GLAutoDrawable, modeChanged: Boolean, deviceChanged: Boolean) {}
 }

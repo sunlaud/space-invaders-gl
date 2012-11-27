@@ -20,17 +20,17 @@ class ShotEntity(sprite : Sprite,  pos: Vector3f) extends AbstractEntity(sprite,
 
   override def move(delta: Long){
     super.move(delta)
-    if (position.getY() < 0) notifyDead()
+    if (position.getY < 0) notifyDead()
   }
 
-  override def collidedWith(target: AbstractEntity): Unit = {
-    if (used) {return}
+  override def collidedWith(target: AbstractEntity) {
+    if (used) return
     this.notifyDead()
     target.notifyDead()
     used = true
   }
 
-  override def doLogic():Unit= {}
+  override def doLogic() {}
   override def update(delta: Long){}
 
   override def toString = "ShotEntity[" + position + "]"

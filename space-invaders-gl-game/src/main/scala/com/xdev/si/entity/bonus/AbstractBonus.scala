@@ -15,12 +15,12 @@ import javax.media.opengl.GL
 abstract class AbstractBonus(sprite : Sprite, pos: Vector3f) {
   //Coordinates
   val position = pos
-  val width = sprite.getWidth()
-  val height = sprite.getHeight()
+  val width = sprite.getWidth
+  val height = sprite.getHeight
 
   val velocity: Vector3f = new Vector3f(0.0f, 80.0f, 0.0f)
   //Bounding boxes
-  private val thisBoundBox : Rectangle  = new Rectangle(position.getX().asInstanceOf[Int], position.getY().asInstanceOf[Int], width, height)
+  private val thisBoundBox : Rectangle  = new Rectangle(position.getX.asInstanceOf[Int], position.getY.asInstanceOf[Int], width, height)
   private val targetBoundBox : Rectangle  = new Rectangle()
   //State
   var markedAsDead = false
@@ -33,12 +33,12 @@ abstract class AbstractBonus(sprite : Sprite, pos: Vector3f) {
    * Move  entity
    */
   def move(delta: Long){
-    position.addX((velocity.getX() * delta) / 1000.0f)
-    position.addY((velocity.getY() * delta) / 1000.0f)
-    position.addZ((velocity.getZ() * delta) / 1000.0f)
-    thisBoundBox.x = position.getX().asInstanceOf[Int]
-    thisBoundBox.y = position.getY().asInstanceOf[Int]
-    if (position.getY() > Game.WND_HEIGHT) {
+    position.addX((velocity.getX * delta) / 1000.0f)
+    position.addY((velocity.getY * delta) / 1000.0f)
+    position.addZ((velocity.getZ * delta) / 1000.0f)
+    thisBoundBox.x = position.getX.asInstanceOf[Int]
+    thisBoundBox.y = position.getY.asInstanceOf[Int]
+    if (position.getY > Game.WND_HEIGHT) {
        notifyDead()
     }
   }
@@ -54,26 +54,26 @@ abstract class AbstractBonus(sprite : Sprite, pos: Vector3f) {
     velocity.setZ(0.0f)
   }
 
-  def draw(gl: GL) = sprite.draw(gl, position)
+  def draw(gl: GL) { sprite.draw(gl, position)}
 
   def isCollidesWith(target : AbstractEntity): Boolean ={
-    thisBoundBox.setBounds(position.getX().asInstanceOf[Int],
-      position.getY().asInstanceOf[Int],
+    thisBoundBox.setBounds(position.getX.asInstanceOf[Int],
+      position.getY.asInstanceOf[Int],
       width,
       height)
-    targetBoundBox.setBounds(target.position.getX().asInstanceOf[Int],
-      target.position.getY().asInstanceOf[Int],
+    targetBoundBox.setBounds(target.position.getX.asInstanceOf[Int],
+      target.position.getY.asInstanceOf[Int],
       target.width,
       target.height)
-    return thisBoundBox.intersects(targetBoundBox)
+    thisBoundBox.intersects(targetBoundBox)
   }
 
-  def collidedWith(target: AbstractEntity): Unit = {
+  def collidedWith(target: AbstractEntity) {
     notifyDead()
     applyBonus(target)
   }
 
-  def notifyDead(): Unit = {
+  def notifyDead() {
     isDead = true
     markedAsDead = true
   }
@@ -82,5 +82,5 @@ abstract class AbstractBonus(sprite : Sprite, pos: Vector3f) {
   /**
    * Apply bonus to target entity
    */
-  def applyBonus(target: AbstractEntity): Unit
+  def applyBonus(target: AbstractEntity)
 }

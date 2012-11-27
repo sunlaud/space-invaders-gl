@@ -16,11 +16,11 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
   //Coordinates
   val position = pos
   val velocity = vel
-  val width = sprite.getWidth()
-  val height = sprite.getHeight()
+  val width = sprite.getWidth
+  val height = sprite.getHeight
 
   //Bounding boxes
-  private val thisBoundBox : Rectangle  = new Rectangle(position.getX().asInstanceOf[Int], position.getY().asInstanceOf[Int], width, height)
+  private val thisBoundBox : Rectangle  = new Rectangle(position.getX.asInstanceOf[Int], position.getY.asInstanceOf[Int], width, height)
   private val targetBoundBox : Rectangle  = new Rectangle()
   //State
   var markedAsDead = false
@@ -41,11 +41,11 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
    */
   def move(delta: Long){
     val dt = (delta / 1000.0f)
-    position.addX(velocity.getX() * dt)
-    position.addY(velocity.getY() * dt)
-    position.addZ(velocity.getZ() * dt)
-    thisBoundBox.x = position.getX().asInstanceOf[Int]
-    thisBoundBox.y = position.getY().asInstanceOf[Int]
+    position.addX(velocity.getX * dt)
+    position.addY(velocity.getY * dt)
+    position.addZ(velocity.getZ * dt)
+    thisBoundBox.x = position.getX.asInstanceOf[Int]
+    thisBoundBox.y = position.getY.asInstanceOf[Int]
   }
 
   def accelerate(dx: Float = 0.0f, dy: Float = 0.0f, dz: Float = 0.0f){
@@ -60,26 +60,26 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
     velocity.setZ(0.0f)
   }
 
-  def draw(gl: GL) = sprite.draw(gl, position)
+  def draw(gl: GL) {sprite.draw(gl, position)}
   
   def collidesWith(target : AbstractEntity): Boolean ={
-    thisBoundBox.setBounds(position.getX().asInstanceOf[Int],
-      position.getY().asInstanceOf[Int],
+    thisBoundBox.setBounds(position.getX.asInstanceOf[Int],
+      position.getY.asInstanceOf[Int],
       width,
       height)
-    targetBoundBox.setBounds(target.position.getX().asInstanceOf[Int],
-      target.position.getY().asInstanceOf[Int],
+    targetBoundBox.setBounds(target.position.getX.asInstanceOf[Int],
+      target.position.getY.asInstanceOf[Int],
       target.width,
       target.height)
-    return thisBoundBox.intersects(targetBoundBox)
+    thisBoundBox.intersects(targetBoundBox)
   }
   //Abstract methods
-  protected def init(): Unit
-  def collidedWith(target: AbstractEntity): Unit
-  def doLogic():Unit
-  def update(delta: Long): Unit
+  protected def init()
+  def collidedWith(target: AbstractEntity)
+  def doLogic()
+  def update(delta: Long)
 
-  def notifyDead(): Unit = {
+  def notifyDead() {
     isDead = true
     markedAsDead = true
   }

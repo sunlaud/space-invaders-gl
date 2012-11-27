@@ -14,27 +14,27 @@ abstract class AbstractWeapon(pos: Vector3f) {
   var firingInterval = 500 //milliseconds
   val weaponPos = pos
 
-  def fire(): Unit
+  def fire()
 
-  def removeUnusedShots():Unit = {
+  def removeUnusedShots() {
     shots--= shots.filter(e => e.isDead)    
   }
 
-  def removeAllShots(): Unit = {
+  def removeAllShots() {
     shots.clear()    
   }
 
-  def getShotsCount(): Int = shots.length
+  def getShotsCount: Int = shots.length
 
-  def draw(gl: GL): Unit = {
+  def draw(gl: GL) {
     shots.foreach(_.draw(gl))
   }
 
-  def update(delta: Long): Unit = {
+  def update(delta: Long) {
     shots.foreach(_.move(delta))
   }
 
-  def addShot(shot: ShotEntity): Unit = {
+  def addShot(shot: ShotEntity) {
     shots += shot    
   }
 }

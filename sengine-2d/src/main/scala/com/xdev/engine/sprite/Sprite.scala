@@ -34,13 +34,13 @@ class Sprite(texture: Texture){
       gl.glVertex2f(0, 0)
 
       gl.glTexCoord2f (tc.right(), tc.top())
-      gl.glVertex2f(getWidth(), 0)
+      gl.glVertex2f(getWidth, 0)
 
       gl.glTexCoord2f (tc.right(), tc.bottom())
-      gl.glVertex2f(getWidth(),getHeight())
+      gl.glVertex2f(getWidth, getHeight)
 
       gl.glTexCoord2f (tc.left(), tc.bottom())
-      gl.glVertex2f(0, getHeight())
+      gl.glVertex2f(0, getHeight)
 
     gl.glEnd()
     // restore the model view matrix to prevent contamination

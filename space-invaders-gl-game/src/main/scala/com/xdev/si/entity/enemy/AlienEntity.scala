@@ -44,8 +44,8 @@ case class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(spr
 
   override def move(delta: Long){
     if(markedAsDead)return 
-    if ((velocity.getX() < 0) && (position.getX() <= 0)) { MainRenderLoop.updateEnemiesLogic() }
-    if ((velocity.getX() > 0) && (position.getX() > Game.WND_WIDTH - width)) { MainRenderLoop.updateEnemiesLogic() }
+    if ((velocity.getX < 0) && (position.getX <= 0)) { MainRenderLoop.updateEnemiesLogic() }
+    if ((velocity.getX > 0) && (position.getX > Game.WND_WIDTH - width)) { MainRenderLoop.updateEnemiesLogic() }
     super.move(delta)
   }
 
@@ -53,32 +53,32 @@ case class AlienEntity(sprite: Sprite, pos: Vector3f) extends AbstractEntity(spr
     frameAnimations(currentAnimation).computeNextFrame(delta)
   }
 
-  override def draw(gl: GL): Unit = {
+  override def draw(gl: GL) {
     frameAnimations(currentAnimation).render(gl, position)
   }
 
-  override def doLogic():Unit= {
+  override def doLogic() {
     // swap over horizontal movement and move down the
     // screen a bit
-    if(velocity.getX() < 0) position.subY(10) else position.addY(30)
+    if(velocity.getX < 0) position.subY(10) else position.addY(30)
     velocity.mulX(-1)
     // if we've reached the bottom of the screen then the player
     // dies
-    if (position.getY() >= Game.WND_HEIGHT - (height * 3)) {
+    if (position.getY >= Game.WND_HEIGHT - (height * 3)) {
       MainRenderLoop.notifyPlayerShipDestroyed()
     }
   }
 
-  def runFaster():Unit = {
+  def runFaster() {
     velocity.mulX(1.02f)
   }
 
-  override def collidedWith(target: AbstractEntity): Unit = {}
+  override def collidedWith(target: AbstractEntity) {}
   
-  override def notifyDead(): Unit = {
+  override def notifyDead() {
     markedAsDead = true
     currentAnimation = AlienEntity.EXPLOSION_ANIMATION
-    if(!frameAnimations(currentAnimation).isRunning())
+    if(!frameAnimations(currentAnimation).isRunning)
       frameAnimations(currentAnimation).start()
     //Generate bonuse after enemy dead    
     MainRenderLoop.generateBonus(position.clone())
