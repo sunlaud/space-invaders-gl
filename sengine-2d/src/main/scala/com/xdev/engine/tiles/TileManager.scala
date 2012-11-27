@@ -18,7 +18,7 @@ object TileManager extends LogHelper {
   def load(filename: String, tileW: Int, tileH: Int): TileMap = {
     debug("Load tile map : " + filename)
     val sourceImage : BufferedImage = ImageIO.read(ResourceRetriever.getResourceAsStream(filename))
-    val size = (sourceImage.getWidth(), sourceImage.getHeight())
+    val size = (sourceImage.getWidth, sourceImage.getHeight)
     debug("Image size (width, height) : " + size)
 
     val rows = size._1 / tileH

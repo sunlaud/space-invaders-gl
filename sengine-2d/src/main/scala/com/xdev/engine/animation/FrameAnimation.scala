@@ -34,7 +34,7 @@ class FrameAnimation (val id: Int, //Animation id
         }else stop()
       }
     }
-    return currentFrameNumber
+    currentFrameNumber
   }
 
   def render(gl: GL, position: Vector3f): Unit = {
@@ -42,10 +42,10 @@ class FrameAnimation (val id: Int, //Animation id
     frames(currentFrameNumber).draw(gl, position)    
   }
 
-  def isRunning() = run
-  def start() = restart()
-  def stop() = run = false
-  def restart() = {
+  def isRunning = run
+  def start() {restart()}
+  def stop() { run = false}
+  def restart() {
     lastFrameChange = 0
     currentFrameNumber = 0
     run = true

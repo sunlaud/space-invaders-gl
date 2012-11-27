@@ -16,7 +16,7 @@ object ResourceRetriever extends LogHelper{
   def getResource(filename: String) : URL = {
     debug("getResource : " + filename)
     val url: URL = getClass.getResource(filename)
-    if(url == null)return new URL("file", "localhost", filename) else return url
+    if(url == null) new URL("file", "localhost", filename) else url
   }
 
   @throws(classOf[IOException])
@@ -24,7 +24,7 @@ object ResourceRetriever extends LogHelper{
     val convertedFileName = filename.replace('\\', '/')
     val stream = getClass.getResourceAsStream(convertedFileName)
     // If not found in jar, then load from disk
-    if (stream == null) return new FileInputStream(convertedFileName) else stream
+    if (stream == null) new FileInputStream(convertedFileName) else stream
   }
 
 }

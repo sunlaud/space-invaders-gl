@@ -12,10 +12,10 @@ object SystemTimer {
    *
    * @return The high resolution time in milliseconds
    */
-  def getTime(): Long = {
+  def getTime: Long = {
     // we get the "timer ticks" from the high resolution timer
     // divide on 1 000 000 so our end result is in milliseconds
-    return System.nanoTime() / 1000000
+    System.nanoTime() / 1000000
   }
 
   /**
@@ -23,7 +23,7 @@ object SystemTimer {
    *
    * @param duration The amount of time in milliseconds to sleep for
    */
-  def sleep(duration: Long):Unit = {
+  def sleep(duration: Long) {
     Thread.sleep(duration)
   }
 }

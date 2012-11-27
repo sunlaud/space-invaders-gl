@@ -11,12 +11,12 @@ import org.openmali.vecmath2.Vector3f
  */
 
 class Sprite(texture: Texture){
-  val tc: TextureCoords = texture.getImageTexCoords()
+  val tc: TextureCoords = texture.getImageTexCoords
 
-  def getWidth(): Int = texture.getImageWidth()
-  def getHeight(): Int = texture.getImageHeight()
+  def getWidth: Int = texture.getImageWidth
+  def getHeight: Int = texture.getImageHeight
 
-  def draw(gl : GL, position: Vector3f) = {
+  def draw(gl : GL, position: Vector3f) {
 
     // Enable two-dimensional texturing.
     texture.enable()
@@ -26,7 +26,7 @@ class Sprite(texture: Texture){
     gl.glPushMatrix()
     // bind to the appropriate texture for this sprite
     // translate to the right location and prepare to draw
-    gl.glTranslatef(position.getX(), position.getY(), position.getZ())
+    gl.glTranslatef(position.getX, position.getY, position.getZ)
     gl.glColor3f(1, 1, 1)
     // draw a quad textured to match the sprite
     gl.glBegin(GL.GL_QUADS)
