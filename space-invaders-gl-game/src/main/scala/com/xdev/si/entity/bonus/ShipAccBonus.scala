@@ -7,7 +7,7 @@ import com.xdev.si.Game
 import com.xdev.si.entity.player.PlayerEntity
 
 /**
- * User: xdev
+ * User: xdev.developer@gmail.com
  * Date: Nov 29, 2010
  * Time: 10:57:58 PM
  */

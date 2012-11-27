@@ -155,7 +155,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
    }
 
   def notifyAlienKilled(){
-    enemies.foreach(_.runFaster())
+    enemies.foreach(_.onFriendEnemyKilled())
     Game.SCORE += 100
   }
 

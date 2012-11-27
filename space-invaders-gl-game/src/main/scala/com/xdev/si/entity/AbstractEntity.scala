@@ -15,7 +15,7 @@ import org.openmali.vecmath2.Vector3f
 abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
   //Coordinates
   val position = pos
-  val velocity = vel
+  protected val velocity = vel
   val width = sprite.getWidth
   val height = sprite.getHeight
 
@@ -36,25 +36,32 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
   /* =============================================
      Methods
     =============================================*/
+
+  protected def moveFunction(dt: Float, pos:Vector3f, velocity: Vector3f): Vector3f = {
+    pos.addX(velocity.getX * dt)
+    pos.addY(velocity.getY * dt)
+    pos.addZ(velocity.getZ * dt)
+    pos
+  }
   /**
    * Move  entity
    */
   def move(delta: Long){
-    val dt = (delta / 1000.0f)
-    position.addX(velocity.getX * dt)
-    position.addY(velocity.getY * dt)
-    position.addZ(velocity.getZ * dt)
+    val pos = moveFunction((delta / 1000.0f), position, velocity)
+    position.setX(pos.getX)
+    position.setY(pos.getY)
+    position.setZ(pos.getZ)
     thisBoundBox.x = position.getX.asInstanceOf[Int]
     thisBoundBox.y = position.getY.asInstanceOf[Int]
   }
 
-  def accelerate(dx: Float = 0.0f, dy: Float = 0.0f, dz: Float = 0.0f){
+  final def accelerate(dx: Float = 0.0f, dy: Float = 0.0f, dz: Float = 0.0f){
     velocity.addX(dx)
     velocity.addY(dy)
     velocity.addZ(dz)
   }
 
-  def stop(){
+  final def stop(){
     velocity.setX(0.0f)
     velocity.setY(0.0f)
     velocity.setZ(0.0f)
@@ -84,7 +91,7 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
     markedAsDead = true
   }
   
-  def addFrameAnimation(animation: FrameAnimation){
+  final def addFrameAnimation(animation: FrameAnimation){
      frameAnimations.put(animation.id, animation)
   }
 }

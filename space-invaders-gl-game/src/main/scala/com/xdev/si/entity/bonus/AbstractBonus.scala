@@ -7,7 +7,7 @@ import com.xdev.si.Game
 import java.awt.Rectangle
 import javax.media.opengl.GL
 /**
- * User: xdev
+ * User: xdev.developer@gmail.com
  * Date: Nov 30, 2010
  * Time: 11:08:51 PM
  */
@@ -19,6 +19,7 @@ abstract class AbstractBonus(sprite : Sprite, pos: Vector3f) {
   val height = sprite.getHeight
 
   val velocity: Vector3f = new Vector3f(0.0f, 80.0f, 0.0f)
+
   //Bounding boxes
   private val thisBoundBox : Rectangle  = new Rectangle(position.getX.asInstanceOf[Int], position.getY.asInstanceOf[Int], width, height)
   private val targetBoundBox : Rectangle  = new Rectangle()

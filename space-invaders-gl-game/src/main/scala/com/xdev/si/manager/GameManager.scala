@@ -3,7 +3,7 @@ package com.xdev.si.manager
 import com.xdev.engine.sprite.Sprite
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.weapon.ShotEntity
-import com.xdev.si.entity.enemy.EnemyEntity
+import com.xdev.si.entity.enemy.{AlienEnemy, EnemyEntity}
 import com.xdev.si.entity.player.PlayerEntity
 import com.xdev.engine.util.ResourceFactory
 import com.xdev.si.entity.bonus._
@@ -35,7 +35,7 @@ object GameManager extends LogHelper{
     for(y <- 0 until rows) {
       for(x <- 0 until columns) {
         //TODO: Remove listener, remove magic numbers
-        aliens += new EnemyEntity(ResourceFactory.getSprite(texture), new Vector3f(100 + (x * 50), (50) + y * 30, 0.0f))
+        aliens += new AlienEnemy(new Vector3f(100 + (x * 50), (50) + y * 30, 0.0f))
       }
     }
    aliens
