@@ -3,38 +3,48 @@ package com.xdev.si.entity.weapon
 import collection.mutable.ArrayBuffer
 import javax.media.opengl.GL
 import org.openmali.vecmath2.Vector3f
+import com.xdev.si.core.HasWaitInterval
 
 /**
- * User: xdev
+ * User: xdev.developer@gmail.com
  * Date: 06.12.2010
  * Time: 0:38:33
  */
-abstract class AbstractWeapon(pos: Vector3f) {
-  val shots = new ArrayBuffer[ShotEntity]() //List of shots
-  var firingInterval = 500 //milliseconds
-  val weaponPos = pos
+abstract class AbstractWeapon(pos: Vector3f) extends HasWaitInterval{
+  protected var lastFireTime: Long = 0
+  protected val shotsList = new ArrayBuffer[ShotEntity]() //List of shots
 
-  def fire()
+  waitInterval(500) //Shot wait interval
 
-  def removeUnusedShots() {
-    shots--= shots.filter(e => e.isDead)    
+  protected def makeShot(pos: Vector3f)
+
+  final def fire() {
+    if ((System.currentTimeMillis - lastFireTime) < waitInterval()) return
+    makeShot(pos)
+    lastFireTime = System.currentTimeMillis
   }
 
-  def removeAllShots() {
-    shots.clear()    
+  def shots(): List[ShotEntity] = shotsList.toList
+
+  final def removeUnusedShots() {
+    shotsList--= shotsList.filter(e => e.isDead)
   }
 
-  def getShotsCount: Int = shots.length
-
-  def draw(gl: GL) {
-    shots.foreach(_.draw(gl))
+  final def removeAllShots() {
+    shotsList.clear()
   }
 
-  def update(delta: Long) {
-    shots.foreach(_.move(delta))
+  final def getShotsCount: Int = shotsList.length
+
+  final def draw(gl: GL) {
+    shotsList.foreach(_.draw(gl))
   }
 
-  def addShot(shot: ShotEntity) {
-    shots += shot    
+  final def update(delta: Long) {
+    shotsList.foreach(_.move(delta))
+  }
+
+  final def addShot(shot: ShotEntity) {
+    shotsList += shot
   }
 }

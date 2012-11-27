@@ -22,7 +22,7 @@ object DebugRenderer extends GLEventListener2D{
     isDebuggerInfoRendered = isDisplayed
   }
 
-  def isDebugEnabled(): Boolean = isDebuggerInfoRendered
+  def isDebugEnabled: Boolean = isDebuggerInfoRendered
 
   def show(){
     setDisplayMode(true)
@@ -36,9 +36,9 @@ object DebugRenderer extends GLEventListener2D{
     textBuffer = textLines
   }
 
-  override def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
+  override def onUpdateFrame(delta: Long, w: Int, h: Int) {}
   
-  override def onRenderFrame(gl: GL, w: Int, h: Int) = {
+  override def onRenderFrame(gl: GL, w: Int, h: Int) {
     if(isDebuggerInfoRendered && textBuffer.length > 0){
       textRenderer.beginRendering(w, h)
       textRenderer.setColor(1f, 1f, 1f, 1f)
@@ -51,7 +51,7 @@ object DebugRenderer extends GLEventListener2D{
     }
   }
 
-  override def onInit(gl: GL) = {
+  override def onInit(gl: GL) {
     textRenderer = new TextRenderer(new Font("Default", Font.PLAIN, 9))    
   }
 

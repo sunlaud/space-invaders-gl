@@ -16,8 +16,8 @@ case class ShotSpeedBonus(pos: Vector3f) extends AbstractBonus(ResourceFactory.g
 
   override def applyBonus(target: AbstractEntity): Unit = target match {
     case ship: PlayerEntity => {
-      if(ship.weapon.firingInterval > PlayerEntity.MIN_FIRE_INTERVAL)
-        ship.weapon.firingInterval -= 15
+      if(ship.weapon.waitInterval() > PlayerEntity.MIN_FIRE_INTERVAL)
+        ship.weapon.waitInterval(ship.weapon.waitInterval() - 15)
     }
     case _ =>
   }

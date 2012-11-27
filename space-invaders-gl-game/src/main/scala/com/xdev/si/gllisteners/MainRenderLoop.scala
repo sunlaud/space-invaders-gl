@@ -66,7 +66,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
   }
 
   override def onRenderFrame(gl: GL, w: Int, h: Int) {
-    if(DebugRenderer.isDebugEnabled())
+    if(DebugRenderer.isDebugEnabled)
       renderDebugInfo()
 
     currentGameState match {
@@ -198,7 +198,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
         "shots : " + player.weapon.getShotsCount,
         "bonuses : " + bonuses.length,
         "ship acceleration : " + player.acceleration,
-        "ship firingInterval : " + player.weapon.firingInterval
+        "ship firingInterval : " + player.weapon.waitInterval()
       )
     DebugRenderer.setTextForDebugging(textBuff)
   }

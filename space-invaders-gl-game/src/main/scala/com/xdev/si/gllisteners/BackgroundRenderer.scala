@@ -17,14 +17,15 @@ import com.xdev.engine.util.ResourceFactory
 object BackgroundRenderer extends GLEventListener2D with LogHelper {
   var background: Sprite = null
   val position: Vector3f = new Vector3f(0.0f, 0.0f, 0.0f)
-  override def onInit(gl: GL): Unit = {
+
+  override def onInit(gl: GL) {
     background = ResourceFactory.getSprite(Game.BACKGROUND_SPRITE)
 
   }
 
-  override def onUpdateFrame(delta: Long, w: Int, h: Int): Unit = {}
+  override def onUpdateFrame(delta: Long, w: Int, h: Int) {}
   
-  override def onRenderFrame(gl: GL, w: Int, h: Int): Unit = {
+  override def onRenderFrame(gl: GL, w: Int, h: Int) {
      background.draw(gl, position)
   }
 }

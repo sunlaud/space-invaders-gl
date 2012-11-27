@@ -11,15 +11,8 @@ import com.xdev.si.Game
  */
 
 class RocketWeapon(pos: Vector3f) extends AbstractWeapon(pos) {
- private var lastFire: Long = 0
 
- override def fire() {
-   if (System.currentTimeMillis() - lastFire < firingInterval) {
-       return
-   }
-    // if we waited long enough, create the shot entity, and record the time.
-   lastFire = System.currentTimeMillis()
-   addShot(GameManager.createShot(Game.SHOT_SPRITE, new Vector3f(weaponPos.getX + 10, weaponPos.getY - 30, 0.0f)))
- }
-
+  protected def makeShot(pos: Vector3f) {
+    addShot(GameManager.createShot(Game.SHOT_SPRITE, new Vector3f(pos.getX + 10, pos.getY - 30, 0.0f)))
+  }
 }
