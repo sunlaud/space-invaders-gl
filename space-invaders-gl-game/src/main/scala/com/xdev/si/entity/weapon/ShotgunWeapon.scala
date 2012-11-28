@@ -16,28 +16,12 @@ final class ShotgunWeapon(pos: Vector3f) extends AbstractWeapon(pos) {
 
   protected def makeShot(pos: Vector3f) {
     val left = new ShotEntity(ResourceFactory.getSprite(Game.SHOT_SPRITE), new Vector3f(pos.getX + 10, pos.getY - 30, 0.0f)) {
-      override def moveFunction(dt: Float, pos: Vector3f, velocity: Vector3f): Vector3f = {
-        pos.addX((velocity.getX * dt) - deltaMove)
-        pos.addY(velocity.getY * dt)
-        pos.addZ(velocity.getZ * dt)
-        pos
-      }
+      override def fx(x: Float): Float = x - deltaMove
     }
-    val center = new ShotEntity(ResourceFactory.getSprite(Game.SHOT_SPRITE), new Vector3f(pos.getX + 10, pos.getY - 30, 0.0f)) {
-      override def moveFunction(dt: Float, pos: Vector3f, velocity: Vector3f): Vector3f = {
-        pos.addX(velocity.getX * dt)
-        pos.addY(velocity.getY * dt)
-        pos.addZ(velocity.getZ * dt)
-        pos
-      }
-    }
+    val center = new ShotEntity(ResourceFactory.getSprite(Game.SHOT_SPRITE), new Vector3f(pos.getX + 10, pos.getY - 30, 0.0f))
+
     val right = new ShotEntity(ResourceFactory.getSprite(Game.SHOT_SPRITE), new Vector3f(pos.getX + 10, pos.getY - 30, 0.0f)) {
-      override def moveFunction(dt: Float, pos: Vector3f, velocity: Vector3f): Vector3f = {
-        pos.addX((velocity.getX * dt) + deltaMove)
-        pos.addY(velocity.getY * dt)
-        pos.addZ(velocity.getZ * dt)
-        pos
-      }
+      override def fx(x: Float): Float = x + deltaMove
     }
     addShot(left)
     addShot(center)

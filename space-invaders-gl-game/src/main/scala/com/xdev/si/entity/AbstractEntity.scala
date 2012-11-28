@@ -6,13 +6,14 @@ import collection.mutable.HashMap
 import com.xdev.engine.animation.FrameAnimation
 import java.awt.Rectangle
 import org.openmali.vecmath2.Vector3f
+import com.xdev.si.core.MoveFunction
 
 /**
  * Created by User: xdev
  * Date: 24.08.2010
  * Time: 21:56:53
  */
-abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
+abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) extends MoveFunction {
   //Coordinates
   val position = pos
   protected val velocity = vel
@@ -32,24 +33,22 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) {
 
   def this(sprite: Sprite, pos:Vector3f) = this(sprite, pos, new Vector3f(0.0f, 0.0f, 0.0f))
   def this(sprite: Sprite) = this(sprite, new Vector3f(0.0f, 0.0f, 0.0f) , new Vector3f(0.0f, 0.0f, 0.0f))
-
   /* =============================================
      Methods
     =============================================*/
 
-  protected def moveFunction(dt: Float, pos:Vector3f, velocity: Vector3f): Vector3f = {
-    pos.addX(velocity.getX * dt)
-    pos.addY(velocity.getY * dt)
-    pos.addZ(velocity.getZ * dt)
-    pos
-  }
+  def fx(x: Float) = x
+  def fy(y: Float) = y
+
   /**
    * Move  entity
    */
   def move(delta: Long){
-    val pos = moveFunction((delta / 1000.0f), position, velocity)
-    position.setX(pos.getX)
-    position.setY(pos.getY)
+    val dt = (delta / 1000.0f)
+    val x = pos.addX(velocity.getX * dt).getX
+    val y = pos.addY(velocity.getY * dt).getY
+    position.setX(fx(x))
+    position.setY(fy(y))
     position.setZ(pos.getZ)
     thisBoundBox.x = position.getX.asInstanceOf[Int]
     thisBoundBox.y = position.getY.asInstanceOf[Int]
