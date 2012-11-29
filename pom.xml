@@ -145,7 +145,7 @@
                         <testSourceDir>src/test/scala</testSourceDir>
                         <jvmArgs>
                             <jvmArg>-Xms64m</jvmArg>
-                            <jvmArg>-Xmx2048m</jvmArg>
+                            <jvmArg>-Xmx1024m</jvmArg>
                         </jvmArgs>
                     </configuration>
                 </plugin>
