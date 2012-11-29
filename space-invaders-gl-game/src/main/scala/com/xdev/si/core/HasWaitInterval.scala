@@ -1,8 +1,7 @@
 package com.xdev.si.core
 
 /**
- * Created by IntelliJ IDEA.
- * User: xdev
+ * User: xdev.developer@gmail.com
  * Date: 27.11.12
  * Time: 22:38
  */
