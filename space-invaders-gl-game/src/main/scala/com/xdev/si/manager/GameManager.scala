@@ -10,6 +10,7 @@ import com.xdev.si.entity.bonus._
 import collection.mutable.{HashMap, ArrayBuffer}
 import com.xdev.engine.logging.LogHelper
 import util.Random
+import com.xdev.si.core.loader.LevelLoader
 
 /**
  * User: xdev
@@ -31,6 +32,8 @@ object GameManager extends LogHelper{
   }
 
   def createEnemies(texture: String, rows: Int, columns: Int): ArrayBuffer[EnemyEntity] = {
+    val map = LevelLoader.load("/levels/1.lvl")
+
     val aliens = new ArrayBuffer[EnemyEntity]()
     for(y <- 0 until rows) {
       for(x <- 0 until columns) {
