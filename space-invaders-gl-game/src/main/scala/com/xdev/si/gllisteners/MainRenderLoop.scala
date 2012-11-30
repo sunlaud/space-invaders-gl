@@ -13,6 +13,7 @@ import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.player.PlayerEntity
 import com.xdev.si.entity.enemy.EnemyEntity
 import com.xdev.si.entity.bonus.AbstractBonus
+import com.xdev.si.core.loader.LevelLoader
 
 /**
  * Created by User: xdev
@@ -34,7 +35,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
   override def onInit(gl: GL) {
     debug("Initialize")
     player = GameManager.createPlayer(Game.SHIP_SPRITE, PLAYER_START_POS)
-    enemies ++= GameManager.createEnemies(Game.ALIEN_SPRITE_0, 5, 12)
+    enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int) {
@@ -120,8 +121,10 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
          if(Keyboard.isPressed(KeyEvent.VK_SPACE)){
            var bonus = 1000 * Game.CURRENT_LEVEL
            Game.SCORE += bonus
-           Game.CURRENT_LEVEL += 1
-           enemies ++= GameManager.createEnemies(Game.ALIEN_SPRITE_0, 5, 12)
+           if (Game.CURRENT_LEVEL + 1 <= Game.LEVELS_COUNT){
+             Game.CURRENT_LEVEL += 1
+           }
+           enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
            setGameState(GAME_RUN)
          }
        }
@@ -130,7 +133,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
            var bonus = 1000 * Game.CURRENT_LEVEL
            if(Game.SCORE >= bonus)Game.SCORE -= bonus
            enemies.clear()
-           enemies ++= GameManager.createEnemies(Game.ALIEN_SPRITE_0, 5, 12)
+           enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
            player.position.set(PLAYER_START_POS)
            setGameState(GAME_RUN)
          }

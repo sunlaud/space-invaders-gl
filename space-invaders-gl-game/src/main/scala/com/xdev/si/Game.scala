@@ -16,6 +16,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   val WND_WIDTH = 800
   val WND_HEIGHT = 600
   var CURRENT_LEVEL = 1
+  val LEVELS_COUNT = 5
   var SCORE = 0
 
   val PRESS_ANY_KEY_SPRITE = "/sprites/pressanykey.gif"
@@ -34,6 +35,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   val B_SHOT_SPEED_SPRITE = "/sprites/shotSpeed.png"
   val B_SHIP_SPEED_SPRITE = "/sprites/plazma.png"
   val B_SHOTGUN = "/sprites/4.gif"
+  val LEVEL_PATH_PATTERN = "/levels/%s.lvl"
 
   var explTileMap:TileMap = null
 
