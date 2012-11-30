@@ -1,6 +1,6 @@
 package com.xdev.si.entity
 
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import com.xdev.engine.sprite.Sprite
 import collection.mutable.HashMap
 import com.xdev.engine.animation.FrameAnimation
@@ -68,7 +68,7 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
     velocity.setZ(0.0f)
   }
 
-  def draw(gl: GL) {sprite.draw(gl, position)}
+  def draw(gl: GL2) {sprite.draw(gl, position)}
   
   def collidesWith(target : AbstractEntity): Boolean ={
     thisBoundBox.setBounds(position.getX.asInstanceOf[Int],

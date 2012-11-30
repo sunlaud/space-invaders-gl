@@ -2,7 +2,7 @@ package com.xdev.si.entity.player
 
 import com.xdev.si.Game
 import com.xdev.engine.sprite.Sprite
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.AbstractEntity
 import com.xdev.si.entity.weapon.{ShotgunWeapon, RocketWeapon, AbstractWeapon}
@@ -31,7 +31,7 @@ final case class PlayerEntity(sprite : Sprite, pos: Vector3f) extends AbstractEn
     weapon.update(delta)
   }
 
-  override def draw(gl: GL) {
+  override def draw(gl: GL2) {
     super.draw(gl)
     weapon.draw(gl)
   }

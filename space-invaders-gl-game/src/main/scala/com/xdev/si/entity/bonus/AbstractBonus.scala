@@ -5,7 +5,7 @@ import com.xdev.engine.sprite.Sprite
 import com.xdev.si.entity.AbstractEntity
 import com.xdev.si.Game
 import java.awt.Rectangle
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 /**
  * User: xdev.developer@gmail.com
  * Date: Nov 30, 2010
@@ -55,7 +55,7 @@ abstract class AbstractBonus(sprite : Sprite, pos: Vector3f) {
     velocity.setZ(0.0f)
   }
 
-  def draw(gl: GL) { sprite.draw(gl, position)}
+  def draw(gl: GL2) { sprite.draw(gl, position)}
 
   def isCollidesWith(target : AbstractEntity): Boolean ={
     thisBoundBox.setBounds(position.getX.asInstanceOf[Int],

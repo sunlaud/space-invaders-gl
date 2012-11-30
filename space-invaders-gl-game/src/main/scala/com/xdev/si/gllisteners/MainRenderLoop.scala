@@ -2,7 +2,7 @@ package com.xdev.si.gllisteners
 
 import com.xdev.engine.logging.LogHelper
 import com.xdev.engine.gl.render.GLEventListener2D
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import com.xdev.si.manager.GameManager
 import collection.mutable.ArrayBuffer
 import java.awt.event.KeyEvent
@@ -32,7 +32,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
   private val INFO_SPRITE_POS = new Vector3f(325.0f, 250.0f, 0.0f)
   private val PLAYER_START_POS = new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f)
 
-  override def onInit(gl: GL) {
+  override def onInit(gl: GL2) {
     debug("Initialize")
     player = GameManager.createPlayer(Game.SHIP_SPRITE, PLAYER_START_POS)
     enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
@@ -66,7 +66,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     }
   }
 
-  override def onRenderFrame(gl: GL, w: Int, h: Int) {
+  override def onRenderFrame(gl: GL2, w: Int, h: Int) {
     if(DebugRenderer.isDebugEnabled)
       renderDebugInfo()
 

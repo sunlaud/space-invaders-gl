@@ -1,7 +1,7 @@
 package com.xdev.si.gllisteners
 
 import com.xdev.engine.logging.LogHelper
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import com.xdev.si.Game
 import com.xdev.engine.gl.render.GLEventListener2D
 import com.xdev.engine.sprite.Sprite
@@ -18,14 +18,14 @@ object BackgroundRenderer extends GLEventListener2D with LogHelper {
   var background: Sprite = null
   val position: Vector3f = new Vector3f(0.0f, 0.0f, 0.0f)
 
-  override def onInit(gl: GL) {
+  override def onInit(gl: GL2) {
     background = ResourceFactory.getSprite(Game.BACKGROUND_SPRITE)
 
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int) {}
   
-  override def onRenderFrame(gl: GL, w: Int, h: Int) {
+  override def onRenderFrame(gl: GL2, w: Int, h: Int) {
      background.draw(gl, position)
   }
 }

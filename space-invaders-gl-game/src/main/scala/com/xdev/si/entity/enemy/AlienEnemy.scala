@@ -5,7 +5,7 @@ import com.xdev.si.Game
 import org.openmali.vecmath2.Vector3f
 import com.xdev.engine.animation.FrameAnimation
 import com.xdev.si.gllisteners.MainRenderLoop
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import com.xdev.si.entity.AbstractEntity
 
 /**
@@ -65,7 +65,7 @@ final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSpr
     frameAnimations(currentAnimation).computeNextFrame(delta)
   }
 
-  override def draw(gl: GL) {
+  override def draw(gl: GL2) {
     frameAnimations(currentAnimation).render(gl, position)
   }
 

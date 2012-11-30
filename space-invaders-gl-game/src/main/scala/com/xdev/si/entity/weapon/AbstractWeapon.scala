@@ -1,7 +1,7 @@
 package com.xdev.si.entity.weapon
 
 import collection.mutable.ArrayBuffer
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.core.HasWaitInterval
 
@@ -36,7 +36,7 @@ abstract class AbstractWeapon(pos: Vector3f) extends HasWaitInterval{
 
   final def getShotsCount: Int = shotsList.length
 
-  final def draw(gl: GL) {
+  final def draw(gl: GL2) {
     shotsList.foreach(_.draw(gl))
   }
 

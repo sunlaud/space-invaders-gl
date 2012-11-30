@@ -2,7 +2,7 @@ package com.xdev.si
 
 import entity.enemy.{AlienEnemy, EnemyEntity}
 import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderLoop}
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import com.xdev.engine.gl.GLGameWindow
 import com.xdev.engine.gl.render.GLEventListener2D
 import com.xdev.engine.sprite.Sprite
@@ -53,7 +53,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
     return listeners
   }
 
-  def initGameResources(gl: GL): Unit = {
+  def initGameResources(gl: GL2): Unit = {
     val start = System.currentTimeMillis
     info("Init game resources")
     info("Preinit textures")
