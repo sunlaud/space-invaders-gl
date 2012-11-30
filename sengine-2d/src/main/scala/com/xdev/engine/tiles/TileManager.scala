@@ -4,8 +4,10 @@ import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import com.xdev.engine.util.ResourceRetriever
 import com.xdev.engine.logging.LogHelper
-import com.sun.opengl.util.texture.TextureIO
 import com.xdev.engine.sprite.Sprite
+import com.jogamp.opengl.util.texture.TextureIO
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO
+import javax.media.opengl.GLProfile
 
 /**
  * Created by User: xdev
@@ -32,7 +34,7 @@ object TileManager extends LogHelper {
        for(c <- 0 until columns){
          val x = c * tileW
          val y = r * tileH
-         tiles(r)(c) = new Sprite(TextureIO.newTexture(sourceImage.getSubimage(x, y, tileW, tileH), false))
+         tiles(r)(c) = new Sprite(AWTTextureIO.newTexture(GLProfile.getDefault, sourceImage.getSubimage(x, y, tileW, tileH), false))
        }
     }
     return new TileMap(rows, columns, tiles)

@@ -1,8 +1,8 @@
 package com.xdev.engine.sprite
 
-import javax.media.opengl.GL
-import com.sun.opengl.util.texture.{Texture, TextureCoords}
+import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
+import com.jogamp.opengl.util.texture.{TextureCoords, Texture}
 
 /**
  * Created by User: xdev
@@ -16,12 +16,12 @@ class Sprite(texture: Texture){
   def getWidth: Int = texture.getImageWidth
   def getHeight: Int = texture.getImageHeight
 
-  def draw(gl : GL, position: Vector3f) {
+  def draw(gl : GL2, position: Vector3f) {
 
     // Enable two-dimensional texturing.
-    texture.enable()
+    texture.enable(gl)
     // Bind this texture to the current rendering context.
-    texture.bind()
+    texture.bind(gl)
     // store the current model matrix
     gl.glPushMatrix()
     // bind to the appropriate texture for this sprite
@@ -29,7 +29,7 @@ class Sprite(texture: Texture){
     gl.glTranslatef(position.getX, position.getY, position.getZ)
     gl.glColor3f(1, 1, 1)
     // draw a quad textured to match the sprite
-    gl.glBegin(GL.GL_QUADS)
+    gl.glBegin(GL2.GL_QUADS)
       gl.glTexCoord2f (tc.left(), tc.top())
       gl.glVertex2f(0, 0)
 
@@ -46,6 +46,6 @@ class Sprite(texture: Texture){
     // restore the model view matrix to prevent contamination
     gl.glPopMatrix()
 
-    texture.disable()
+    texture.disable(gl)
   }
 }

@@ -1,7 +1,8 @@
 package com.xdev.engine.gl.render
 
 import com.xdev.engine.util.SystemTimer
-import javax.media.opengl.{DebugGL, GL, GLAutoDrawable, GLEventListener}
+import javax.media.opengl.{GL2, GL, GLAutoDrawable, GLEventListener}
+import javax.media.opengl.GL._
 
 /**
  * Created by User: xdev
@@ -26,10 +27,9 @@ abstract class GLEventListener2D extends GLEventListener{
    */
   def init(drawable: GLAutoDrawable) {
     // get hold of the GL content
-    drawable.setGL(new DebugGL(drawable.getGL))
-    onInit(drawable.getGL)
+    onInit(drawable.getGL.getGL2)
   }
-  def onInit(gl: GL)
+  def onInit(gl: GL2)
   /**
    * Called by the JOGL rendering process to display a frame. In this
    * case its responsible for blanking the display and then notifing
@@ -39,10 +39,10 @@ abstract class GLEventListener2D extends GLEventListener{
   def display(drawable: GLAutoDrawable) {
     calculateDelta()
     onUpdateFrame(delta, drawable.getWidth, drawable.getHeight)
-    onRenderFrame(drawable.getGL, drawable.getWidth, drawable.getHeight)
+    onRenderFrame(drawable.getGL.getGL2, drawable.getWidth, drawable.getHeight)
   }
   def onUpdateFrame(delta: Long, w: Int, h: Int)
-  def onRenderFrame(gl: GL, w: Int, h: Int)
+  def onRenderFrame(gl: GL2, w: Int, h: Int)
 
   private def calculateDelta(){
     delta = SystemTimer.getTime - lastLoopTime
@@ -76,4 +76,6 @@ abstract class GLEventListener2D extends GLEventListener{
 	 * @param deviceChanged True if the device in use has changed
 	 */
   def displayChanged(drawable: GLAutoDrawable, modeChanged: Boolean, deviceChanged: Boolean) {}
+
+  def dispose(drawable: GLAutoDrawable) {}
 }

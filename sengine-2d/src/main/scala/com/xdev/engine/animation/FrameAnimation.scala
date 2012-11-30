@@ -1,6 +1,6 @@
 package com.xdev.engine.animation
 import com.xdev.engine.sprite.Sprite
-import javax.media.opengl.GL
+import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
 
 /**
@@ -37,7 +37,7 @@ class FrameAnimation (val id: Int, //Animation id
     currentFrameNumber
   }
 
-  def render(gl: GL, position: Vector3f): Unit = {
+  def render(gl: GL2, position: Vector3f): Unit = {
     if(!isRunning)return
     frames(currentFrameNumber).draw(gl, position)    
   }
