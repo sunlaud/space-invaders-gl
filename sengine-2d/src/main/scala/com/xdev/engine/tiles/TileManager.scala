@@ -21,8 +21,8 @@ object TileManager extends LogHelper {
     val size = (sourceImage.getWidth, sourceImage.getHeight)
     debug("Image size (width, height) : " + size)
 
-    val rows = size._1 / tileH
-    val columns = size._2 / tileW
+    var columns = size._1 / tileW
+    var rows = size._2 / tileH
 
     debug("TileMap greed size (rows, columns) : (" + rows + ", " + columns + ")")
 
