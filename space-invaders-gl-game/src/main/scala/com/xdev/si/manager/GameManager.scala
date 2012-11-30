@@ -31,14 +31,18 @@ object GameManager extends LogHelper{
     new PlayerEntity(ResourceFactory.getSprite(texture), position)
   }
 
-  def createEnemies(texture: String, rows: Int, columns: Int): ArrayBuffer[EnemyEntity] = {
-    val map = LevelLoader.load("/levels/1.lvl")
-
+  def createEnemies(map: Array[Array[Int]]): ArrayBuffer[EnemyEntity] = {
     val aliens = new ArrayBuffer[EnemyEntity]()
-    for(y <- 0 until rows) {
-      for(x <- 0 until columns) {
+    for(y <- 0 until map.size) {
+      for(x <- 0 until map(0).size) {
         //TODO: Remove listener, remove magic numbers
-        aliens += new AlienEnemy(new Vector3f(100 + (x * 50), (50) + y * 30, 0.0f))
+        map(y)(x) match {
+          case 1 => {
+            aliens += new AlienEnemy(new Vector3f((x * 43), (y * 30) + 30, 0.0f))
+          }
+          case _=>{}
+        }
+
       }
     }
    aliens

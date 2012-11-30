@@ -23,6 +23,7 @@ object ResourceRetriever extends LogHelper{
   def getResourceAsStream(filename: String) : InputStream = {
     val convertedFileName = filename.replace('\\', '/')
     val stream = getClass.getResourceAsStream(convertedFileName)
+    debug(filename + " -> " + convertedFileName + " stream iexists : " + (stream != null))
     // If not found in jar, then load from disk
     if (stream == null) new FileInputStream(convertedFileName) else stream
   }
