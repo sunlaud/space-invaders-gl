@@ -1,9 +1,9 @@
 package com.xdev.engine.gl
 
 import com.xdev.engine.input.Keyboard
-import java.awt.{BorderLayout, Frame}
+import java.awt.{Dimension, BorderLayout, Frame}
 import javax.media.opengl._
-import awt.GLCanvas
+import awt.{GLJPanel, GLCanvas}
 import java.awt.event.{WindowEvent, WindowAdapter}
 import com.xdev.engine.logging.LogHelper
 import render.GLEventListener2D
@@ -22,7 +22,7 @@ import javax.media.opengl.fixedfunc.GLMatrixFunc._
  */
 
 abstract class GLGameWindow(title: String, w: Int, h: Int) extends LogHelper {
-  private var canvas: GLCanvas = null
+  private var canvas: GLJPanel = null
   //Game loop animator
   private var animator: Animator = null
   private val frame = new Frame(title)
@@ -33,8 +33,8 @@ abstract class GLGameWindow(title: String, w: Int, h: Int) extends LogHelper {
    */
   private def init(glCaps: GLCapabilities, gameRenderers: Array[GLEventListener2D]): Unit = {
     if (gameRenderers.isEmpty) throw new IllegalStateException("No GLEventListeners found")
-    canvas = new GLCanvas(glCaps)
-    canvas.setSize(w, h)
+    canvas = new GLJPanel(glCaps)
+    canvas.setPreferredSize(new Dimension(w, h))
     //Add Root Renderer
     canvas.addGLEventListener(new RootRenderer())
     //Add all gameRenderers

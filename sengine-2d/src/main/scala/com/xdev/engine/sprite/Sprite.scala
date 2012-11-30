@@ -10,14 +10,13 @@ import com.jogamp.opengl.util.texture.{TextureCoords, Texture}
  * Time: 22:02:57
  */
 
-class Sprite(texture: Texture){
+class Sprite(val texture: Texture){
   val tc: TextureCoords = texture.getImageTexCoords
 
   def getWidth: Int = texture.getImageWidth
   def getHeight: Int = texture.getImageHeight
 
   def draw(gl : GL2, position: Vector3f) {
-
     // Enable two-dimensional texturing.
     texture.enable(gl)
     // Bind this texture to the current rendering context.

@@ -20,7 +20,6 @@ object BackgroundRenderer extends GLEventListener2D with LogHelper {
 
   override def onInit(gl: GL2) {
     background = ResourceFactory.getSprite(Game.BACKGROUND_SPRITE)
-
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int) {}

@@ -3,6 +3,7 @@ package com.xdev.engine.gl.render
 import com.xdev.engine.util.SystemTimer
 import javax.media.opengl.{GL2, GL, GLAutoDrawable, GLEventListener}
 import javax.media.opengl.GL._
+import com.xdev.engine.logging.LogHelper
 
 /**
  * Created by User: xdev
@@ -10,7 +11,7 @@ import javax.media.opengl.GL._
  * Time: 22:49:59
  */
 
-abstract class GLEventListener2D extends GLEventListener{
+abstract class GLEventListener2D extends GLEventListener with LogHelper{
 
   protected var delta : Long = 0
   /** The time at which the last rendering looped started from the point of view of the game logic */
@@ -29,7 +30,9 @@ abstract class GLEventListener2D extends GLEventListener{
     // get hold of the GL content
     onInit(drawable.getGL.getGL2)
   }
+
   def onInit(gl: GL2)
+
   /**
    * Called by the JOGL rendering process to display a frame. In this
    * case its responsible for blanking the display and then notifing
@@ -77,5 +80,6 @@ abstract class GLEventListener2D extends GLEventListener{
 	 */
   def displayChanged(drawable: GLAutoDrawable, modeChanged: Boolean, deviceChanged: Boolean) {}
 
-  def dispose(drawable: GLAutoDrawable) {}
+  def dispose(drawable: GLAutoDrawable) {
+  }
 }

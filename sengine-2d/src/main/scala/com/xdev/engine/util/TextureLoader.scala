@@ -1,11 +1,12 @@
 package com.xdev.engine.util
 
-import javax.media.opengl.{GLContext, GL}
+import javax.media.opengl.{GLProfile, GLContext}
 import collection.mutable.HashMap
 import javax.imageio.ImageIO
 import com.xdev.engine.logging.LogHelper
-import com.jogamp.opengl.util.texture.{TextureIO, Texture}
+import com.jogamp.opengl.util.texture.Texture
 import javax.media.opengl.GL._
+import com.jogamp.opengl.util.texture.awt.AWTTextureIO
 
 /**
  * Created by User: xdev
@@ -22,14 +23,13 @@ object TextureLoader extends LogHelper{
             return table(resourceName)
           }
         val gl = GLContext.getCurrentGL
-          debug("Load texture " + resourceName)
-          val texture: Texture = TextureIO.newTexture(ResourceRetriever.getResourceAsStream(resourceName), false, TextureIO.PNG)
-
+          debug("Load texture " + resourceName + " GL : " + gl)
+          val texture: Texture = AWTTextureIO.newTexture(GLProfile.getDefault, ImageIO.read(ResourceRetriever.getResourceAsStream(resourceName)), false)
           texture.setTexParameteri (gl, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
           // Use the NEAREST minification function when the pixel being
           // textured maps to an area greater than one texel.
           texture.setTexParameteri (gl, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-          debug("Texture loaded ")
+          debug("Texture loaded " + texture)
           table.put(resourceName, texture)
           texture
       }
