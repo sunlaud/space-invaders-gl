@@ -24,6 +24,18 @@
             <url>http://download.java.net/maven/2/</url>
         </repository>
 
+        <repository>
+            <id>jogamp-remote</id>
+            <name>jogamp test mirror</name>
+            <url>http://www.jogamp.org/deployment/maven/</url>
+        </repository>
+
+        <repository>
+            <id>xdev.developer.repo</id>
+            <name>xdev developer repository</name>
+            <url>http://xaoc3dgraph.github.com/maven/</url>
+        </repository>
+
     </repositories>
 
     <pluginRepositories>
@@ -70,15 +82,14 @@
             </dependency>
 
             <dependency>
-                <groupId>net.java.dev</groupId>
-                <artifactId>jogl</artifactId>
-                <version>1.1.1</version>
+                <groupId>org.jogamp.gluegen</groupId>
+                <artifactId>gluegen-rt-main</artifactId>
+                <version>2.0-rc11</version>
             </dependency>
-
             <dependency>
-                <groupId>net.java.dev</groupId>
-                <artifactId>gluegen-rt</artifactId>
-                <version>1.1.1</version>
+                <groupId>org.jogamp.jogl</groupId>
+                <artifactId>jogl-all-main</artifactId>
+                <version>2.0-rc11</version>
             </dependency>
 
             <dependency>
