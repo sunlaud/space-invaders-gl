@@ -10,6 +10,7 @@ import collection.mutable.HashMap
 import com.xdev.engine.tiles.{TileManager, TileMap}
 import com.xdev.engine.util.ResourceFactory
 import manager.GameManager
+import javax.swing.SwingUtilities
 
 object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 600){
 
@@ -86,6 +87,10 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   
   //Game entry point
   def main(args: Array[String]): Unit = {
-    Game.showWindow()
+    SwingUtilities.invokeLater(new Runnable() {
+      def run() {
+        Game.showWindow()
+      }
+    })
   }
 }

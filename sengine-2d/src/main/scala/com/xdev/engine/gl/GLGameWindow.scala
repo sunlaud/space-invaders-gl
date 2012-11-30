@@ -57,7 +57,11 @@ abstract class GLGameWindow(title: String, w: Int, h: Int) extends LogHelper {
     // do we'd like to exit the game
     frame.addWindowListener(new WindowAdapter() {
       override def windowClosing(e: WindowEvent) {
-        closeWindow()
+        new Thread() {
+          override def run() {
+            closeWindow()
+          }
+        }.start
       }
     })
   }
