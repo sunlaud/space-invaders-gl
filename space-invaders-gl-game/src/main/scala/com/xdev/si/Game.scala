@@ -29,6 +29,8 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   val BACKGROUND_SPRITE = "/sprites/space.png"
 
   val EXPL_TILE_MAP = "/sprites/exp1.png"
+  val ALIEN_MAIN_TILE_MAP = "/sprites/alienmain.png"
+  val ALIEN_DMG_TILE_MAP = "/sprites/aliendmg.png"
 
   //Bonuses sprites
   val B_SHOT_SPEED_SPRITE = "/sprites/shotSpeed.png"
@@ -36,6 +38,8 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   val B_SHOTGUN = "/sprites/1.png"
 
   var explTileMap:TileMap = null
+  var alienMainTileMap:TileMap = null
+  var alienDmgTileMap:TileMap = null
 
   val frameSets = new HashMap[Int, Array[Sprite]]()
 
@@ -64,15 +68,12 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
 
     info("Load animation frames")
     explTileMap = TileManager.load(EXPL_TILE_MAP, 42, 42)
-    val enemyMainAnimatonFrames = Array[Sprite](
-                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_0),
-                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
-                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_2),
-                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_1),
-                  ResourceFactory.getSprite(Game.ALIEN_SPRITE_0)
-                )
-    frameSets.put(AlienEnemy.MAIN_ANIMATION, enemyMainAnimatonFrames)
+    alienDmgTileMap = TileManager.load(ALIEN_DMG_TILE_MAP, 40, 25)
+    alienMainTileMap = TileManager.load(ALIEN_MAIN_TILE_MAP, 40, 25)
+
     frameSets.put(AlienEnemy.EXPLOSION_ANIMATION, explTileMap.toLine)
+    frameSets.put(AlienEnemy.DAMAGE_ANIMATION, alienDmgTileMap.toLine)
+    frameSets.put(AlienEnemy.MAIN_ANIMATION, alienMainTileMap.toLine)
     info("Game resources loaded")
 
     info("Register game bonuses")
