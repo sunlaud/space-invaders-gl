@@ -18,7 +18,7 @@ object PlayerEntity{
 }
 
 final case class PlayerEntity(sprite : Sprite, pos: Vector3f) extends AbstractEntity(sprite, pos){
-  private var playerWeapon: AbstractWeapon = new ShotgunWeapon(pos)
+  private var playerWeapon: AbstractWeapon = new RocketWeapon(pos)
   var acceleration = 250
 
   def weapon(w: AbstractWeapon) { this.playerWeapon = w}

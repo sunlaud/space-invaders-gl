@@ -16,9 +16,14 @@ import com.xdev.si.entity.AbstractEntity
 object AlienEnemy{
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
+  val DAMAGE_ANIMATION = 3
 }
 final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSprite(Game.ALIEN_SPRITE_0), pos){
   var currentAnimation = AlienEnemy.MAIN_ANIMATION
+
+  healthPoints = 50
+
+  collisionDamage = 30
 
   override def init(){
     //Change started velocity
@@ -36,6 +41,14 @@ final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSpr
       duration = 1000,
       onAnimationEndedHook = {
         isDead = true; MainRenderLoop.notifyAlienKilled()
+      })
+    )
+    addFrameAnimation(new FrameAnimation(
+      id = AlienEnemy.DAMAGE_ANIMATION,
+      frames = Game.frameSets(AlienEnemy.DAMAGE_ANIMATION),
+      duration = 250,
+      onAnimationEndedHook = {
+        currentAnimation = AlienEnemy.MAIN_ANIMATION
       })
     )
     frameAnimations(currentAnimation).start()
@@ -68,7 +81,8 @@ final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSpr
     }
   }
 
-  override def collidedWith(target: AbstractEntity) {}
+  override def collidedWith(target: AbstractEntity) {
+  }
 
   override def notifyDead() {
     markedAsDead = true
@@ -77,6 +91,13 @@ final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSpr
       frameAnimations(currentAnimation).start()
     //Generate bonuse after enemy dead
     MainRenderLoop.generateBonus(position.clone())
+  }
+
+  override def takeDamage(damage: Int) {
+    currentAnimation = AlienEnemy.DAMAGE_ANIMATION
+    if(!frameAnimations(currentAnimation).isRunning)
+      frameAnimations(currentAnimation).start()
+    super.takeDamage(damage)
   }
 
   /**
