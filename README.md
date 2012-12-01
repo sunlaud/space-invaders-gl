@@ -1,5 +1,5 @@
 ##About
-Space invader GL this is simple open game project realized in scala. 
+Space Invaders GL is a simple open-source game project in scala.
 
 ###If you love game programming and scala - join!!!
 
@@ -30,5 +30,5 @@ and other.
 3. Or double click on jar file.
 
 ##Download
-All platform executable version [link](https://github.com/downloads/xaoc3dgraph/space-invaders-gl/game.tar.gz)
+All platforms package: [link](https://github.com/downloads/xaoc3dgraph/space-invaders-gl/game.tar.gz)
 
