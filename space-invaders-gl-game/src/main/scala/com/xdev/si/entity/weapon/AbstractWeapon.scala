@@ -42,7 +42,10 @@ abstract class AbstractWeapon(pos: Vector3f) extends HasWaitInterval{
   }
 
   final def update(delta: Long) {
-    shotsList.foreach(_.move(delta))
+    shotsList.foreach(s => {
+      s.update(delta)
+      s.move(delta)
+    })
   }
 
   final def addShot(shot: ShotEntity) {
