@@ -11,9 +11,7 @@ class LaserShot(pos: Vector3f) extends ShotEntity(ResourceFactory.getSprite(Game
   collisionDamage = 5f
   healthPoints = 10f
 
-  override def init() {
-    velocity.setY(-800)
-  }
+  velocity.setY(-800)
 
   override def move(delta: Long){
     super.move(delta)

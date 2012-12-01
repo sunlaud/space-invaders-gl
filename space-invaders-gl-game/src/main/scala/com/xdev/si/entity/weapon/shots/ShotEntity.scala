@@ -13,9 +13,7 @@ class ShotEntity(sprite : Sprite,  pos: Vector3f) extends AbstractEntity(sprite,
 
   private var used  = false
 
-  override def init(){
     velocity.setY(-350)//Start shot velocity
-  }
 
   override def move(delta: Long){
     super.move(delta)

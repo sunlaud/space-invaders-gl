@@ -7,25 +7,25 @@ import com.xdev.engine.animation.FrameAnimation
 import com.xdev.si.gllisteners.MainRenderLoop
 import javax.media.opengl.GL2
 import com.xdev.si.entity.AbstractEntity
+import com.xdev.si.core.Animation
 
 /**
  * User: xdev.developer@gmail.com
  * Date: 27.11.12
  * Time: 23:08
  */
-object AlienEnemy{
+object AlienEnemy {
   val MAIN_ANIMATION = 0
   val EXPLOSION_ANIMATION = 1
   val DAMAGE_ANIMATION = 3
 }
-final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSprite(Game.ALIEN_SPRITE_0), pos){
+final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSprite(Game.ALIEN_SPRITE_0), pos) with Animation{
   private var currentAnimation = AlienEnemy.MAIN_ANIMATION
 
   healthPoints = 50
 
   collisionDamage = 30
 
-  override def init(){
     //Change started velocity
     velocity.setX(-30.0f * Game.CURRENT_LEVEL)
 
@@ -52,7 +52,6 @@ final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSpr
       })
     )
     frameAnimations(currentAnimation).start()
-  }
 
   override def move(delta: Long){
     if(markedAsDead)return

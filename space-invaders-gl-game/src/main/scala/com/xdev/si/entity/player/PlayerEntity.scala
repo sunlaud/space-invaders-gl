@@ -36,8 +36,6 @@ final case class PlayerEntity(sprite : Sprite, pos: Vector3f) extends AbstractEn
     weapon.draw(gl)
   }
 
-  override def init(){}
-  
   override def collidedWith(target: AbstractEntity) {
     target.notifyDead()
     this.notifyDead()

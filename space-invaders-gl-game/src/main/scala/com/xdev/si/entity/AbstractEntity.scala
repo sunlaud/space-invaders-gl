@@ -28,10 +28,8 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
   var collisionDamage: Float = 10
   var markedAsDead = false
   var isDead = false
-  protected val frameAnimations = new HashMap[Int, FrameAnimation]()
 
   //Run init method on constructor creation
-  init()
 
   def this(sprite: Sprite, pos:Vector3f) = this(sprite, pos, new Vector3f(0.0f, 0.0f, 0.0f))
   def this(sprite: Sprite) = this(sprite, new Vector3f(0.0f, 0.0f, 0.0f) , new Vector3f(0.0f, 0.0f, 0.0f))
@@ -81,8 +79,7 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
       target.height)
     thisBoundBox.intersects(targetBoundBox)
   }
-  //Abstract methods
-  protected def init()
+
   def collidedWith(target: AbstractEntity)
   def doLogic()
   def update(delta: Long)
@@ -99,9 +96,5 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
 
   def heal(heal: Float) {
     healthPoints += heal
-  }
-  
-  final def addFrameAnimation(animation: FrameAnimation){
-     frameAnimations.put(animation.id, animation)
   }
 }
