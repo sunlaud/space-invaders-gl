@@ -26,7 +26,7 @@ final class RocketShot(pos: Vector3f) extends ShotEntity(ResourceFactory.getSpri
   addFrameAnimation(new FrameAnimation(
     id = RocketShot.FLIGHT_ANIMATION,
     frames = Game.frameSets(RocketShot.FLIGHT_ANIMATION),
-    duration = 1000,
+    duration = 300,
     looped = true)
   )
   frameAnimations(currentAnimation).start()
@@ -34,7 +34,7 @@ final class RocketShot(pos: Vector3f) extends ShotEntity(ResourceFactory.getSpri
   override def move(delta: Long){
     super.move(delta)
     velocity.mulY(acceleration)
-    collisionDamage += 1f
+    collisionDamage += 1.2f
   }
 
   override def update(delta: Long){
