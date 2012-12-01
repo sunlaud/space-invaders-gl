@@ -2,7 +2,6 @@ package com.xdev.si.manager
 
 import com.xdev.engine.sprite.Sprite
 import org.openmali.vecmath2.Vector3f
-import com.xdev.si.entity.weapon.ShotEntity
 import com.xdev.si.entity.enemy.{AlienEnemy, EnemyEntity}
 import com.xdev.si.entity.player.PlayerEntity
 import com.xdev.engine.util.ResourceFactory
@@ -11,6 +10,7 @@ import collection.mutable.{HashMap, ArrayBuffer}
 import com.xdev.engine.logging.LogHelper
 import util.Random
 import com.xdev.si.core.loader.LevelLoader
+import com.xdev.si.entity.weapon.shots.ShotEntity
 
 /**
  * User: xdev

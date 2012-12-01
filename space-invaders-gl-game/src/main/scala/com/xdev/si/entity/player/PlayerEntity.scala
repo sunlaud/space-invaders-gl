@@ -5,7 +5,7 @@ import com.xdev.engine.sprite.Sprite
 import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.AbstractEntity
-import com.xdev.si.entity.weapon.{ShotgunWeapon, RocketWeapon, AbstractWeapon}
+import com.xdev.si.entity.weapon.{LaserWeapon, ShotgunWeapon, RocketWeapon, AbstractWeapon}
 
 /**
  * Created by User: xdev.developer@gmail.com

@@ -24,8 +24,8 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
   private val thisBoundBox : Rectangle  = new Rectangle(position.getX.asInstanceOf[Int], position.getY.asInstanceOf[Int], width, height)
   private val targetBoundBox : Rectangle  = new Rectangle()
   //State
-  var healthPoints: Int = 100
-  var collisionDamage: Int = 10
+  var healthPoints: Float = 100
+  var collisionDamage: Float = 10
   var markedAsDead = false
   var isDead = false
   protected val frameAnimations = new HashMap[Int, FrameAnimation]()
@@ -92,12 +92,12 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
     markedAsDead = true
   }
 
-  def takeDamage(damage: Int) {
+  def takeDamage(damage: Float) {
     healthPoints -= damage;
     if (healthPoints < 0) notifyDead();
   }
 
-  def heal(heal: Int) {
+  def heal(heal: Float) {
     healthPoints += heal
   }
   

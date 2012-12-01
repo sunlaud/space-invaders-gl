@@ -1,6 +1,7 @@
 package com.xdev.si
 
 import entity.enemy.{AlienEnemy, EnemyEntity}
+import entity.weapon.shots.RocketShot
 import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderLoop}
 import javax.media.opengl.GL2
 import com.xdev.engine.gl.GLGameWindow
@@ -40,6 +41,14 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   val B_SHOTGUN = "/sprites/4.gif"
   val LEVEL_PATH_PATTERN = "/levels/%s.lvl"
 
+  //Shot sprites
+  val LASER_SHOT_SPRITE = "/sprites/laserShot.png"
+  val ROCKET_SHOT_SPRITE = "/sprites/weapon/rocket/rocket.png"
+  val ROCKET_BURST_TILE_MAP = "/sprites/weapon/rocket/rocketBurst.png"
+
+  //Shot animations
+  var rocketTileMap: TileMap = null
+
   var explTileMap:TileMap = null
   var alienMainTileMap:TileMap = null
   var alienDmgTileMap:TileMap = null
@@ -66,6 +75,8 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
     ResourceFactory.getSprite(ALIEN_SPRITE_0)
     ResourceFactory.getSprite(ALIEN_SPRITE_1)
     ResourceFactory.getSprite(ALIEN_SPRITE_2)
+    ResourceFactory.getSprite(LASER_SHOT_SPRITE)
+    ResourceFactory.getSprite(ROCKET_SHOT_SPRITE)
     ResourceFactory.getSprite(B_SHIP_SPEED_SPRITE)
     ResourceFactory.getSprite(BACKGROUND_SPRITE)
 
@@ -74,9 +85,13 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
     alienDmgTileMap = TileManager.load(ALIEN_DMG_TILE_MAP, 40, 25)
     alienMainTileMap = TileManager.load(ALIEN_MAIN_TILE_MAP, 40, 25)
 
+    rocketTileMap = TileManager.load(ROCKET_BURST_TILE_MAP, 14, 48)
+
     frameSets.put(AlienEnemy.EXPLOSION_ANIMATION, explTileMap.toLine)
     frameSets.put(AlienEnemy.DAMAGE_ANIMATION, alienDmgTileMap.toLine)
     frameSets.put(AlienEnemy.MAIN_ANIMATION, alienMainTileMap.toLine)
+
+    frameSets.put(RocketShot.FLIGHT_ANIMATION, rocketTileMap.toLine)
     info("Game resources loaded")
 
     info("Register game bonuses")

@@ -19,7 +19,7 @@ object AlienEnemy{
   val DAMAGE_ANIMATION = 3
 }
 final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSprite(Game.ALIEN_SPRITE_0), pos){
-  var currentAnimation = AlienEnemy.MAIN_ANIMATION
+  private var currentAnimation = AlienEnemy.MAIN_ANIMATION
 
   healthPoints = 50
 
@@ -93,7 +93,7 @@ final class AlienEnemy(pos: Vector3f) extends EnemyEntity(ResourceFactory.getSpr
     MainRenderLoop.generateBonus(position.clone())
   }
 
-  override def takeDamage(damage: Int) {
+  override def takeDamage(damage: Float) {
     currentAnimation = AlienEnemy.DAMAGE_ANIMATION
     if(!frameAnimations(currentAnimation).isRunning)
       frameAnimations(currentAnimation).start()

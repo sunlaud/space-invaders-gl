@@ -4,6 +4,7 @@ import collection.mutable.ArrayBuffer
 import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.core.HasWaitInterval
+import shots.ShotEntity
 
 /**
  * User: xdev.developer@gmail.com

@@ -3,6 +3,7 @@ package com.xdev.si.entity.weapon
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.Game
 import com.xdev.engine.util.ResourceFactory
+import shots.ShotEntity
 
 /**
  * User: xdev.developer@gmail.com
