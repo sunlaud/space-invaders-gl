@@ -6,6 +6,7 @@ scala:
 branches:
   only:
     - master
+    - dev
 # use sbt-extras runner instead of stock Travis CI sbt version
 notifications:
   email:
