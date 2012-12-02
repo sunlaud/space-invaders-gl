@@ -5,7 +5,7 @@ import org.openmali.spatial.bounds.Bounds
 import org.openmali.vecmath2.Point3f
 import com.xdev.engine.util.BoundingBoxUtils
 
-class QuadTreeNode(center: Point3f, size: Float) extends SpatialNode {
+class QuadTreeNode(val center: Point3f, val size: Float) extends SpatialNode {
 
   var cell: Any = null
 
