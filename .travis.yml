@@ -1,8 +1,14 @@
+# See http://about.travis-ci.org/docs/user/build-configuration/
 language: scala
 scala:
-- 2.9.2
+  - 2.9.1
+# whitelist branches for now. need backport branch to support 2.8.x
+branches:
+  only:
+    - master
+# use sbt-extras runner instead of stock Travis CI sbt version
 notifications:
-email:
-recipients:
-- roa.the.serpent@gmail.com
-- xdev.developer@gmail.com
+  email:
+    recipients:
+      - xdev.developer@gmail.com
+      - roa.the.serpent@gmail.com
