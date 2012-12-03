@@ -62,6 +62,8 @@ object GameManager extends LogHelper{
       availableBonuses.put(availableBonuses.size, new ShotSpeedBonus(new Vector3f(0,0,0)))
       availableBonuses.put(availableBonuses.size, new ShipAccBonus(new Vector3f(0,0,0)))
       availableBonuses.put(availableBonuses.size, new ShotGunBonus(new Vector3f(0,0,0)))
+      availableBonuses.put(availableBonuses.size, new LaserBonus(new Vector3f(0,0,0)))
+      availableBonuses.put(availableBonuses.size, new RocketBonus(new Vector3f(0,0,0)))
   }
 
   def generateRandomBonus(startPosition: Vector3f): Option[AbstractBonus] = {
@@ -71,6 +73,8 @@ object GameManager extends LogHelper{
         case b: ShotSpeedBonus => Some(new ShotSpeedBonus(startPosition))
         case b: ShipAccBonus => Some(new ShipAccBonus(startPosition))
         case b: ShotGunBonus => Some(new ShotGunBonus(startPosition))
+        case b: LaserBonus => Some(new LaserBonus(startPosition))
+        case b: RocketBonus => Some(new RocketBonus(startPosition))
         case _ => None
       }
     }

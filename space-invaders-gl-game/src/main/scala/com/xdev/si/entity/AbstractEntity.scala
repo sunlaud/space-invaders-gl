@@ -97,4 +97,8 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
   def heal(heal: Float) {
     healthPoints += heal
   }
+
+  def getVelocity():Vector3f = {
+    velocity
+  }
 }
