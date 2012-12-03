@@ -30,5 +30,5 @@ and other.
 3. Or double click on jar file.
 
 ##Download
-All platforms package: [link](https://github.com/downloads/xaoc3dgraph/space-invaders-gl/game.tar.gz)
+All platforms package: [download page](https://github.com/xaoc3dgraph/space-invaders-gl/downloads)
 
