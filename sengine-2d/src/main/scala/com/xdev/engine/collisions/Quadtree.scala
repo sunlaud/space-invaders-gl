@@ -6,10 +6,10 @@ import org.openmali.spatial.{SpatialNode, AxisIndicator}
 import org.openmali.spatial.bodies.{Box, Classifier}
 import org.openmali.spatial.bodies.Classifier.Classification
 import collection.mutable.ArrayBuffer
+import com.xdev.engine.util._
 
 class Quadtree[T <: SpatialNode](center: Vector3f, w: Float, h: Float) extends QuadTree[T](center, AxisIndicator.POSITIVE_Z_AXIS, w, h, false) {
 
-  setMinNodesBeforeSplit(4)
   def getClassifier(target: Box, node: QuadCell[T]): Classification  = {
     Classifier.classifyBoxBox(node, target)
   }
@@ -19,6 +19,24 @@ class Quadtree[T <: SpatialNode](center: Vector3f, w: Float, h: Float) extends Q
     val root = getRootCell
     findNodes(target, root, nodes)
     nodes.toList
+  }
+
+  def render(){
+    recRender(getRootCell)
+
+    def recRender(cell: QuadCell[T]){
+      BoundingBoxUtils.render(cell.getUpper, cell.getLower)
+      if (cell.hasChildCells){
+        if (cell.getCellHBack != null){recRender(cell.getCellHBack)}
+        if (cell.getCellHFront != null){recRender(cell.getCellHFront)}
+        if (cell.getCellHLeft != null){recRender(cell.getCellHLeft)}
+        if (cell.getCellHRight != null){recRender(cell.getCellHRight)}
+        if (cell.getCellQuBackLeft != null){recRender(cell.getCellQuBackLeft)}
+        if (cell.getCellQuBackRight != null){recRender(cell.getCellQuBackRight)}
+        if (cell.getCellQuFrontLeft != null){recRender(cell.getCellQuFrontLeft)}
+        if (cell.getCellQuFrontRight != null){recRender(cell.getCellQuFrontRight)}        
+      }
+    }
   }
 
   private def findNodes(target: Box, cell: QuadCell[T], nodesHolder: ArrayBuffer[T]){
@@ -64,7 +82,6 @@ class Quadtree[T <: SpatialNode](center: Vector3f, w: Float, h: Float) extends Q
         findNodes(target, cell.getCellQuFrontRight, nodesHolder)
 
       }
-
     }
   }
 }

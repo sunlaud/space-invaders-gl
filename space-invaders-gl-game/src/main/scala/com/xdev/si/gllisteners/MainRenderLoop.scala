@@ -2,6 +2,8 @@ package com.xdev.si.gllisteners
 
 import com.xdev.engine.logging.LogHelper
 import com.xdev.engine.gl.render.GLEventListener2D
+import com.xdev.engine.util.BoundingBoxUtils
+import com.xdev.engine.collisions._
 import javax.media.opengl.GL2
 import com.xdev.si.manager.GameManager
 import collection.mutable.ArrayBuffer
@@ -9,12 +11,12 @@ import java.awt.event.KeyEvent
 import com.xdev.engine.input.Keyboard
 import com.xdev.si.GameStateType._
 import com.xdev.si.{GameStateType, Game}
-import org.openmali.vecmath2.Vector3f
+import org.openmali.vecmath2._
 import com.xdev.si.entity.player.PlayerEntity
 import com.xdev.si.entity.enemy.EnemyEntity
 import com.xdev.si.entity.bonus.AbstractBonus
 import com.xdev.si.core.loader.LevelLoader
-
+import com.xdev.si.entity.AbstractEntity
 /**
  * Created by User: xdev
  * Date: 26.08.2010
@@ -31,18 +33,20 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
 
   private val INFO_SPRITE_POS = new Vector3f(325.0f, 250.0f, 0.0f)
   private val PLAYER_START_POS = new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f)
+  private var tree: Quadtree[AbstractEntity] = null
 
   override def onInit(gl: GL2) {
     debug("Initialize")
     player = GameManager.createPlayer(Game.SHIP_SPRITE, PLAYER_START_POS)
     enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
+    tree = new QuadTreeBuilder[AbstractEntity]().build(enemies.toList, new Vector3f(300, 300, 0), 500, 500)
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int) {
     processKeyboard()
     currentGameState match {
       case GAME_RUN =>{
-        enemies.foreach(_.move(delta))
+        //enemies.foreach(_.move(delta))
         player.move(delta)
         bonuses.foreach(_.move(delta))
 
@@ -59,7 +63,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
         }
 
         //Update 
-        enemies.foreach(_.update(delta))
+        //enemies.foreach(_.update(delta))
         player.update(delta)
       }
       case _ =>
@@ -69,6 +73,10 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
   override def onRenderFrame(gl: GL2, w: Int, h: Int) {
     if(DebugRenderer.isDebugEnabled)
       renderDebugInfo()
+    //val box = BoundingBoxUtils.createBox(new Point3f(150,150,0), 20)
+    //BoundingBoxUtils.render(box)
+
+    tree.render()
 
     currentGameState match {
       case NEW_GAME =>{

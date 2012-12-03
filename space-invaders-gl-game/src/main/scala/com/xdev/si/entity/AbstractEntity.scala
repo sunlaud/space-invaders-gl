@@ -2,10 +2,11 @@ package com.xdev.si.entity
 
 import javax.media.opengl.GL2
 import com.xdev.engine.sprite.Sprite
+import com.xdev.engine.collisions.QuadTreeNode
 import collection.mutable.HashMap
 import com.xdev.engine.animation.FrameAnimation
 import java.awt.Rectangle
-import org.openmali.vecmath2.Vector3f
+import org.openmali.vecmath2._
 import com.xdev.si.core.MoveFunction
 
 /**
@@ -13,7 +14,9 @@ import com.xdev.si.core.MoveFunction
  * Date: 24.08.2010
  * Time: 21:56:53
  */
-abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) extends MoveFunction {
+abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) 
+  extends QuadTreeNode(new Point3f(pos.x - sprite.getWidth, pos.y -  sprite.getHeight, 0.f), sprite.getHeight)
+  with MoveFunction {
   //Coordinates
   val position = pos
   protected val velocity = vel
