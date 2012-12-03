@@ -1,6 +1,5 @@
-package com.xdev.si.entity.weapon
+package com.xdev.si.entity.weapon.shots
 
-import com.xdev.si.gllisteners.MainRenderLoop
 import com.xdev.engine.sprite.Sprite
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.AbstractEntity
@@ -14,9 +13,7 @@ class ShotEntity(sprite : Sprite,  pos: Vector3f) extends AbstractEntity(sprite,
 
   private var used  = false
 
-  override def init(){
     velocity.setY(-350)//Start shot velocity
-  }
 
   override def move(delta: Long){
     super.move(delta)
@@ -25,9 +22,11 @@ class ShotEntity(sprite : Sprite,  pos: Vector3f) extends AbstractEntity(sprite,
 
   override def collidedWith(target: AbstractEntity) {
     if (used) return
-    this.notifyDead()
-    target.notifyDead()
-    used = true
+    target.takeDamage(collisionDamage)
+    if (!target.markedAsDead) {
+      this.notifyDead()
+      used = true
+    } else takeDamage(target.collisionDamage)
   }
 
   override def doLogic() {}

@@ -2,7 +2,6 @@ package com.xdev.si.manager
 
 import com.xdev.engine.sprite.Sprite
 import org.openmali.vecmath2.Vector3f
-import com.xdev.si.entity.weapon.ShotEntity
 import com.xdev.si.entity.enemy.{AlienEnemy, EnemyEntity}
 import com.xdev.si.entity.player.PlayerEntity
 import com.xdev.engine.util.ResourceFactory
@@ -11,6 +10,7 @@ import collection.mutable.{HashMap, ArrayBuffer}
 import com.xdev.engine.logging.LogHelper
 import util.Random
 import com.xdev.si.core.loader.LevelLoader
+import com.xdev.si.entity.weapon.shots.ShotEntity
 
 /**
  * User: xdev
@@ -62,6 +62,8 @@ object GameManager extends LogHelper{
       availableBonuses.put(availableBonuses.size, new ShotSpeedBonus(new Vector3f(0,0,0)))
       availableBonuses.put(availableBonuses.size, new ShipAccBonus(new Vector3f(0,0,0)))
       availableBonuses.put(availableBonuses.size, new ShotGunBonus(new Vector3f(0,0,0)))
+      availableBonuses.put(availableBonuses.size, new LaserBonus(new Vector3f(0,0,0)))
+      availableBonuses.put(availableBonuses.size, new RocketBonus(new Vector3f(0,0,0)))
   }
 
   def generateRandomBonus(startPosition: Vector3f): Option[AbstractBonus] = {
@@ -71,6 +73,8 @@ object GameManager extends LogHelper{
         case b: ShotSpeedBonus => Some(new ShotSpeedBonus(startPosition))
         case b: ShipAccBonus => Some(new ShipAccBonus(startPosition))
         case b: ShotGunBonus => Some(new ShotGunBonus(startPosition))
+        case b: LaserBonus => Some(new LaserBonus(startPosition))
+        case b: RocketBonus => Some(new RocketBonus(startPosition))
         case _ => None
       }
     }

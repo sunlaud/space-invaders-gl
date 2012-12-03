@@ -4,6 +4,7 @@ import collection.mutable.ArrayBuffer
 import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.core.HasWaitInterval
+import shots.ShotEntity
 
 /**
  * User: xdev.developer@gmail.com
@@ -41,7 +42,10 @@ abstract class AbstractWeapon(pos: Vector3f) extends HasWaitInterval{
   }
 
   final def update(delta: Long) {
-    shotsList.foreach(_.move(delta))
+    shotsList.foreach(s => {
+      s.update(delta)
+      s.move(delta)
+    })
   }
 
   final def addShot(shot: ShotEntity) {
