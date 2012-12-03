@@ -1,18 +1,21 @@
 package com.xdev.engine.collisions
 
 import org.openmali.spatial.quadtree.{QuadCell, QuadTree}
-import org.openmali.vecmath2.Vector3f
+import org.openmali.vecmath2.{Point3f, Vector3f}
 import org.openmali.spatial.{SpatialNode, AxisIndicator}
 import org.openmali.spatial.bodies.{Box, Classifier}
 import org.openmali.spatial.bodies.Classifier.Classification
 import collection.mutable.ArrayBuffer
 import com.xdev.engine.util._
 
-class Quadtree[T <: SpatialNode](center: Vector3f, w: Float, h: Float) extends QuadTree[T](center, AxisIndicator.POSITIVE_Z_AXIS, w, h, false) {
+class Quadtree[T <: SpatialNode](center: Vector3f, w: Float, h: Float) extends QuadTree[T](center, AxisIndicator.POSITIVE_Z_AXIS, w, h, h, true) {
 
+  setMinNodesBeforeSplit(4)
+  setMaxLevelForExtendedCells(4)
   def getClassifier(target: Box, node: QuadCell[T]): Classification  = {
     Classifier.classifyBoxBox(node, target)
   }
+
 
   def getIntersectNodes(target: Box): List[T] = {
     val nodes = new ArrayBuffer[T]()
@@ -25,7 +28,7 @@ class Quadtree[T <: SpatialNode](center: Vector3f, w: Float, h: Float) extends Q
     recRender(getRootCell)
 
     def recRender(cell: QuadCell[T]){
-      BoundingBoxUtils.render(cell.getUpper, cell.getLower)
+      BoundingBoxUtils.render(BoundingBoxUtils.createBox(cell.getCenter(new Point3f()), cell.getSize))
       if (cell.hasChildCells){
         if (cell.getCellHBack != null){recRender(cell.getCellHBack)}
         if (cell.getCellHFront != null){recRender(cell.getCellHFront)}
@@ -34,7 +37,7 @@ class Quadtree[T <: SpatialNode](center: Vector3f, w: Float, h: Float) extends Q
         if (cell.getCellQuBackLeft != null){recRender(cell.getCellQuBackLeft)}
         if (cell.getCellQuBackRight != null){recRender(cell.getCellQuBackRight)}
         if (cell.getCellQuFrontLeft != null){recRender(cell.getCellQuFrontLeft)}
-        if (cell.getCellQuFrontRight != null){recRender(cell.getCellQuFrontRight)}        
+        if (cell.getCellQuFrontRight != null){recRender(cell.getCellQuFrontRight)}
       }
     }
   }

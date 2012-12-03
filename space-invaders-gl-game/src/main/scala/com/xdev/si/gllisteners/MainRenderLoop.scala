@@ -39,7 +39,8 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     debug("Initialize")
     player = GameManager.createPlayer(Game.SHIP_SPRITE, PLAYER_START_POS)
     enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
-    tree = new QuadTreeBuilder[AbstractEntity]().build(enemies.toList, new Vector3f(300, 300, 0), 500, 500)
+    tree = new QuadTreeBuilder[AbstractEntity]().build(enemies.toList, new Vector3f(400, 200, 0), 790, 400)
+    tree.dump()
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int) {
@@ -63,7 +64,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
         }
 
         //Update 
-        //enemies.foreach(_.update(delta))
+        enemies.foreach(_.update(delta))
         player.update(delta)
       }
       case _ =>
@@ -75,7 +76,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
       renderDebugInfo()
     //val box = BoundingBoxUtils.createBox(new Point3f(150,150,0), 20)
     //BoundingBoxUtils.render(box)
-
+    enemies.foreach(e => {BoundingBoxUtils.render(BoundingBoxUtils.createBox(e.getWorldBounds.getCenter(new Point3f()), new Point3f(e.width, e.height, 0)))})
     tree.render()
 
     currentGameState match {

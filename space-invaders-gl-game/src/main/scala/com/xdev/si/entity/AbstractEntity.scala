@@ -15,7 +15,7 @@ import com.xdev.si.core.MoveFunction
  * Time: 21:56:53
  */
 abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) 
-  extends QuadTreeNode(new Point3f(pos.x - sprite.getWidth, pos.y -  sprite.getHeight, 0.f), sprite.getHeight)
+  extends QuadTreeNode(new Point3f(pos.x + sprite.getWidth /2, pos.y +  sprite.getHeight/2, 0.f), new Point3f(sprite.getWidth, sprite.getHeight, 0))
   with MoveFunction {
   //Coordinates
   val position = pos

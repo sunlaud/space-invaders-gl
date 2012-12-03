@@ -6,13 +6,13 @@ import org.openmali.spatial.bodies.Box
 import javax.media.opengl.{GL, GLContext}
 
 object BoundingBoxUtils {
-  def create(center: Point3f , size: Float): BoundingBox = {
-    return new BoundingBox(center.x() - size / 2f,
-      center.y() - size / 2f,
-      center.z() - size / 2f,
-      center.x() + size / 2f,
-      center.y() + size / 2f,
-      center.z() + size / 2f);
+  def create(center: Point3f , size: Tuple3f): BoundingBox = {
+    return new BoundingBox(center.x() - size.x / 2f,
+      center.y() - size.y / 2f,
+      center.z() - size.z / 2f,
+      center.x() + size.x / 2f,
+      center.y() + size.y / 2f,
+      center.z() + size.z / 2f);
   }
 
   def createBox(center: Point3f, size: Float): Box ={
@@ -22,6 +22,15 @@ object BoundingBoxUtils {
       center.x() + size / 2f,
       center.y() + size / 2f,
       center.z() + size / 2f);
+  }
+
+  def createBox(center: Point3f, size: Tuple3f): Box ={
+    return new Box(center.x() - size.x / 2f,
+      center.y() - size.y / 2f,
+      center.z() - size.z / 2f,
+      center.x() + size.x / 2f,
+      center.y() + size.y / 2f,
+      center.z() + size.z / 2f);
   }
   def render(box: Box) {
     render(box.getUpper, box.getLower)
@@ -35,6 +44,7 @@ object BoundingBoxUtils {
     glDisable(GL_BLEND)
     glLineWidth(0.1f)
     glPushMatrix()
+    glTranslatef(0, 0, 0)
     glBegin(GL_LINE_STRIP)
       glColor3f(0f, 1f, 0f)
       glVertex3f(lower.x(), lower.y(), Z)
