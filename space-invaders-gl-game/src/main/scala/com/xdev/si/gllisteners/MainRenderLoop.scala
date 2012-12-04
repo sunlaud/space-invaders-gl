@@ -14,6 +14,8 @@ import com.xdev.si.entity.player.PlayerEntity
 import com.xdev.si.entity.enemy.EnemyEntity
 import com.xdev.si.entity.bonus.AbstractBonus
 import com.xdev.si.core.loader.LevelLoader
+import com.xdev.engine.quadtree.QuadTree
+import com.xdev.si.entity.AbstractEntity
 
 /**
  * Created by User: xdev
@@ -31,6 +33,8 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
 
   private val INFO_SPRITE_POS = new Vector3f(325.0f, 250.0f, 0.0f)
   private val PLAYER_START_POS = new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f)
+
+  private val tree: QuadTree[AbstractEntity] = new QuadTree[AbstractEntity](795, 595)
 
   override def onInit(gl: GL2) {
     debug("Initialize")
@@ -88,6 +92,7 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     player.draw(gl)
     bonuses.foreach(_.draw(gl))
     enemies.foreach(_.draw(gl))
+    tree.render(gl)
   }
 
    private def processKeyboard() {
