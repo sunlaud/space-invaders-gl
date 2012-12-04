@@ -7,13 +7,14 @@ import com.xdev.engine.animation.FrameAnimation
 import java.awt.Rectangle
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.core.MoveFunction
+import com.xdev.engine.quadtree.TreeNode
 
 /**
  * Created by User: xdev
  * Date: 24.08.2010
  * Time: 21:56:53
  */
-abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) extends MoveFunction {
+abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) extends MoveFunction with TreeNode {
   //Coordinates
   val position = pos
   protected val velocity = vel
@@ -21,7 +22,7 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
   val height = sprite.getHeight
 
   //Bounding boxes
-  private val thisBoundBox : Rectangle  = new Rectangle(position.getX.asInstanceOf[Int], position.getY.asInstanceOf[Int], width, height)
+  val bounds : Rectangle  = new Rectangle(position.getX.asInstanceOf[Int], position.getY.asInstanceOf[Int], width, height)
   private val targetBoundBox : Rectangle  = new Rectangle()
   //State
   var healthPoints: Float = 100
@@ -50,8 +51,9 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
     position.setX(fx(x))
     position.setY(fy(y))
     position.setZ(pos.getZ)
-    thisBoundBox.x = position.getX.asInstanceOf[Int]
-    thisBoundBox.y = position.getY.asInstanceOf[Int]
+//    bounds.x =
+//    bounds.y = position.getY.asInstanceOf[Int]
+    bounds.setLocation(position.x.toInt, position.y.toInt)
   }
 
   final def accelerate(dx: Float = 0.0f, dy: Float = 0.0f, dz: Float = 0.0f){
@@ -69,7 +71,7 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
   def draw(gl: GL2) {sprite.draw(gl, position)}
   
   def collidesWith(target : AbstractEntity): Boolean ={
-    thisBoundBox.setBounds(position.getX.asInstanceOf[Int],
+    bounds.setBounds(position.getX.asInstanceOf[Int],
       position.getY.asInstanceOf[Int],
       width,
       height)
@@ -77,7 +79,7 @@ abstract class AbstractEntity (sprite : Sprite, pos: Vector3f, vel: Vector3f) ex
       target.position.getY.asInstanceOf[Int],
       target.width,
       target.height)
-    thisBoundBox.intersects(targetBoundBox)
+    bounds.intersects(targetBoundBox)
   }
 
   def collidedWith(target: AbstractEntity)

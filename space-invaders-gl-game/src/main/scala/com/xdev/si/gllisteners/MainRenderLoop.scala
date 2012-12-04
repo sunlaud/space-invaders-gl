@@ -15,6 +15,9 @@ import com.xdev.si.entity.enemy.EnemyEntity
 import com.xdev.si.entity.bonus.AbstractBonus
 import com.xdev.si.core.loader.LevelLoader
 import com.xdev.si.entity.weapon.{FireBallWeapon, ShotgunWeapon, RocketWeapon, LaserWeapon}
+import com.xdev.engine.quadtree.{TreeNode, QuadTree}
+import com.xdev.si.entity.AbstractEntity
+import java.awt.Rectangle
 
 /**
  * Created by User: xdev
@@ -32,29 +35,37 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
 
   private val INFO_SPRITE_POS = new Vector3f(325.0f, 250.0f, 0.0f)
   private val PLAYER_START_POS = new Vector3f(Game.WND_WIDTH / 2, Game.WND_HEIGHT - 25, 0.0f)
+  private val VISIBLE_AREA = new TreeNode() {
+    val bounds: Rectangle = new Rectangle(0, 0, Game.WND_WIDTH, Game.WND_HEIGHT)
+  }
+
+  private val tree: QuadTree[AbstractEntity] = new QuadTree[AbstractEntity](Game.WND_WIDTH, Game.WND_HEIGHT)
 
   override def onInit(gl: GL2) {
     debug("Initialize")
     player = GameManager.createPlayer(Game.SHIP_SPRITE, PLAYER_START_POS)
     enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
+    tree.insertNodes(enemies)
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int) {
     processKeyboard()
     currentGameState match {
       case GAME_RUN =>{
-        enemies.foreach(_.move(delta))
+        enemies.foreach(e => {e.move(delta); tree.updateNode(e)})
         player.move(delta)
         bonuses.foreach(_.move(delta))
 
         checkCollisions()
 
         //Remove dead entites
-        enemies --= enemies.filter(e => e.isDead)
+        val removed = enemies.filter(e => e.isDead)
+        removed.foreach(e => {enemies -= e; tree.removeNode(e)})
+
         bonuses --= bonuses.filter(e => e.isDead)
         player.weapon.removeUnusedShots()
         //Check
-        if (enemies.length == 0){
+        if (enemies.isEmpty){
           notifyAllAlienKilled()
           return
         }
@@ -73,26 +84,22 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
 
     currentGameState match {
       case NEW_GAME =>{
-        //TODO: Remove magic numbers
         GameManager.createSprite(Game.PRESS_ANY_KEY_SPRITE).draw(gl, INFO_SPRITE_POS)
       }
       case WIN =>{
-        //TODO: Remove magic numbers
         GameManager.createSprite(Game.WIN_SPRITE).draw(gl, INFO_SPRITE_POS)
       }
       case LOSE =>{
-        //TODO: Remove magic numbers
         GameManager.createSprite(Game.GAME_OVER_SPRITE).draw(gl, INFO_SPRITE_POS)
       }
       case _ =>
     }
     player.draw(gl)
     bonuses.foreach(_.draw(gl))
-    enemies.foreach(_.draw(gl))
+    tree.getIntersectsNodes(VISIBLE_AREA).foreach(_.draw(gl))
   }
 
    private def processKeyboard() {
-     //TODO: After changing input processing logic - refactor this
      if(Keyboard.isPressed(KeyEvent.VK_F2)){
        DebugRenderer.show()
        return
@@ -112,7 +119,6 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
          }
        }
        case GAME_RUN => {
-         //TODO: Fix Move speed - remove magic number
          player.stop()
          if(Keyboard.isPressed(KeyEvent.VK_LEFT))player.accelerate(-player.acceleration)
          if(Keyboard.isPressed(KeyEvent.VK_RIGHT))player.accelerate(player.acceleration)
@@ -131,7 +137,10 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
            if (Game.CURRENT_LEVEL + 1 <= Game.LEVELS_COUNT){
              Game.CURRENT_LEVEL += 1
            }
+           enemies.clear()
+           tree.clear()
            enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
+           tree.insertNodes(enemies)
            setGameState(GAME_RUN)
          }
        }
@@ -140,7 +149,9 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
            var bonus = 1000 * Game.CURRENT_LEVEL
            if(Game.SCORE >= bonus)Game.SCORE -= bonus
            enemies.clear()
+           tree.clear()
            enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
+           tree.insertNodes(enemies)
            player.position.set(PLAYER_START_POS)
            setGameState(GAME_RUN)
          }
@@ -182,16 +193,16 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
 
   private def checkCollisions(){
     for(shot <- player.weapon.shots if !shot.isDead; if !shot.markedAsDead){
-      for(enemy <- enemies if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
+      for(enemy <- tree.getIntersectsNodes(shot) if !enemy.isDead; if !enemy.markedAsDead; if shot.collidesWith(enemy)){
         shot.collidedWith(enemy)
         return
       }
     }
-    
+
     for(enemy <- enemies if !enemy.isDead; if !enemy.markedAsDead; if player.collidesWith(enemy)){
-        player.collidedWith(enemy)
-        return
-      }
+      player.collidedWith(enemy)
+      return
+    }
 
     for(bonus <- bonuses if !bonus.isDead; if !bonus.markedAsDead; if bonus.isCollidesWith(player)){
         bonus.collidedWith(player)

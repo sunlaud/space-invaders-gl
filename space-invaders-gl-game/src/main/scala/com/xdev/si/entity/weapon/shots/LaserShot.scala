@@ -16,6 +16,4 @@ class LaserShot(pos: Vector3f) extends ShotEntity(ResourceFactory.getSprite(Game
   override def move(delta: Long){
     super.move(delta)
   }
-
-
 }
