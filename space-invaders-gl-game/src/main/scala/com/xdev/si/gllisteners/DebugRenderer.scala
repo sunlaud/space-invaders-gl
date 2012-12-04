@@ -15,7 +15,7 @@ import com.jogamp.opengl.util.awt.TextRenderer
 
 object DebugRenderer extends GLEventListener2D{
 
-  var isDebuggerInfoRendered = true
+  var isDebuggerInfoRendered = false
   var textBuffer: Array[String] = Array[String]()
   var textRenderer: TextRenderer = null
 

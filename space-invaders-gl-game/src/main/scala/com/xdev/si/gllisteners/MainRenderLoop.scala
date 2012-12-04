@@ -40,6 +40,8 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
     debug("Initialize")
     player = GameManager.createPlayer(Game.SHIP_SPRITE, PLAYER_START_POS)
     enemies ++= GameManager.createEnemies(new LevelLoader().load(Game.LEVEL_PATH_PATTERN.format(Game.CURRENT_LEVEL)))
+    tree.insertNodes(enemies.toList)
+    tree.dumpTree()
   }
 
   override def onUpdateFrame(delta: Long, w: Int, h: Int) {
