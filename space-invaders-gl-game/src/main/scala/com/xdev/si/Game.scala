@@ -2,7 +2,7 @@ package com.xdev.si
 
 import entity.bonus.ShotGunBonus
 import entity.enemy.{AlienEnemy, EnemyEntity}
-import entity.weapon.shots.{ShotgunShot, RocketShot}
+import entity.weapon.shots.{ShotgunShot, RocketShot, FireBallShot}
 import gllisteners.{DebugRenderer, BackgroundRenderer, HudRenderer, MainRenderLoop}
 import javax.media.opengl.GL2
 import com.xdev.engine.gl.GLGameWindow
@@ -42,6 +42,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   val B_LASER = "/sprites/bonus/bonus_laser.png"
   val B_ROCKET = "/sprites/bonus/bonus_rocket_launcher.png"
   val B_SHOTGUN = "/sprites/bonus/bonus_shotgun.png"
+  val B_FIREBALL = "/sprites/bonus/bonus_fireball.png"
 
   val LEVEL_PATH_PATTERN = "/levels/%s.lvl"
 
@@ -51,10 +52,13 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   val ROCKET_BURST_TILE_MAP = "/sprites/weapon/rocket/rocketBurst.png"
   val SHOTGUN_SHRAPNEL_SPRITE = "/sprites/weapon/shotgun/scrap.png"
   val SHOTGUN_SHRAPNEL_TILE_MAP = "/sprites/weapon/shotgun/scrapBurst.png"
+  val FIREBALL_SHOT_SPRITE = "/sprites/weapon/fireball/fireball.png"
+  val FIREBALL_SHOT_TILE_MAP = "/sprites/weapon/fireball/fireballBurst.png"
 
   //Shot animations
   var rocketTileMap: TileMap = null
   var shotgunShrapnelTileMap: TileMap = null
+  var fireballTileMap:TileMap = null
 
   var explTileMap:TileMap = null
   var alienMainTileMap:TileMap = null
@@ -84,12 +88,14 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
     ResourceFactory.getSprite(ALIEN_SPRITE_2)
     ResourceFactory.getSprite(LASER_SHOT_SPRITE)
     ResourceFactory.getSprite(ROCKET_SHOT_SPRITE)
+    ResourceFactory.getSprite(FIREBALL_SHOT_SPRITE)
     ResourceFactory.getSprite(SHOTGUN_SHRAPNEL_SPRITE)
     ResourceFactory.getSprite(B_SHIP_SPEED_SPRITE)
     ResourceFactory.getSprite(B_SHOT_SPEED_SPRITE)
     ResourceFactory.getSprite(B_LASER)
     ResourceFactory.getSprite(B_ROCKET)
     ResourceFactory.getSprite(B_SHOTGUN)
+    ResourceFactory.getSprite(B_FIREBALL)
     ResourceFactory.getSprite(BACKGROUND_SPRITE)
 
     info("Load animation frames")
@@ -98,6 +104,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
     alienMainTileMap = TileManager.load(ALIEN_MAIN_TILE_MAP, 40, 25)
 
     rocketTileMap = TileManager.load(ROCKET_BURST_TILE_MAP, 14, 48)
+    fireballTileMap = TileManager.load(FIREBALL_SHOT_TILE_MAP, 62, 62)
     shotgunShrapnelTileMap = TileManager.load(SHOTGUN_SHRAPNEL_TILE_MAP, 10, 9)
 
     frameSets.put(AlienEnemy.EXPLOSION_ANIMATION, explTileMap.toLine)
@@ -106,6 +113,8 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
 
     frameSets.put(RocketShot.FLIGHT_ANIMATION, rocketTileMap.toLine)
     frameSets.put(ShotgunShot.SPINNING_ANIMATION, shotgunShrapnelTileMap.toLine)
+    frameSets.put(FireBallShot.FLIGHT_ANIMATION, fireballTileMap.toLine)
+
     info("Game resources loaded")
 
     info("Register game bonuses")
