@@ -1,3 +1,4 @@
+[![Build Status](https://secure.travis-ci.org/xaoc3dgraph/space-invaders-gl.png)](http://travis-ci.org/xaoc3dgraph/space-invaders-gl)
 ##About
 Space Invaders GL is a simple open-source game project in scala.
 
