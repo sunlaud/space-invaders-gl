@@ -5,7 +5,7 @@ import com.xdev.engine.sprite.Sprite
 import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.AbstractEntity
-import com.xdev.si.entity.weapon.{LaserWeapon, ShotgunWeapon, RocketWeapon, AbstractWeapon}
+import com.xdev.si.entity.weapon.{LaserWeapon, ShotgunWeapon, RocketWeapon, FireBallWeapon, AbstractWeapon}
 
 /**
  * Created by User: xdev.developer@gmail.com
@@ -18,7 +18,7 @@ object PlayerEntity{
 }
 
 final case class PlayerEntity(sprite : Sprite, pos: Vector3f) extends AbstractEntity(sprite, pos){
-  private var playerWeapon: AbstractWeapon = new LaserWeapon(pos)
+  private var playerWeapon: AbstractWeapon = new FireBallWeapon(pos)
   var acceleration = 250
 
   def weapon(w: AbstractWeapon) { this.playerWeapon = w}
