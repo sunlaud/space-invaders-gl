@@ -11,7 +11,7 @@ final case class FireBallBonus (pos: Vector3f) extends AbstractBonus(ResourceFac
 
   override def applyBonus(target: AbstractEntity) { target match {
     case p: PlayerEntity => {
-     p.weapon(new FireBallWeapon(p.pos))
+     p.changeWeapon(new FireBallWeapon(p.pos))
     }
     case _ =>
   }

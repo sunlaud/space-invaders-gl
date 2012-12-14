@@ -6,6 +6,7 @@ import javax.media.opengl.GL2
 import org.openmali.vecmath2.Vector3f
 import com.xdev.si.entity.AbstractEntity
 import com.xdev.si.entity.weapon.{LaserWeapon, ShotgunWeapon, RocketWeapon, FireBallWeapon, AbstractWeapon}
+import collection.mutable
 
 /**
  * Created by User: xdev.developer@gmail.com
@@ -20,6 +21,8 @@ object PlayerEntity{
 final case class PlayerEntity(sprite : Sprite, pos: Vector3f) extends AbstractEntity(sprite, pos){
   private var playerWeapon: AbstractWeapon = new LaserWeapon(pos)
   var acceleration = 250
+
+  val weaponStack = mutable.HashMap[String, AbstractWeapon]()
 
   def weapon(w: AbstractWeapon) { this.playerWeapon = w}
   def weapon = this.playerWeapon
@@ -48,4 +51,17 @@ final case class PlayerEntity(sprite : Sprite, pos: Vector3f) extends AbstractEn
   def fire(){
     weapon.fire()
   }
+
+  def changeWeapon(weapon: AbstractWeapon) {
+    if (weapon.name == playerWeapon.name) return
+    //Save already fired projectiles and remove them from weapon being saved
+    val shots = playerWeapon.shots
+    playerWeapon.removeAllShots()
+    //Save current Weapon
+    weaponStack.put(playerWeapon.name, playerWeapon)
+    //Get saved weapon from stack, if possible
+    playerWeapon = weaponStack.get(weapon.name).getOrElse(weapon)
+    playerWeapon.addAllShots(shots)
+  }
+
 }

@@ -10,6 +10,8 @@ import shots.FireBallShot
 
 class FireBallWeapon(pos: Vector3f) extends AbstractWeapon(pos) {
 
+  name = "FireBall"
+
   waitInterval(3000)
 
   protected def makeShot(pos: Vector3f) {

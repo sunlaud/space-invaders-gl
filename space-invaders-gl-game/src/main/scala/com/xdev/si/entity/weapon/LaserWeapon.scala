@@ -5,6 +5,8 @@ import shots.LaserShot
 
 class LaserWeapon(pos: Vector3f) extends AbstractWeapon(pos) {
 
+  name = "Laser"
+
   waitInterval(150)
 
   protected def makeShot(pos: Vector3f) {

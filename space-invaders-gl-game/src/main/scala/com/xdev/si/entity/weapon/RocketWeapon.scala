@@ -15,6 +15,8 @@ import shots.{RocketShot, LaserShot, ShotEntity}
 
 class RocketWeapon(pos: Vector3f) extends AbstractWeapon(pos) {
 
+  name = "RocketLauncher"
+
   protected def makeShot(pos: Vector3f) {
     addShot(new RocketShot(new Vector3f(pos.getX + 10, pos.getY - 30, 0.0f)))
   }

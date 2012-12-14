@@ -11,7 +11,7 @@ final case class RocketBonus (pos: Vector3f) extends AbstractBonus(ResourceFacto
 
   override def applyBonus(target: AbstractEntity) { target match {
     case p: PlayerEntity => {
-     p.weapon(new RocketWeapon(p.pos))
+     p.changeWeapon(new RocketWeapon(p.pos))
     }
     case _ =>
   }
