@@ -14,6 +14,8 @@ import com.xdev.si.entity.AbstractEntity
 
 final class ShotgunWeapon(pos: Vector3f) extends AbstractWeapon(pos) {
 
+  name = "ShotGun"
+
   private val deltaMove = 0.3f
 
   protected def makeShot(pos: Vector3f) {

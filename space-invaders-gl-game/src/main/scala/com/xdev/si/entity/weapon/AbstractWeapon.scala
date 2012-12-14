@@ -12,6 +12,9 @@ import shots.ShotEntity
  * Time: 0:38:33
  */
 abstract class AbstractWeapon(pos: Vector3f) extends HasWaitInterval{
+
+  var name = "AbstractWeapon"
+
   protected var lastFireTime: Long = 0
   protected val shotsList = new ArrayBuffer[ShotEntity]() //List of shots
 
