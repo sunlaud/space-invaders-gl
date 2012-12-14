@@ -14,6 +14,7 @@ import com.xdev.si.entity.player.PlayerEntity
 import com.xdev.si.entity.enemy.EnemyEntity
 import com.xdev.si.entity.bonus.AbstractBonus
 import com.xdev.si.core.loader.LevelLoader
+import com.xdev.si.entity.weapon.{FireBallWeapon, ShotgunWeapon, RocketWeapon, LaserWeapon}
 
 /**
  * Created by User: xdev
@@ -115,7 +116,13 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
          player.stop()
          if(Keyboard.isPressed(KeyEvent.VK_LEFT))player.accelerate(-player.acceleration)
          if(Keyboard.isPressed(KeyEvent.VK_RIGHT))player.accelerate(player.acceleration)
-         if(Keyboard.isPressed(KeyEvent.VK_SPACE)){player.fire()}
+         if(Keyboard.isPressed(KeyEvent.VK_Z)){player.fire()}
+
+         //Change weapon keys, for debug purposes
+         if(Keyboard.isPressed(KeyEvent.VK_1)){player.changeWeapon(new LaserWeapon(player.pos))}
+         if(Keyboard.isPressed(KeyEvent.VK_2)){player.changeWeapon(new RocketWeapon(player.pos))}
+         if(Keyboard.isPressed(KeyEvent.VK_3)){player.changeWeapon(new ShotgunWeapon(player.pos))}
+         if(Keyboard.isPressed(KeyEvent.VK_4)){player.changeWeapon(new FireBallWeapon(player.pos))}
        }
        case WIN =>{
          if(Keyboard.isPressed(KeyEvent.VK_SPACE)){
@@ -201,7 +208,9 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
         "shots : " + player.weapon.getShotsCount,
         "bonuses : " + bonuses.length,
         "ship acceleration : " + player.acceleration,
-        "ship firingInterval : " + player.weapon.waitInterval()
+        "ship firingInterval : " + player.weapon.waitInterval,
+        "current weapon : " + player.weapon.name,
+        "weapon stack : " + player.weaponStack.keySet.toString
       )
     DebugRenderer.setTextForDebugging(textBuff)
   }
