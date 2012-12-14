@@ -48,4 +48,10 @@ final case class PlayerEntity(sprite : Sprite, pos: Vector3f) extends AbstractEn
   def fire(){
     weapon.fire()
   }
+
+  def changeWeapon(weapon: AbstractWeapon) {
+    weapon.addAllShots(playerWeapon.shots)
+    playerWeapon = weapon
+  }
+
 }

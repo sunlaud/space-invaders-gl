@@ -51,4 +51,8 @@ abstract class AbstractWeapon(pos: Vector3f) extends HasWaitInterval{
   final def addShot(shot: ShotEntity) {
     shotsList += shot
   }
+
+  final def addAllShots(shots: List[ShotEntity]) {
+    shotsList.insertAll(shotsList.length, shots)
+  }
 }

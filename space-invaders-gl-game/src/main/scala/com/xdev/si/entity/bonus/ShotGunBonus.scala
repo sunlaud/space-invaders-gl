@@ -16,7 +16,7 @@ final case class ShotGunBonus (pos: Vector3f) extends AbstractBonus(ResourceFact
 
   override def applyBonus(target: AbstractEntity) { target match {
     case p: PlayerEntity => {
-     p.weapon(new ShotgunWeapon(p.pos))
+     p.changeWeapon(new ShotgunWeapon(p.pos))
     }
     case _ =>
   }

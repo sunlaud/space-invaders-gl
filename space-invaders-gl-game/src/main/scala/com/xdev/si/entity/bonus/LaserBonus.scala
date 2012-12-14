@@ -11,7 +11,7 @@ final case class LaserBonus (pos: Vector3f) extends AbstractBonus(ResourceFactor
 
   override def applyBonus(target: AbstractEntity) { target match {
     case p: PlayerEntity => {
-     p.weapon(new LaserWeapon(p.pos))
+     p.changeWeapon(new LaserWeapon(p.pos))
     }
     case _ =>
   }
