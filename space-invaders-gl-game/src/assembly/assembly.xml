@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <assembly>
-    <id>webspider</id>
+    <id>game</id>
     <formats>
         <format>zip</format>
     </formats>
@@ -14,16 +14,16 @@
     <fileSets>
         <fileSet>
             <directory>bin</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/</outputDirectory>
             <fileMode>0755</fileMode>
         </fileSet>
         <fileSet>
             <directory>src/main/resources</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>game-content</directory>
-            <outputDirectory></outputDirectory>
+            <outputDirectory>/</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}</directory>
