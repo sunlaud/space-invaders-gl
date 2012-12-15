@@ -1,8 +1,9 @@
 package com.xdev.engine.util
 
-import java.net.URL
+import java.net.{URI, URL}
 import java.io.{FileInputStream, InputStream, IOException}
 import com.xdev.engine.logging.LogHelper
+import io.Source
 
 /**
  * Created by User: xdev
@@ -25,7 +26,12 @@ object ResourceRetriever extends LogHelper{
     val stream = getClass.getResourceAsStream(convertedFileName)
     debug(filename + " -> " + convertedFileName + " stream iexists : " + (stream != null))
     // If not found in jar, then load from disk
-    if (stream == null) new FileInputStream(convertedFileName) else stream
+    if (stream == null) {
+      debug("Trying to load from filesystem")
+      new FileInputStream("." + convertedFileName)
+    }else {
+      stream
+    }
   }
 
 }
