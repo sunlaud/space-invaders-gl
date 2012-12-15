@@ -1,1 +1,2 @@
-java -jar space-invaders-gl-game\target\space-invaders-gl-game-1.0-SNAPSHOT.jar
+cd space-invaders-gl-game\target\
+java -jar space-invaders.jar
