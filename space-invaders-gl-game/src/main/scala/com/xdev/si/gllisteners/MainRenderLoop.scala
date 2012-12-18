@@ -19,6 +19,9 @@ import com.xdev.engine.quadtree.{TreeNode, QuadTree}
 import com.xdev.si.entity.AbstractEntity
 import java.awt.Rectangle
 
+import com.xdev.si.entity.weapon.shots.ShotParamsFactory
+
+
 /**
  * Created by User: xdev
  * Date: 26.08.2010
@@ -106,6 +109,10 @@ object MainRenderLoop extends GLEventListener2D with LogHelper {
      }
      if(Keyboard.isPressed(KeyEvent.VK_F3)){
        DebugRenderer.hide()
+       return
+     }
+     if(Keyboard.isPressed(KeyEvent.VK_F5)){
+       ShotParamsFactory.reloadConfig()
        return
      }
      if(Keyboard.isPressed(KeyEvent.VK_ESCAPE)){

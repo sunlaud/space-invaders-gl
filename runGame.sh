@@ -1,3 +1,4 @@
 #!/bin/sh
+
 cd ./space-invaders-gl-game/target/
-java -jar space-invaders.jar
+java $JAVA_OPTS -jar space-invaders.jar

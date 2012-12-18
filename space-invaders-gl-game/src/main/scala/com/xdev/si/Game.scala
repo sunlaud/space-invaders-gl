@@ -77,6 +77,7 @@ object Game extends GLGameWindow("Space Invaders GL - Scala version 1.1", 800, 6
   def initGameResources(gl: GL2): Unit = {
     val start = System.currentTimeMillis
     info("Init game resources")
+
     info("Preinit textures")
     ResourceFactory.getSprite(PRESS_ANY_KEY_SPRITE)
     ResourceFactory.getSprite(WIN_SPRITE)

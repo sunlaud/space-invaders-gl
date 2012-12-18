@@ -19,11 +19,8 @@ class FireBallShot(pos: Vector3f) extends ShotEntity(ResourceFactory.getSprite(G
 
   private val currentAnimation = FireBallShot.FLIGHT_ANIMATION
 
-  //this is slow but powerful weapon
-  collisionDamage = 100f
-  healthPoints = 900f
+  applyParams(ShotParamsFactory.getFireballShotParams)
 
-  velocity.setY(-180)
   addFrameAnimation(new FrameAnimation(
     id = FireBallShot.FLIGHT_ANIMATION,
     frames = Game.frameSets(FireBallShot.FLIGHT_ANIMATION),

@@ -36,6 +36,12 @@
             <url>http://xaoc3dgraph.github.com/maven/</url>
         </repository>
 
+        <repository>
+            <id>sunlaud-repo</id>
+            <name>sunlaud maven repository</name>
+            <url>https://raw.github.com/sunlaud/maven-repo/master</url>
+        </repository>
+
     </repositories>
 
     <pluginRepositories>
@@ -44,7 +50,7 @@
             <name>Scala-Tools Maven2 Repository</name>
             <url>http://scala-tools.org/repo-releases</url>
         </pluginRepository>
-	
+
 	<pluginRepository>
 		<id>maven2-repository.dev.java.net</id>
 		<name>Java.net Repository for Maven</name>
@@ -158,6 +164,12 @@
                             <jvmArg>-Xms64m</jvmArg>
                             <jvmArg>-Xmx1024m</jvmArg>
                         </jvmArgs>
+                        <launchers>
+                            <launcher>
+                                <id>simple</id>
+                                <mainClass>com.xdev.si.Game</mainClass>
+                            </launcher>
+                        </launchers>
                     </configuration>
                 </plugin>
             </plugins>

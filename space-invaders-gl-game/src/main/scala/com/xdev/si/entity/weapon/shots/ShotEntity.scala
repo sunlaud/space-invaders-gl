@@ -33,4 +33,10 @@ class ShotEntity(sprite : Sprite,  pos: Vector3f) extends AbstractEntity(sprite,
   override def update(delta: Long){}
 
   override def toString = "ShotEntity[" + position + "]"
+
+  def applyParams(params: ShotParams) {
+    collisionDamage = params.damage
+    healthPoints = params.durability
+    velocity.setY(params.velocity)
+  }
 }

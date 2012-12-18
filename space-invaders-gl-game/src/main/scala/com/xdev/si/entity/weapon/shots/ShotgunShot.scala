@@ -17,11 +17,8 @@ class ShotgunShot(pos: Vector3f) extends ShotEntity(ResourceFactory.getSprite(Ga
 
   private val currentAnimation = ShotgunShot.SPINNING_ANIMATION
 
-  //Overriding inherited damage values and healthPoints
-  collisionDamage = 10f
-  healthPoints = 180f
+  applyParams(ShotParamsFactory.getShotgunShotParams)
 
-  velocity.setY(-150)
   addFrameAnimation(new FrameAnimation(
     id = ShotgunShot.SPINNING_ANIMATION,
     frames = Game.frameSets(ShotgunShot.SPINNING_ANIMATION),

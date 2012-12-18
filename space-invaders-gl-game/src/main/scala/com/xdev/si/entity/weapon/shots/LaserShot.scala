@@ -7,11 +7,7 @@ import com.xdev.engine.logging.LogHelper
 
 class LaserShot(pos: Vector3f) extends ShotEntity(ResourceFactory.getSprite(Game.LASER_SHOT_SPRITE), pos){
 
-  //Overriding inherited damage values and healthPoints
-  collisionDamage = 10f
-  healthPoints = 10f
-
-  velocity.setY(-800)
+  applyParams(ShotParamsFactory.getLaserShotParams)
 
   override def move(delta: Long){
     super.move(delta)

@@ -20,11 +20,8 @@ class RocketShot(pos: Vector3f) extends ShotEntity(ResourceFactory.getSprite(Gam
   private val currentAnimation = RocketShot.FLIGHT_ANIMATION
   private val acceleration = 1.02f
 
-  //Overriding inherited damage values and healthPoints
-  collisionDamage = 35f
-  healthPoints = 50f
+  applyParams(ShotParamsFactory.getRocketShotParams)
 
-  velocity.setY(-100)
   addFrameAnimation(new FrameAnimation(
     id = RocketShot.FLIGHT_ANIMATION,
     frames = Game.frameSets(RocketShot.FLIGHT_ANIMATION),
